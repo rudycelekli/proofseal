@@ -1,0 +1,723 @@
+{
+  "schema": "proofkit-bench-claims/v1",
+  "fixture": "repo-b-python-tool",
+  "generatorSeed": 1337,
+  "claims": [
+    {
+      "id": "B-FH-001",
+      "type": "file-hash",
+      "desc": "byte-stable: LICENSE",
+      "file": "LICENSE",
+      "sha256": "52922228b23305e794a076834f31e539d15c41ed115e694b551145a5469e34f9"
+    },
+    {
+      "id": "B-FH-002",
+      "type": "file-hash",
+      "desc": "byte-stable: README.md",
+      "file": "README.md",
+      "sha256": "051ef2e5f79f3542ce77e53b976a8d4c81dd58cf69d56f8214957d5535d92a01"
+    },
+    {
+      "id": "B-FH-003",
+      "type": "file-hash",
+      "desc": "byte-stable: pyproject.toml",
+      "file": "pyproject.toml",
+      "sha256": "6e7ff4162da68926e6ac64ab600f4f0e33e45581aa660c3095e554dff33900d5"
+    },
+    {
+      "id": "B-FH-004",
+      "type": "file-hash",
+      "desc": "byte-stable: requirements.txt",
+      "file": "requirements.txt",
+      "sha256": "66a6cd34f181dcc9073fc2a326e66bbefc01749c6a013c73c6618851306b5d73"
+    },
+    {
+      "id": "B-FH-005",
+      "type": "file-hash",
+      "desc": "byte-stable: tools/deterministic.py",
+      "file": "tools/deterministic.py",
+      "sha256": "7ca3cdbc3c76d8e58cebc1efba0ae3f1570fbe0d420339a6b4445879dbb66aca"
+    },
+    {
+      "id": "B-HN-001",
+      "type": "harness",
+      "desc": "deterministic LCG output stable (seed 42)",
+      "harness": "lcg-seed-42",
+      "file": "tools/deterministic.py",
+      "cmd": "python3 tools/deterministic.py",
+      "seed": 42,
+      "quantizeDecimals": 6,
+      "expectedSha256": "032db21b7f9444ca11f973e064918842e46b08fc3800d1d24ea86ce291dff271",
+      "tolerance": {
+        "rtol": 0.0001,
+        "atol": 0.000001
+      }
+    },
+    {
+      "id": "B-HN-002",
+      "type": "harness",
+      "desc": "deterministic LCG output stable (seed 7)",
+      "harness": "lcg-seed-7",
+      "file": "tools/deterministic.py",
+      "cmd": "python3 tools/deterministic.py",
+      "seed": 7,
+      "quantizeDecimals": 6,
+      "expectedSha256": "8b9e461135e49282130743a8e78eea1c145680b1e93b520a1209accac60c291d",
+      "tolerance": {
+        "rtol": 0.0001,
+        "atol": 0.000001
+      }
+    },
+    {
+      "id": "B-MK-001",
+      "type": "marker",
+      "desc": "fix fix-b-011 present in pktool/cli.py",
+      "file": "pktool/cli.py",
+      "marker": "PROOFKIT:fix-b-011 merkle-relay-602"
+    },
+    {
+      "id": "B-MK-002",
+      "type": "marker",
+      "desc": "fix fix-b-012 present in pktool/cli.py",
+      "file": "pktool/cli.py",
+      "marker": "PROOFKIT:fix-b-012 lattice-oracle-164"
+    },
+    {
+      "id": "B-MK-003",
+      "type": "marker",
+      "desc": "fix fix-b-013 present in pktool/cli.py",
+      "file": "pktool/cli.py",
+      "marker": "PROOFKIT:fix-b-013 sentry-beacon-115"
+    },
+    {
+      "id": "B-MK-004",
+      "type": "marker",
+      "desc": "fix fix-b-014 present in pktool/cli.py",
+      "file": "pktool/cli.py",
+      "marker": "PROOFKIT:fix-b-014 shard-merkle-288"
+    },
+    {
+      "id": "B-MK-005",
+      "type": "marker",
+      "desc": "fix fix-b-015 present in pktool/cli.py",
+      "file": "pktool/cli.py",
+      "marker": "PROOFKIT:fix-b-015 sentry-probe-347"
+    },
+    {
+      "id": "B-MK-006",
+      "type": "marker",
+      "desc": "fix fix-b-016 present in pktool/cli.py",
+      "file": "pktool/cli.py",
+      "marker": "PROOFKIT:fix-b-016 relay-relay-855"
+    },
+    {
+      "id": "B-MK-007",
+      "type": "marker",
+      "desc": "fix fix-b-017 present in pktool/cli.py",
+      "file": "pktool/cli.py",
+      "marker": "PROOFKIT:fix-b-017 witness-kernel-994"
+    },
+    {
+      "id": "B-MK-008",
+      "type": "marker",
+      "desc": "fix fix-b-021 present in pktool/mod01.py",
+      "file": "pktool/mod01.py",
+      "marker": "PROOFKIT:fix-b-021 vault-mantle-546"
+    },
+    {
+      "id": "B-MK-009",
+      "type": "marker",
+      "desc": "fix fix-b-022 present in pktool/mod01.py",
+      "file": "pktool/mod01.py",
+      "marker": "PROOFKIT:fix-b-022 pivot-gauge-315"
+    },
+    {
+      "id": "B-MK-010",
+      "type": "marker",
+      "desc": "fix fix-b-023 present in pktool/mod01.py",
+      "file": "pktool/mod01.py",
+      "marker": "PROOFKIT:fix-b-023 quorum-beacon-417"
+    },
+    {
+      "id": "B-MK-011",
+      "type": "marker",
+      "desc": "fix fix-b-024 present in pktool/mod01.py",
+      "file": "pktool/mod01.py",
+      "marker": "PROOFKIT:fix-b-024 cipher-vault-153"
+    },
+    {
+      "id": "B-MK-012",
+      "type": "marker",
+      "desc": "fix fix-b-025 present in pktool/mod01.py",
+      "file": "pktool/mod01.py",
+      "marker": "PROOFKIT:fix-b-025 beacon-probe-385"
+    },
+    {
+      "id": "B-MK-013",
+      "type": "marker",
+      "desc": "fix fix-b-026 present in pktool/mod01.py",
+      "file": "pktool/mod01.py",
+      "marker": "PROOFKIT:fix-b-026 anchor-prism-294"
+    },
+    {
+      "id": "B-MK-014",
+      "type": "marker",
+      "desc": "fix fix-b-027 present in pktool/mod01.py",
+      "file": "pktool/mod01.py",
+      "marker": "PROOFKIT:fix-b-027 anchor-merkle-104"
+    },
+    {
+      "id": "B-MK-015",
+      "type": "marker",
+      "desc": "fix fix-b-031 present in pktool/mod02.py",
+      "file": "pktool/mod02.py",
+      "marker": "PROOFKIT:fix-b-031 witness-anchor-330"
+    },
+    {
+      "id": "B-MK-016",
+      "type": "marker",
+      "desc": "fix fix-b-032 present in pktool/mod02.py",
+      "file": "pktool/mod02.py",
+      "marker": "PROOFKIT:fix-b-032 beacon-strata-913"
+    },
+    {
+      "id": "B-MK-017",
+      "type": "marker",
+      "desc": "fix fix-b-033 present in pktool/mod02.py",
+      "file": "pktool/mod02.py",
+      "marker": "PROOFKIT:fix-b-033 ledger-cursor-212"
+    },
+    {
+      "id": "B-MK-018",
+      "type": "marker",
+      "desc": "fix fix-b-034 present in pktool/mod02.py",
+      "file": "pktool/mod02.py",
+      "marker": "PROOFKIT:fix-b-034 merkle-socket-682"
+    },
+    {
+      "id": "B-MK-019",
+      "type": "marker",
+      "desc": "fix fix-b-035 present in pktool/mod02.py",
+      "file": "pktool/mod02.py",
+      "marker": "PROOFKIT:fix-b-035 prism-relay-106"
+    },
+    {
+      "id": "B-MK-020",
+      "type": "marker",
+      "desc": "fix fix-b-036 present in pktool/mod02.py",
+      "file": "pktool/mod02.py",
+      "marker": "PROOFKIT:fix-b-036 tally-digest-309"
+    },
+    {
+      "id": "B-MK-021",
+      "type": "marker",
+      "desc": "fix fix-b-037 present in pktool/mod02.py",
+      "file": "pktool/mod02.py",
+      "marker": "PROOFKIT:fix-b-037 anchor-ledger-509"
+    },
+    {
+      "id": "B-MK-022",
+      "type": "marker",
+      "desc": "fix fix-b-041 present in pktool/mod03.py",
+      "file": "pktool/mod03.py",
+      "marker": "PROOFKIT:fix-b-041 cipher-sentry-172"
+    },
+    {
+      "id": "B-MK-023",
+      "type": "marker",
+      "desc": "fix fix-b-042 present in pktool/mod03.py",
+      "file": "pktool/mod03.py",
+      "marker": "PROOFKIT:fix-b-042 anchor-pivot-910"
+    },
+    {
+      "id": "B-MK-024",
+      "type": "marker",
+      "desc": "fix fix-b-043 present in pktool/mod03.py",
+      "file": "pktool/mod03.py",
+      "marker": "PROOFKIT:fix-b-043 lattice-ledger-565"
+    },
+    {
+      "id": "B-MK-025",
+      "type": "marker",
+      "desc": "fix fix-b-044 present in pktool/mod03.py",
+      "file": "pktool/mod03.py",
+      "marker": "PROOFKIT:fix-b-044 socket-strata-348"
+    },
+    {
+      "id": "B-MK-026",
+      "type": "marker",
+      "desc": "fix fix-b-045 present in pktool/mod03.py",
+      "file": "pktool/mod03.py",
+      "marker": "PROOFKIT:fix-b-045 beacon-socket-180"
+    },
+    {
+      "id": "B-MK-027",
+      "type": "marker",
+      "desc": "fix fix-b-046 present in pktool/mod03.py",
+      "file": "pktool/mod03.py",
+      "marker": "PROOFKIT:fix-b-046 merkle-ledger-881"
+    },
+    {
+      "id": "B-MK-028",
+      "type": "marker",
+      "desc": "fix fix-b-051 present in pktool/mod04.py",
+      "file": "pktool/mod04.py",
+      "marker": "PROOFKIT:fix-b-051 probe-oracle-696"
+    },
+    {
+      "id": "B-MK-029",
+      "type": "marker",
+      "desc": "fix fix-b-052 present in pktool/mod04.py",
+      "file": "pktool/mod04.py",
+      "marker": "PROOFKIT:fix-b-052 cursor-digest-134"
+    },
+    {
+      "id": "B-MK-030",
+      "type": "marker",
+      "desc": "fix fix-b-053 present in pktool/mod04.py",
+      "file": "pktool/mod04.py",
+      "marker": "PROOFKIT:fix-b-053 witness-strata-671"
+    },
+    {
+      "id": "B-MK-031",
+      "type": "marker",
+      "desc": "fix fix-b-054 present in pktool/mod04.py",
+      "file": "pktool/mod04.py",
+      "marker": "PROOFKIT:fix-b-054 tally-socket-115"
+    },
+    {
+      "id": "B-MK-032",
+      "type": "marker",
+      "desc": "fix fix-b-055 present in pktool/mod04.py",
+      "file": "pktool/mod04.py",
+      "marker": "PROOFKIT:fix-b-055 pivot-digest-363"
+    },
+    {
+      "id": "B-MK-033",
+      "type": "marker",
+      "desc": "fix fix-b-056 present in pktool/mod04.py",
+      "file": "pktool/mod04.py",
+      "marker": "PROOFKIT:fix-b-056 probe-socket-902"
+    },
+    {
+      "id": "B-MK-034",
+      "type": "marker",
+      "desc": "fix fix-b-061 present in pktool/mod05.py",
+      "file": "pktool/mod05.py",
+      "marker": "PROOFKIT:fix-b-061 digest-anchor-163"
+    },
+    {
+      "id": "B-MK-035",
+      "type": "marker",
+      "desc": "fix fix-b-062 present in pktool/mod05.py",
+      "file": "pktool/mod05.py",
+      "marker": "PROOFKIT:fix-b-062 shard-witness-272"
+    },
+    {
+      "id": "B-MK-036",
+      "type": "marker",
+      "desc": "fix fix-b-063 present in pktool/mod05.py",
+      "file": "pktool/mod05.py",
+      "marker": "PROOFKIT:fix-b-063 pivot-beacon-460"
+    },
+    {
+      "id": "B-MK-037",
+      "type": "marker",
+      "desc": "fix fix-b-064 present in pktool/mod05.py",
+      "file": "pktool/mod05.py",
+      "marker": "PROOFKIT:fix-b-064 ledger-quorum-760"
+    },
+    {
+      "id": "B-MK-038",
+      "type": "marker",
+      "desc": "fix fix-b-065 present in pktool/mod05.py",
+      "file": "pktool/mod05.py",
+      "marker": "PROOFKIT:fix-b-065 shard-cipher-588"
+    },
+    {
+      "id": "B-MK-039",
+      "type": "marker",
+      "desc": "fix fix-b-066 present in pktool/mod05.py",
+      "file": "pktool/mod05.py",
+      "marker": "PROOFKIT:fix-b-066 probe-strata-286"
+    },
+    {
+      "id": "B-MK-040",
+      "type": "marker",
+      "desc": "fix fix-b-071 present in pktool/mod06.py",
+      "file": "pktool/mod06.py",
+      "marker": "PROOFKIT:fix-b-071 tally-gauge-992"
+    },
+    {
+      "id": "B-MK-041",
+      "type": "marker",
+      "desc": "fix fix-b-072 present in pktool/mod06.py",
+      "file": "pktool/mod06.py",
+      "marker": "PROOFKIT:fix-b-072 beacon-prism-442"
+    },
+    {
+      "id": "B-MK-042",
+      "type": "marker",
+      "desc": "fix fix-b-073 present in pktool/mod06.py",
+      "file": "pktool/mod06.py",
+      "marker": "PROOFKIT:fix-b-073 lattice-beacon-819"
+    },
+    {
+      "id": "B-MK-043",
+      "type": "marker",
+      "desc": "fix fix-b-074 present in pktool/mod06.py",
+      "file": "pktool/mod06.py",
+      "marker": "PROOFKIT:fix-b-074 ledger-ledger-469"
+    },
+    {
+      "id": "B-MK-044",
+      "type": "marker",
+      "desc": "fix fix-b-075 present in pktool/mod06.py",
+      "file": "pktool/mod06.py",
+      "marker": "PROOFKIT:fix-b-075 witness-anchor-613"
+    },
+    {
+      "id": "B-MK-045",
+      "type": "marker",
+      "desc": "fix fix-b-076 present in pktool/mod06.py",
+      "file": "pktool/mod06.py",
+      "marker": "PROOFKIT:fix-b-076 gauge-merkle-478"
+    },
+    {
+      "id": "B-MK-046",
+      "type": "marker",
+      "desc": "fix fix-b-081 present in pktool/mod07.py",
+      "file": "pktool/mod07.py",
+      "marker": "PROOFKIT:fix-b-081 strata-pivot-694"
+    },
+    {
+      "id": "B-MK-047",
+      "type": "marker",
+      "desc": "fix fix-b-082 present in pktool/mod07.py",
+      "file": "pktool/mod07.py",
+      "marker": "PROOFKIT:fix-b-082 probe-beacon-450"
+    },
+    {
+      "id": "B-MK-048",
+      "type": "marker",
+      "desc": "fix fix-b-083 present in pktool/mod07.py",
+      "file": "pktool/mod07.py",
+      "marker": "PROOFKIT:fix-b-083 tally-relay-199"
+    },
+    {
+      "id": "B-MK-049",
+      "type": "marker",
+      "desc": "fix fix-b-084 present in pktool/mod07.py",
+      "file": "pktool/mod07.py",
+      "marker": "PROOFKIT:fix-b-084 cursor-kernel-818"
+    },
+    {
+      "id": "B-MK-050",
+      "type": "marker",
+      "desc": "fix fix-b-085 present in pktool/mod07.py",
+      "file": "pktool/mod07.py",
+      "marker": "PROOFKIT:fix-b-085 sentry-gauge-933"
+    },
+    {
+      "id": "B-MK-051",
+      "type": "marker",
+      "desc": "fix fix-b-086 present in pktool/mod07.py",
+      "file": "pktool/mod07.py",
+      "marker": "PROOFKIT:fix-b-086 strata-cipher-104"
+    },
+    {
+      "id": "B-MK-052",
+      "type": "marker",
+      "desc": "fix fix-b-091 present in pktool/mod08.py",
+      "file": "pktool/mod08.py",
+      "marker": "PROOFKIT:fix-b-091 oracle-beacon-720"
+    },
+    {
+      "id": "B-MK-053",
+      "type": "marker",
+      "desc": "fix fix-b-092 present in pktool/mod08.py",
+      "file": "pktool/mod08.py",
+      "marker": "PROOFKIT:fix-b-092 gauge-kernel-142"
+    },
+    {
+      "id": "B-MK-054",
+      "type": "marker",
+      "desc": "fix fix-b-093 present in pktool/mod08.py",
+      "file": "pktool/mod08.py",
+      "marker": "PROOFKIT:fix-b-093 beacon-cipher-987"
+    },
+    {
+      "id": "B-MK-055",
+      "type": "marker",
+      "desc": "fix fix-b-094 present in pktool/mod08.py",
+      "file": "pktool/mod08.py",
+      "marker": "PROOFKIT:fix-b-094 tally-witness-221"
+    },
+    {
+      "id": "B-MK-056",
+      "type": "marker",
+      "desc": "fix fix-b-095 present in pktool/mod08.py",
+      "file": "pktool/mod08.py",
+      "marker": "PROOFKIT:fix-b-095 socket-sentry-482"
+    },
+    {
+      "id": "B-MK-057",
+      "type": "marker",
+      "desc": "fix fix-b-096 present in pktool/mod08.py",
+      "file": "pktool/mod08.py",
+      "marker": "PROOFKIT:fix-b-096 socket-lattice-286"
+    },
+    {
+      "id": "B-MK-058",
+      "type": "marker",
+      "desc": "fix fix-b-101 present in pktool/mod09.py",
+      "file": "pktool/mod09.py",
+      "marker": "PROOFKIT:fix-b-101 lattice-ledger-148"
+    },
+    {
+      "id": "B-MK-059",
+      "type": "marker",
+      "desc": "fix fix-b-102 present in pktool/mod09.py",
+      "file": "pktool/mod09.py",
+      "marker": "PROOFKIT:fix-b-102 oracle-relay-184"
+    },
+    {
+      "id": "B-MK-060",
+      "type": "marker",
+      "desc": "fix fix-b-103 present in pktool/mod09.py",
+      "file": "pktool/mod09.py",
+      "marker": "PROOFKIT:fix-b-103 strata-prism-177"
+    },
+    {
+      "id": "B-MK-061",
+      "type": "marker",
+      "desc": "fix fix-b-104 present in pktool/mod09.py",
+      "file": "pktool/mod09.py",
+      "marker": "PROOFKIT:fix-b-104 prism-sentry-961"
+    },
+    {
+      "id": "B-MK-062",
+      "type": "marker",
+      "desc": "fix fix-b-105 present in pktool/mod09.py",
+      "file": "pktool/mod09.py",
+      "marker": "PROOFKIT:fix-b-105 witness-pivot-744"
+    },
+    {
+      "id": "B-MK-063",
+      "type": "marker",
+      "desc": "fix fix-b-106 present in pktool/mod09.py",
+      "file": "pktool/mod09.py",
+      "marker": "PROOFKIT:fix-b-106 merkle-pivot-690"
+    },
+    {
+      "id": "B-MK-064",
+      "type": "marker",
+      "desc": "fix fix-b-111 present in pktool/mod10.py",
+      "file": "pktool/mod10.py",
+      "marker": "PROOFKIT:fix-b-111 strata-oracle-142"
+    },
+    {
+      "id": "B-MK-065",
+      "type": "marker",
+      "desc": "fix fix-b-112 present in pktool/mod10.py",
+      "file": "pktool/mod10.py",
+      "marker": "PROOFKIT:fix-b-112 pivot-lattice-648"
+    },
+    {
+      "id": "B-MK-066",
+      "type": "marker",
+      "desc": "fix fix-b-113 present in pktool/mod10.py",
+      "file": "pktool/mod10.py",
+      "marker": "PROOFKIT:fix-b-113 cipher-anchor-466"
+    },
+    {
+      "id": "B-MK-067",
+      "type": "marker",
+      "desc": "fix fix-b-114 present in pktool/mod10.py",
+      "file": "pktool/mod10.py",
+      "marker": "PROOFKIT:fix-b-114 probe-sentry-899"
+    },
+    {
+      "id": "B-MK-068",
+      "type": "marker",
+      "desc": "fix fix-b-115 present in pktool/mod10.py",
+      "file": "pktool/mod10.py",
+      "marker": "PROOFKIT:fix-b-115 prism-witness-353"
+    },
+    {
+      "id": "B-MK-069",
+      "type": "marker",
+      "desc": "fix fix-b-116 present in pktool/mod10.py",
+      "file": "pktool/mod10.py",
+      "marker": "PROOFKIT:fix-b-116 oracle-anchor-551"
+    },
+    {
+      "id": "B-MK-070",
+      "type": "marker",
+      "desc": "fix fix-b-121 present in pktool/mod11.py",
+      "file": "pktool/mod11.py",
+      "marker": "PROOFKIT:fix-b-121 ledger-digest-850"
+    },
+    {
+      "id": "B-MK-071",
+      "type": "marker",
+      "desc": "fix fix-b-122 present in pktool/mod11.py",
+      "file": "pktool/mod11.py",
+      "marker": "PROOFKIT:fix-b-122 sentry-probe-503"
+    },
+    {
+      "id": "B-MK-072",
+      "type": "marker",
+      "desc": "fix fix-b-123 present in pktool/mod11.py",
+      "file": "pktool/mod11.py",
+      "marker": "PROOFKIT:fix-b-123 merkle-anchor-246"
+    },
+    {
+      "id": "B-MK-073",
+      "type": "marker",
+      "desc": "fix fix-b-124 present in pktool/mod11.py",
+      "file": "pktool/mod11.py",
+      "marker": "PROOFKIT:fix-b-124 sentry-strata-248"
+    },
+    {
+      "id": "B-MK-074",
+      "type": "marker",
+      "desc": "fix fix-b-125 present in pktool/mod11.py",
+      "file": "pktool/mod11.py",
+      "marker": "PROOFKIT:fix-b-125 pivot-mantle-877"
+    },
+    {
+      "id": "B-MK-075",
+      "type": "marker",
+      "desc": "fix fix-b-126 present in pktool/mod11.py",
+      "file": "pktool/mod11.py",
+      "marker": "PROOFKIT:fix-b-126 gauge-gauge-954"
+    },
+    {
+      "id": "B-MK-076",
+      "type": "marker",
+      "desc": "fix fix-b-131 present in pktool/mod12.py",
+      "file": "pktool/mod12.py",
+      "marker": "PROOFKIT:fix-b-131 probe-shard-702"
+    },
+    {
+      "id": "B-MK-077",
+      "type": "marker",
+      "desc": "fix fix-b-132 present in pktool/mod12.py",
+      "file": "pktool/mod12.py",
+      "marker": "PROOFKIT:fix-b-132 merkle-ledger-591"
+    },
+    {
+      "id": "B-MK-078",
+      "type": "marker",
+      "desc": "fix fix-b-133 present in pktool/mod12.py",
+      "file": "pktool/mod12.py",
+      "marker": "PROOFKIT:fix-b-133 gauge-beacon-733"
+    },
+    {
+      "id": "B-MK-079",
+      "type": "marker",
+      "desc": "fix fix-b-134 present in pktool/mod12.py",
+      "file": "pktool/mod12.py",
+      "marker": "PROOFKIT:fix-b-134 socket-tally-455"
+    },
+    {
+      "id": "B-MK-080",
+      "type": "marker",
+      "desc": "fix fix-b-135 present in pktool/mod12.py",
+      "file": "pktool/mod12.py",
+      "marker": "PROOFKIT:fix-b-135 socket-gauge-839"
+    },
+    {
+      "id": "B-MK-081",
+      "type": "marker",
+      "desc": "fix fix-b-136 present in pktool/mod12.py",
+      "file": "pktool/mod12.py",
+      "marker": "PROOFKIT:fix-b-136 probe-cursor-111"
+    },
+    {
+      "id": "B-MK-082",
+      "type": "marker",
+      "desc": "fix fix-b-141 present in pktool/mod13.py",
+      "file": "pktool/mod13.py",
+      "marker": "PROOFKIT:fix-b-141 ledger-witness-215"
+    },
+    {
+      "id": "B-MK-083",
+      "type": "marker",
+      "desc": "fix fix-b-142 present in pktool/mod13.py",
+      "file": "pktool/mod13.py",
+      "marker": "PROOFKIT:fix-b-142 ledger-mantle-178"
+    },
+    {
+      "id": "B-MK-084",
+      "type": "marker",
+      "desc": "fix fix-b-143 present in pktool/mod13.py",
+      "file": "pktool/mod13.py",
+      "marker": "PROOFKIT:fix-b-143 lattice-digest-387"
+    },
+    {
+      "id": "B-MK-085",
+      "type": "marker",
+      "desc": "fix fix-b-144 present in pktool/mod13.py",
+      "file": "pktool/mod13.py",
+      "marker": "PROOFKIT:fix-b-144 beacon-merkle-978"
+    },
+    {
+      "id": "B-MK-086",
+      "type": "marker",
+      "desc": "fix fix-b-145 present in pktool/mod13.py",
+      "file": "pktool/mod13.py",
+      "marker": "PROOFKIT:fix-b-145 cipher-witness-717"
+    },
+    {
+      "id": "B-MK-087",
+      "type": "marker",
+      "desc": "fix fix-b-146 present in pktool/mod13.py",
+      "file": "pktool/mod13.py",
+      "marker": "PROOFKIT:fix-b-146 sentry-probe-904"
+    },
+    {
+      "id": "B-MK-088",
+      "type": "marker",
+      "desc": "fix fix-b-151 present in pktool/mod14.py",
+      "file": "pktool/mod14.py",
+      "marker": "PROOFKIT:fix-b-151 quorum-prism-132"
+    },
+    {
+      "id": "B-MK-089",
+      "type": "marker",
+      "desc": "fix fix-b-152 present in pktool/mod14.py",
+      "file": "pktool/mod14.py",
+      "marker": "PROOFKIT:fix-b-152 sentry-oracle-214"
+    },
+    {
+      "id": "B-MK-090",
+      "type": "marker",
+      "desc": "fix fix-b-153 present in pktool/mod14.py",
+      "file": "pktool/mod14.py",
+      "marker": "PROOFKIT:fix-b-153 gauge-witness-757"
+    },
+    {
+      "id": "B-MK-091",
+      "type": "marker",
+      "desc": "fix fix-b-154 present in pktool/mod14.py",
+      "file": "pktool/mod14.py",
+      "marker": "PROOFKIT:fix-b-154 oracle-lattice-891"
+    },
+    {
+      "id": "B-MK-092",
+      "type": "marker",
+      "desc": "fix fix-b-155 present in pktool/mod14.py",
+      "file": "pktool/mod14.py",
+      "marker": "PROOFKIT:fix-b-155 lattice-digest-576"
+    },
+    {
+      "id": "B-MK-093",
+      "type": "marker",
+      "desc": "fix fix-b-156 present in pktool/mod14.py",
+      "file": "pktool/mod14.py",
+      "marker": "PROOFKIT:fix-b-156 socket-oracle-316"
+    }
+  ]
+}

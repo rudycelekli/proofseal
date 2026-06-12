@@ -1,0 +1,367 @@
+{
+  "schema": "proofkit-bench-mutations/v1",
+  "seed": 42,
+  "count": 45,
+  "mutations": [
+    {
+      "id": "M-001",
+      "class": "manifest-byte",
+      "fixture": "repo-a-npm-lib",
+      "target": "manifest:integrity.signature",
+      "operation": "flip-hex-nibble@5",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-002",
+      "class": "manifest-byte",
+      "fixture": "repo-a-npm-lib",
+      "target": "manifest:claims[].sha256",
+      "operation": "flip-hex-nibble@25",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-003",
+      "class": "manifest-byte",
+      "fixture": "repo-a-npm-lib",
+      "target": "manifest:manifest.summary.verified",
+      "operation": "flip-hex-nibble@27",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-004",
+      "class": "manifest-byte",
+      "fixture": "repo-a-npm-lib",
+      "target": "manifest:integrity.manifestHash",
+      "operation": "flip-hex-nibble@5",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-005",
+      "class": "marker-removal",
+      "fixture": "repo-a-npm-lib",
+      "target": "src/module07.ts#A-MK-037",
+      "operation": "remove-marker-line",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-006",
+      "class": "marker-removal",
+      "fixture": "repo-a-npm-lib",
+      "target": "src/module14.ts#A-MK-074",
+      "operation": "remove-marker-line",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-007",
+      "class": "marker-removal",
+      "fixture": "repo-a-npm-lib",
+      "target": "src/module09.ts#A-MK-050",
+      "operation": "remove-marker-line",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-008",
+      "class": "marker-removal",
+      "fixture": "repo-a-npm-lib",
+      "target": "src/module15.ts#A-MK-077",
+      "operation": "remove-marker-line",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-009",
+      "class": "edit-marker-intact",
+      "fixture": "repo-a-npm-lib",
+      "target": "src/module10.ts#A-MK-053",
+      "operation": "append-benign-line",
+      "expectedDetection": "drift"
+    },
+    {
+      "id": "M-010",
+      "class": "edit-marker-intact",
+      "fixture": "repo-a-npm-lib",
+      "target": "src/module03.ts#A-MK-014",
+      "operation": "append-benign-line",
+      "expectedDetection": "drift"
+    },
+    {
+      "id": "M-011",
+      "class": "edit-marker-intact",
+      "fixture": "repo-a-npm-lib",
+      "target": "src/module13.ts#A-MK-067",
+      "operation": "append-benign-line",
+      "expectedDetection": "drift"
+    },
+    {
+      "id": "M-012",
+      "class": "edit-marker-intact",
+      "fixture": "repo-a-npm-lib",
+      "target": "src/module08.ts#A-MK-045",
+      "operation": "append-benign-line",
+      "expectedDetection": "drift"
+    },
+    {
+      "id": "M-013",
+      "class": "file-deletion",
+      "fixture": "repo-a-npm-lib",
+      "target": "dist/module01.js#A-FH-004",
+      "operation": "delete-file",
+      "expectedDetection": "missing"
+    },
+    {
+      "id": "M-014",
+      "class": "file-deletion",
+      "fixture": "repo-a-npm-lib",
+      "target": "dist/module06.js#A-FH-009",
+      "operation": "delete-file",
+      "expectedDetection": "missing"
+    },
+    {
+      "id": "M-015",
+      "class": "file-deletion",
+      "fixture": "repo-a-npm-lib",
+      "target": "dist/module10.js#A-FH-013",
+      "operation": "delete-file",
+      "expectedDetection": "missing"
+    },
+    {
+      "id": "M-016",
+      "class": "manifest-byte",
+      "fixture": "repo-b-python-tool",
+      "target": "manifest:integrity.signature",
+      "operation": "flip-hex-nibble@14",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-017",
+      "class": "manifest-byte",
+      "fixture": "repo-b-python-tool",
+      "target": "manifest:claims[].sha256",
+      "operation": "flip-hex-nibble@24",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-018",
+      "class": "manifest-byte",
+      "fixture": "repo-b-python-tool",
+      "target": "manifest:manifest.summary.verified",
+      "operation": "flip-hex-nibble@29",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-019",
+      "class": "manifest-byte",
+      "fixture": "repo-b-python-tool",
+      "target": "manifest:integrity.manifestHash",
+      "operation": "flip-hex-nibble@18",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-020",
+      "class": "marker-removal",
+      "fixture": "repo-b-python-tool",
+      "target": "pktool/mod02.py#B-MK-020",
+      "operation": "remove-marker-line",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-021",
+      "class": "marker-removal",
+      "fixture": "repo-b-python-tool",
+      "target": "pktool/mod12.py#B-MK-080",
+      "operation": "remove-marker-line",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-022",
+      "class": "marker-removal",
+      "fixture": "repo-b-python-tool",
+      "target": "pktool/mod12.py#B-MK-078",
+      "operation": "remove-marker-line",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-023",
+      "class": "marker-removal",
+      "fixture": "repo-b-python-tool",
+      "target": "pktool/mod11.py#B-MK-072",
+      "operation": "remove-marker-line",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-024",
+      "class": "edit-marker-intact",
+      "fixture": "repo-b-python-tool",
+      "target": "pktool/mod02.py#B-MK-016",
+      "operation": "append-benign-line",
+      "expectedDetection": "drift"
+    },
+    {
+      "id": "M-025",
+      "class": "edit-marker-intact",
+      "fixture": "repo-b-python-tool",
+      "target": "pktool/mod13.py#B-MK-086",
+      "operation": "append-benign-line",
+      "expectedDetection": "drift"
+    },
+    {
+      "id": "M-026",
+      "class": "edit-marker-intact",
+      "fixture": "repo-b-python-tool",
+      "target": "pktool/mod08.py#B-MK-054",
+      "operation": "append-benign-line",
+      "expectedDetection": "drift"
+    },
+    {
+      "id": "M-027",
+      "class": "edit-marker-intact",
+      "fixture": "repo-b-python-tool",
+      "target": "pktool/mod06.py#B-MK-045",
+      "operation": "append-benign-line",
+      "expectedDetection": "drift"
+    },
+    {
+      "id": "M-028",
+      "class": "file-deletion",
+      "fixture": "repo-b-python-tool",
+      "target": "README.md#B-FH-002",
+      "operation": "delete-file",
+      "expectedDetection": "missing"
+    },
+    {
+      "id": "M-029",
+      "class": "file-deletion",
+      "fixture": "repo-b-python-tool",
+      "target": "pyproject.toml#B-FH-003",
+      "operation": "delete-file",
+      "expectedDetection": "missing"
+    },
+    {
+      "id": "M-030",
+      "class": "file-deletion",
+      "fixture": "repo-b-python-tool",
+      "target": "LICENSE#B-FH-001",
+      "operation": "delete-file",
+      "expectedDetection": "missing"
+    },
+    {
+      "id": "M-031",
+      "class": "manifest-byte",
+      "fixture": "repo-c-docs-site",
+      "target": "manifest:integrity.signature",
+      "operation": "flip-hex-nibble@25",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-032",
+      "class": "manifest-byte",
+      "fixture": "repo-c-docs-site",
+      "target": "manifest:claims[].sha256",
+      "operation": "flip-hex-nibble@30",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-033",
+      "class": "manifest-byte",
+      "fixture": "repo-c-docs-site",
+      "target": "manifest:manifest.summary.verified",
+      "operation": "flip-hex-nibble@9",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-034",
+      "class": "manifest-byte",
+      "fixture": "repo-c-docs-site",
+      "target": "manifest:integrity.manifestHash",
+      "operation": "flip-hex-nibble@6",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-035",
+      "class": "marker-removal",
+      "fixture": "repo-c-docs-site",
+      "target": ".github/workflows/ci.yml#C-MK-092",
+      "operation": "remove-marker-line",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-036",
+      "class": "marker-removal",
+      "fixture": "repo-c-docs-site",
+      "target": "docs/page03.md#C-MK-033",
+      "operation": "remove-marker-line",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-037",
+      "class": "marker-removal",
+      "fixture": "repo-c-docs-site",
+      "target": "docs/page01.md#C-MK-020",
+      "operation": "remove-marker-line",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-038",
+      "class": "marker-removal",
+      "fixture": "repo-c-docs-site",
+      "target": "index.md#C-MK-001",
+      "operation": "remove-marker-line",
+      "expectedDetection": "fail"
+    },
+    {
+      "id": "M-039",
+      "class": "edit-marker-intact",
+      "fixture": "repo-c-docs-site",
+      "target": "docs/page03.md#C-MK-032",
+      "operation": "append-benign-line",
+      "expectedDetection": "drift"
+    },
+    {
+      "id": "M-040",
+      "class": "edit-marker-intact",
+      "fixture": "repo-c-docs-site",
+      "target": "docs/page02.md#C-MK-030",
+      "operation": "append-benign-line",
+      "expectedDetection": "drift"
+    },
+    {
+      "id": "M-041",
+      "class": "edit-marker-intact",
+      "fixture": "repo-c-docs-site",
+      "target": "index.md#C-MK-010",
+      "operation": "append-benign-line",
+      "expectedDetection": "drift"
+    },
+    {
+      "id": "M-042",
+      "class": "edit-marker-intact",
+      "fixture": "repo-c-docs-site",
+      "target": "docs/page08.md#C-MK-079",
+      "operation": "append-benign-line",
+      "expectedDetection": "drift"
+    },
+    {
+      "id": "M-043",
+      "class": "file-deletion",
+      "fixture": "repo-c-docs-site",
+      "target": "docs/page09.md#C-FH-003",
+      "operation": "delete-file",
+      "expectedDetection": "missing"
+    },
+    {
+      "id": "M-044",
+      "class": "file-deletion",
+      "fixture": "repo-c-docs-site",
+      "target": "docs/page10.md#C-FH-004",
+      "operation": "delete-file",
+      "expectedDetection": "missing"
+    },
+    {
+      "id": "M-045",
+      "class": "file-deletion",
+      "fixture": "repo-c-docs-site",
+      "target": "LICENSE#C-FH-001",
+      "operation": "delete-file",
+      "expectedDetection": "missing"
+    }
+  ]
+}

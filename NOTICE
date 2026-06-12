@@ -1,0 +1,13 @@
+ProofSeal
+Copyright (c) 2026 rudycelekli
+
+This product generalizes ideas from open work published by the Agentics
+Foundation community:
+
+- ruflo witness manifests (https://github.com/ruvnet/claude-flow) — the
+  seal/verify loop and signed-manifest concept.
+- RuVector marker verification — the marker-claim concept.
+
+ProofSeal is an independent implementation; it contains no code from those
+projects. Thanks to @rUv and the Agentics Foundation for publishing this
+work openly.

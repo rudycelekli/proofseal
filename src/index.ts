@@ -1,0 +1,96 @@
+/**
+ * ProofSeal public library API (ADR-0001 §4.3 — published contract).
+ * CLI and MCP server are thin wrappers over these exports.
+ */
+export { canonicalize } from './core/canonical.js';
+export { sha256Hex, sha256Bytes, fileSha256, fileSha256CrlfNormalized, fileContains, markerPresent, markerOccurrences } from './core/hash.js';
+export { normalizeClaimPath } from './core/paths.js';
+export { lintMarker } from './core/marker-lint.js';
+export { deriveKey, signBytes, verifyBytes, SEED_DERIVATION, type DerivedKey } from './keys/derive.js';
+
+export { seal, refreshClaim, type SealOptions, type SealResult, type SealWarning } from './manifest/seal.js';
+export {
+  verify,
+  checkSignature,
+  classifyFileClaim,
+  toVerifyJson,
+  THREAT_MODEL_NOTE,
+  CRLF_DETAIL,
+  REFERENCE_VECTOR_HINT,
+  type VerifyOptions,
+  type VerifyResult,
+  type VerifyJson,
+  type ClaimResult,
+  type VerifySummary,
+  type SignatureCheck,
+} from './manifest/verify.js';
+export {
+  SCHEMA_ID,
+  ClaimSchema,
+  ManifestSchema,
+  PlatformSchema,
+  WitnessSchema,
+  ConfigSchema,
+  type ManifestPlatform,
+  type Claim,
+  type ClaimState,
+  type ClaimStatus,
+  type FileHashClaim,
+  type MarkerClaim,
+  type HarnessClaim,
+  type Manifest,
+  type ManifestSummary,
+  type Witness,
+  type Integrity,
+  type Tolerance,
+  type ProofSealConfig,
+} from './manifest/schema.js';
+
+export {
+  loadHistory,
+  appendHistory,
+  claimVerified,
+  type HistoryEntry,
+  type HistoryClaimState,
+} from './history/jsonl.js';
+export {
+  fixTimeline,
+  diffLatest,
+  findRegressionIntroductions,
+  sortByIssuedAt,
+  type TimelinePoint,
+  type LatestDiff,
+  type RegressionIntroduction,
+} from './history/queries.js';
+export {
+  enrichRegressionsWithGit,
+  UNREACHABLE_TAG,
+  type RegressionGitInfo,
+  type EnrichedRegression,
+} from './history/gitinfo.js';
+
+export {
+  runHarness,
+  parseNumericOutput,
+  type HarnessDef,
+  type HarnessResult,
+  type HarnessStatus,
+} from './harness/run.js';
+export {
+  roundHalfEven,
+  quantizeValues,
+  packLEFloat64,
+  hashQuantized,
+  allClose,
+  DEFAULT_DECIMALS,
+  DEFAULT_TOLERANCE,
+  type AllCloseResult,
+} from './harness/quantize.js';
+
+export {
+  loadConfig,
+  saveConfig,
+  defaultConfig,
+  CONFIG_FILENAME,
+  type ResolvedConfig,
+} from './config.js';

@@ -1,0 +1,43 @@
+name: Bug report
+description: Something broke — tell me what, and I'll fix it (solo maintainer, ~48h response)
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for trying ProofSeal. The fastest path to a fix is the JSON output below — it carries everything I need.
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: "macOS 15.5 / Ubuntu 24.04 / Windows 11 (note: Windows is best-effort in v0.1)"
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node version (`node --version`)
+      placeholder: "v22.x"
+    validations:
+      required: true
+  - type: input
+    id: command
+    attributes:
+      label: Exact command you ran
+      placeholder: "npx proofseal verify"
+    validations:
+      required: true
+  - type: textarea
+    id: json
+    attributes:
+      label: Output of `npx proofseal verify --json`
+      description: Paste the full JSON. If the failing command wasn't verify, paste that command's output with `--json` too.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: What did you expect, and what happened instead?
+    validations:
+      required: false

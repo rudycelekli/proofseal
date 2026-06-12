@@ -1,0 +1,3 @@
+site_name: repo-c-docs-site
+nav:
+  - Home: index.md

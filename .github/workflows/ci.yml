@@ -1,0 +1,87 @@
+# CI for proofseal — "Windows insurance" per premortem round 2, finding #7
+# (docs/premortem/premortem-round2-transcript-2026-06-12.md)
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [22]
+    runs-on: ${{ matrix.os }}
+    # Windows is best-effort and untested in v0.1 (ADR-0003 amendment, premortem R3):
+    # the lane runs non-blocking until observed green, then gets promoted to supported.
+    continue-on-error: ${{ matrix.os == 'windows-latest' }}
+    steps:
+      # Must run BEFORE checkout: prevents CRLF conversion on Windows
+      # from breaking file-hash tests. Git is preinstalled on all runners.
+      - name: Disable autocrlf
+        run: git config --global core.autocrlf input
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # shell: bash on test steps guarantees identical quoted-glob
+      # handling across ubuntu/windows/macos runners.
+      - name: Unit tests
+        run: npm test
+        shell: bash
+
+      # Loud-failure guard: integration helpers ALSO throw when CI=true and
+      # dist is missing, but this step makes the failure mode unmissable in
+      # the job log instead of buried in a test-runner import error.
+      - name: Guard — built CLI must exist
+        run: test -f dist/cli/index.js || { echo "dist/cli/index.js missing after build — integration tests would have skipped silently"; exit 1; }
+        shell: bash
+
+      - name: Integration tests
+        run: node --test "tests/integration/*.test.mjs"
+        shell: bash
+
+  # Exercises the literal npm-installed path (npm pack → install tarball →
+  # run the INSTALLED bin): shebang + exec bit, `files` whitelist, bin
+  # resolution, MCP handshake over the packed artifact, --help exit code.
+  tarball-smoke:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    # Same Windows best-effort policy as the test job (ADR-0003 amendment).
+    continue-on-error: ${{ matrix.os == 'windows-latest' }}
+    steps:
+      - name: Disable autocrlf
+        run: git config --global core.autocrlf input
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Tarball smoke (packed artifact, installed bin)
+        run: node scripts/tarball-smoke.mjs

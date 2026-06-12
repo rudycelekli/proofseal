@@ -1,0 +1,707 @@
+{
+  "schema": "proofkit-bench-claims/v1",
+  "fixture": "repo-a-npm-lib",
+  "generatorSeed": 1337,
+  "claims": [
+    {
+      "id": "A-FH-001",
+      "type": "file-hash",
+      "desc": "byte-stable: LICENSE",
+      "file": "LICENSE",
+      "sha256": "52922228b23305e794a076834f31e539d15c41ed115e694b551145a5469e34f9"
+    },
+    {
+      "id": "A-FH-002",
+      "type": "file-hash",
+      "desc": "byte-stable: README.md",
+      "file": "README.md",
+      "sha256": "857ca70b67e98d92d9277192e02173dfd1074e280499fd36c9afcd00269bfe9a"
+    },
+    {
+      "id": "A-FH-003",
+      "type": "file-hash",
+      "desc": "byte-stable: build.mjs",
+      "file": "build.mjs",
+      "sha256": "7a9a32f4ac888585e2cfb3423d18644acfb4cf3e0f2eaabd83246f30da4c964c"
+    },
+    {
+      "id": "A-FH-004",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module01.js",
+      "file": "dist/module01.js",
+      "sha256": "900423566d0bd7a398a75a093a49845abbc7671885e25352f48d9ffa97e2d9c4"
+    },
+    {
+      "id": "A-FH-005",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module02.js",
+      "file": "dist/module02.js",
+      "sha256": "6859cbebaa48035bf4312e3be7a7ad21ed219a9db256b5245261f0dc722a1ac2"
+    },
+    {
+      "id": "A-FH-006",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module03.js",
+      "file": "dist/module03.js",
+      "sha256": "2fbbe751f2f045369b03090a18f9ae445e1f8d5f6dd2ede4adca30516c5db1ad"
+    },
+    {
+      "id": "A-FH-007",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module04.js",
+      "file": "dist/module04.js",
+      "sha256": "53e20c7e004afcad4f2eba1fdc77d6371b466d2e35ed9588d62a4ef16e0a7111"
+    },
+    {
+      "id": "A-FH-008",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module05.js",
+      "file": "dist/module05.js",
+      "sha256": "02801cb415e5632c5e4a82868b325c89cf11ff1e06bbe3bbb459565ee00322dc"
+    },
+    {
+      "id": "A-FH-009",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module06.js",
+      "file": "dist/module06.js",
+      "sha256": "9f1a8518d7e2128515d2c6d04761b2afc05f390c88bfddc103a808211e3bcf4b"
+    },
+    {
+      "id": "A-FH-010",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module07.js",
+      "file": "dist/module07.js",
+      "sha256": "5bc45adc4b273b8605d3044d58c6d9df11f36b5d578520c529977e2ac5fd72a4"
+    },
+    {
+      "id": "A-FH-011",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module08.js",
+      "file": "dist/module08.js",
+      "sha256": "f14ae6e0cc3ea31754dcc788973a08b063dc732a5d7b4f8e239aa7f51187de32"
+    },
+    {
+      "id": "A-FH-012",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module09.js",
+      "file": "dist/module09.js",
+      "sha256": "1194dc9b314c1a8770db1bc52b31aa5357c600ad258ff34d89cb51518d7e3f1c"
+    },
+    {
+      "id": "A-FH-013",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module10.js",
+      "file": "dist/module10.js",
+      "sha256": "a67c29adf9536fbe662d20f235d56564cf88b2ab840809ae232f4cdd774683f0"
+    },
+    {
+      "id": "A-FH-014",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module11.js",
+      "file": "dist/module11.js",
+      "sha256": "963d10982cac869641a10e53512f955874ac1459aed453a4eab76c5215c3a3a4"
+    },
+    {
+      "id": "A-FH-015",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module12.js",
+      "file": "dist/module12.js",
+      "sha256": "0439182d8d90cb484b831d8545c40ad8834215917585129f83d830c6a8f79506"
+    },
+    {
+      "id": "A-FH-016",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module13.js",
+      "file": "dist/module13.js",
+      "sha256": "705705d3af349fa17377ed15ea9e3290d88a5594614b30d469903e7a90294bab"
+    },
+    {
+      "id": "A-FH-017",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module14.js",
+      "file": "dist/module14.js",
+      "sha256": "4187ab33a34d18a1ef605f274ba733c0aa119c536e16a815dfb82d1e6122ad63"
+    },
+    {
+      "id": "A-FH-018",
+      "type": "file-hash",
+      "desc": "byte-stable: dist/module15.js",
+      "file": "dist/module15.js",
+      "sha256": "668705537ea747ab63e10600668613e9706dae01f3f21592e0fb87993bdb7a04"
+    },
+    {
+      "id": "A-FH-019",
+      "type": "file-hash",
+      "desc": "byte-stable: package.json",
+      "file": "package.json",
+      "sha256": "a2f5e7bb2464fa7b33f6a3f2ffcbb9668b6ec83d9f825e251772ae4fdd1b12e5"
+    },
+    {
+      "id": "A-FH-020",
+      "type": "file-hash",
+      "desc": "byte-stable: tsconfig.json",
+      "file": "tsconfig.json",
+      "sha256": "bd9ae487e86d4156dcbab9d49cdbeb13b7398791acf09aaeb408870b655643ad"
+    },
+    {
+      "id": "A-MK-001",
+      "type": "marker",
+      "desc": "fix fix-a-011 present in src/module01.ts",
+      "file": "src/module01.ts",
+      "marker": "PROOFKIT:fix-a-011 kernel-vault-905"
+    },
+    {
+      "id": "A-MK-002",
+      "type": "marker",
+      "desc": "fix fix-a-012 present in src/module01.ts",
+      "file": "src/module01.ts",
+      "marker": "PROOFKIT:fix-a-012 mantle-witness-961"
+    },
+    {
+      "id": "A-MK-003",
+      "type": "marker",
+      "desc": "fix fix-a-013 present in src/module01.ts",
+      "file": "src/module01.ts",
+      "marker": "PROOFKIT:fix-a-013 witness-cursor-938"
+    },
+    {
+      "id": "A-MK-004",
+      "type": "marker",
+      "desc": "fix fix-a-014 present in src/module01.ts",
+      "file": "src/module01.ts",
+      "marker": "PROOFKIT:fix-a-014 probe-witness-139"
+    },
+    {
+      "id": "A-MK-005",
+      "type": "marker",
+      "desc": "fix fix-a-015 present in src/module01.ts",
+      "file": "src/module01.ts",
+      "marker": "PROOFKIT:fix-a-015 cipher-digest-799"
+    },
+    {
+      "id": "A-MK-006",
+      "type": "marker",
+      "desc": "fix fix-a-016 present in src/module01.ts",
+      "file": "src/module01.ts",
+      "marker": "PROOFKIT:fix-a-016 gauge-ledger-422"
+    },
+    {
+      "id": "A-MK-007",
+      "type": "marker",
+      "desc": "fix fix-a-021 present in src/module02.ts",
+      "file": "src/module02.ts",
+      "marker": "PROOFKIT:fix-a-021 lattice-tally-354"
+    },
+    {
+      "id": "A-MK-008",
+      "type": "marker",
+      "desc": "fix fix-a-022 present in src/module02.ts",
+      "file": "src/module02.ts",
+      "marker": "PROOFKIT:fix-a-022 shard-tally-815"
+    },
+    {
+      "id": "A-MK-009",
+      "type": "marker",
+      "desc": "fix fix-a-023 present in src/module02.ts",
+      "file": "src/module02.ts",
+      "marker": "PROOFKIT:fix-a-023 mantle-pivot-192"
+    },
+    {
+      "id": "A-MK-010",
+      "type": "marker",
+      "desc": "fix fix-a-024 present in src/module02.ts",
+      "file": "src/module02.ts",
+      "marker": "PROOFKIT:fix-a-024 beacon-anchor-536"
+    },
+    {
+      "id": "A-MK-011",
+      "type": "marker",
+      "desc": "fix fix-a-025 present in src/module02.ts",
+      "file": "src/module02.ts",
+      "marker": "PROOFKIT:fix-a-025 oracle-vault-365"
+    },
+    {
+      "id": "A-MK-012",
+      "type": "marker",
+      "desc": "fix fix-a-026 present in src/module02.ts",
+      "file": "src/module02.ts",
+      "marker": "PROOFKIT:fix-a-026 digest-anchor-134"
+    },
+    {
+      "id": "A-MK-013",
+      "type": "marker",
+      "desc": "fix fix-a-031 present in src/module03.ts",
+      "file": "src/module03.ts",
+      "marker": "PROOFKIT:fix-a-031 vault-kernel-792"
+    },
+    {
+      "id": "A-MK-014",
+      "type": "marker",
+      "desc": "fix fix-a-032 present in src/module03.ts",
+      "file": "src/module03.ts",
+      "marker": "PROOFKIT:fix-a-032 sentry-relay-911"
+    },
+    {
+      "id": "A-MK-015",
+      "type": "marker",
+      "desc": "fix fix-a-033 present in src/module03.ts",
+      "file": "src/module03.ts",
+      "marker": "PROOFKIT:fix-a-033 vault-probe-841"
+    },
+    {
+      "id": "A-MK-016",
+      "type": "marker",
+      "desc": "fix fix-a-034 present in src/module03.ts",
+      "file": "src/module03.ts",
+      "marker": "PROOFKIT:fix-a-034 lattice-shard-477"
+    },
+    {
+      "id": "A-MK-017",
+      "type": "marker",
+      "desc": "fix fix-a-035 present in src/module03.ts",
+      "file": "src/module03.ts",
+      "marker": "PROOFKIT:fix-a-035 cursor-merkle-498"
+    },
+    {
+      "id": "A-MK-018",
+      "type": "marker",
+      "desc": "fix fix-a-036 present in src/module03.ts",
+      "file": "src/module03.ts",
+      "marker": "PROOFKIT:fix-a-036 witness-vault-581"
+    },
+    {
+      "id": "A-MK-019",
+      "type": "marker",
+      "desc": "fix fix-a-041 present in src/module04.ts",
+      "file": "src/module04.ts",
+      "marker": "PROOFKIT:fix-a-041 probe-ledger-253"
+    },
+    {
+      "id": "A-MK-020",
+      "type": "marker",
+      "desc": "fix fix-a-042 present in src/module04.ts",
+      "file": "src/module04.ts",
+      "marker": "PROOFKIT:fix-a-042 witness-cursor-201"
+    },
+    {
+      "id": "A-MK-021",
+      "type": "marker",
+      "desc": "fix fix-a-043 present in src/module04.ts",
+      "file": "src/module04.ts",
+      "marker": "PROOFKIT:fix-a-043 probe-gauge-940"
+    },
+    {
+      "id": "A-MK-022",
+      "type": "marker",
+      "desc": "fix fix-a-044 present in src/module04.ts",
+      "file": "src/module04.ts",
+      "marker": "PROOFKIT:fix-a-044 merkle-prism-308"
+    },
+    {
+      "id": "A-MK-023",
+      "type": "marker",
+      "desc": "fix fix-a-045 present in src/module04.ts",
+      "file": "src/module04.ts",
+      "marker": "PROOFKIT:fix-a-045 quorum-digest-413"
+    },
+    {
+      "id": "A-MK-024",
+      "type": "marker",
+      "desc": "fix fix-a-046 present in src/module04.ts",
+      "file": "src/module04.ts",
+      "marker": "PROOFKIT:fix-a-046 vault-socket-571"
+    },
+    {
+      "id": "A-MK-025",
+      "type": "marker",
+      "desc": "fix fix-a-051 present in src/module05.ts",
+      "file": "src/module05.ts",
+      "marker": "PROOFKIT:fix-a-051 oracle-shard-559"
+    },
+    {
+      "id": "A-MK-026",
+      "type": "marker",
+      "desc": "fix fix-a-052 present in src/module05.ts",
+      "file": "src/module05.ts",
+      "marker": "PROOFKIT:fix-a-052 vault-witness-943"
+    },
+    {
+      "id": "A-MK-027",
+      "type": "marker",
+      "desc": "fix fix-a-053 present in src/module05.ts",
+      "file": "src/module05.ts",
+      "marker": "PROOFKIT:fix-a-053 pivot-strata-447"
+    },
+    {
+      "id": "A-MK-028",
+      "type": "marker",
+      "desc": "fix fix-a-054 present in src/module05.ts",
+      "file": "src/module05.ts",
+      "marker": "PROOFKIT:fix-a-054 socket-relay-655"
+    },
+    {
+      "id": "A-MK-029",
+      "type": "marker",
+      "desc": "fix fix-a-055 present in src/module05.ts",
+      "file": "src/module05.ts",
+      "marker": "PROOFKIT:fix-a-055 sentry-probe-187"
+    },
+    {
+      "id": "A-MK-030",
+      "type": "marker",
+      "desc": "fix fix-a-056 present in src/module05.ts",
+      "file": "src/module05.ts",
+      "marker": "PROOFKIT:fix-a-056 probe-pivot-898"
+    },
+    {
+      "id": "A-MK-031",
+      "type": "marker",
+      "desc": "fix fix-a-061 present in src/module06.ts",
+      "file": "src/module06.ts",
+      "marker": "PROOFKIT:fix-a-061 vault-cursor-655"
+    },
+    {
+      "id": "A-MK-032",
+      "type": "marker",
+      "desc": "fix fix-a-062 present in src/module06.ts",
+      "file": "src/module06.ts",
+      "marker": "PROOFKIT:fix-a-062 cursor-cursor-102"
+    },
+    {
+      "id": "A-MK-033",
+      "type": "marker",
+      "desc": "fix fix-a-063 present in src/module06.ts",
+      "file": "src/module06.ts",
+      "marker": "PROOFKIT:fix-a-063 sentry-probe-772"
+    },
+    {
+      "id": "A-MK-034",
+      "type": "marker",
+      "desc": "fix fix-a-064 present in src/module06.ts",
+      "file": "src/module06.ts",
+      "marker": "PROOFKIT:fix-a-064 witness-probe-962"
+    },
+    {
+      "id": "A-MK-035",
+      "type": "marker",
+      "desc": "fix fix-a-065 present in src/module06.ts",
+      "file": "src/module06.ts",
+      "marker": "PROOFKIT:fix-a-065 strata-cursor-857"
+    },
+    {
+      "id": "A-MK-036",
+      "type": "marker",
+      "desc": "fix fix-a-071 present in src/module07.ts",
+      "file": "src/module07.ts",
+      "marker": "PROOFKIT:fix-a-071 relay-gauge-456"
+    },
+    {
+      "id": "A-MK-037",
+      "type": "marker",
+      "desc": "fix fix-a-072 present in src/module07.ts",
+      "file": "src/module07.ts",
+      "marker": "PROOFKIT:fix-a-072 cipher-shard-593"
+    },
+    {
+      "id": "A-MK-038",
+      "type": "marker",
+      "desc": "fix fix-a-073 present in src/module07.ts",
+      "file": "src/module07.ts",
+      "marker": "PROOFKIT:fix-a-073 shard-vault-152"
+    },
+    {
+      "id": "A-MK-039",
+      "type": "marker",
+      "desc": "fix fix-a-074 present in src/module07.ts",
+      "file": "src/module07.ts",
+      "marker": "PROOFKIT:fix-a-074 ledger-shard-613"
+    },
+    {
+      "id": "A-MK-040",
+      "type": "marker",
+      "desc": "fix fix-a-075 present in src/module07.ts",
+      "file": "src/module07.ts",
+      "marker": "PROOFKIT:fix-a-075 lattice-probe-135"
+    },
+    {
+      "id": "A-MK-041",
+      "type": "marker",
+      "desc": "fix fix-a-081 present in src/module08.ts",
+      "file": "src/module08.ts",
+      "marker": "PROOFKIT:fix-a-081 anchor-relay-175"
+    },
+    {
+      "id": "A-MK-042",
+      "type": "marker",
+      "desc": "fix fix-a-082 present in src/module08.ts",
+      "file": "src/module08.ts",
+      "marker": "PROOFKIT:fix-a-082 tally-cursor-594"
+    },
+    {
+      "id": "A-MK-043",
+      "type": "marker",
+      "desc": "fix fix-a-083 present in src/module08.ts",
+      "file": "src/module08.ts",
+      "marker": "PROOFKIT:fix-a-083 witness-relay-309"
+    },
+    {
+      "id": "A-MK-044",
+      "type": "marker",
+      "desc": "fix fix-a-084 present in src/module08.ts",
+      "file": "src/module08.ts",
+      "marker": "PROOFKIT:fix-a-084 mantle-kernel-296"
+    },
+    {
+      "id": "A-MK-045",
+      "type": "marker",
+      "desc": "fix fix-a-085 present in src/module08.ts",
+      "file": "src/module08.ts",
+      "marker": "PROOFKIT:fix-a-085 relay-shard-388"
+    },
+    {
+      "id": "A-MK-046",
+      "type": "marker",
+      "desc": "fix fix-a-091 present in src/module09.ts",
+      "file": "src/module09.ts",
+      "marker": "PROOFKIT:fix-a-091 cursor-merkle-495"
+    },
+    {
+      "id": "A-MK-047",
+      "type": "marker",
+      "desc": "fix fix-a-092 present in src/module09.ts",
+      "file": "src/module09.ts",
+      "marker": "PROOFKIT:fix-a-092 probe-quorum-325"
+    },
+    {
+      "id": "A-MK-048",
+      "type": "marker",
+      "desc": "fix fix-a-093 present in src/module09.ts",
+      "file": "src/module09.ts",
+      "marker": "PROOFKIT:fix-a-093 cipher-strata-338"
+    },
+    {
+      "id": "A-MK-049",
+      "type": "marker",
+      "desc": "fix fix-a-094 present in src/module09.ts",
+      "file": "src/module09.ts",
+      "marker": "PROOFKIT:fix-a-094 mantle-merkle-200"
+    },
+    {
+      "id": "A-MK-050",
+      "type": "marker",
+      "desc": "fix fix-a-095 present in src/module09.ts",
+      "file": "src/module09.ts",
+      "marker": "PROOFKIT:fix-a-095 probe-digest-865"
+    },
+    {
+      "id": "A-MK-051",
+      "type": "marker",
+      "desc": "fix fix-a-101 present in src/module10.ts",
+      "file": "src/module10.ts",
+      "marker": "PROOFKIT:fix-a-101 mantle-quorum-522"
+    },
+    {
+      "id": "A-MK-052",
+      "type": "marker",
+      "desc": "fix fix-a-102 present in src/module10.ts",
+      "file": "src/module10.ts",
+      "marker": "PROOFKIT:fix-a-102 lattice-gauge-648"
+    },
+    {
+      "id": "A-MK-053",
+      "type": "marker",
+      "desc": "fix fix-a-103 present in src/module10.ts",
+      "file": "src/module10.ts",
+      "marker": "PROOFKIT:fix-a-103 shard-anchor-363"
+    },
+    {
+      "id": "A-MK-054",
+      "type": "marker",
+      "desc": "fix fix-a-104 present in src/module10.ts",
+      "file": "src/module10.ts",
+      "marker": "PROOFKIT:fix-a-104 ledger-ledger-136"
+    },
+    {
+      "id": "A-MK-055",
+      "type": "marker",
+      "desc": "fix fix-a-105 present in src/module10.ts",
+      "file": "src/module10.ts",
+      "marker": "PROOFKIT:fix-a-105 gauge-kernel-847"
+    },
+    {
+      "id": "A-MK-056",
+      "type": "marker",
+      "desc": "fix fix-a-111 present in src/module11.ts",
+      "file": "src/module11.ts",
+      "marker": "PROOFKIT:fix-a-111 sentry-sentry-958"
+    },
+    {
+      "id": "A-MK-057",
+      "type": "marker",
+      "desc": "fix fix-a-112 present in src/module11.ts",
+      "file": "src/module11.ts",
+      "marker": "PROOFKIT:fix-a-112 socket-oracle-168"
+    },
+    {
+      "id": "A-MK-058",
+      "type": "marker",
+      "desc": "fix fix-a-113 present in src/module11.ts",
+      "file": "src/module11.ts",
+      "marker": "PROOFKIT:fix-a-113 strata-probe-247"
+    },
+    {
+      "id": "A-MK-059",
+      "type": "marker",
+      "desc": "fix fix-a-114 present in src/module11.ts",
+      "file": "src/module11.ts",
+      "marker": "PROOFKIT:fix-a-114 merkle-oracle-994"
+    },
+    {
+      "id": "A-MK-060",
+      "type": "marker",
+      "desc": "fix fix-a-115 present in src/module11.ts",
+      "file": "src/module11.ts",
+      "marker": "PROOFKIT:fix-a-115 socket-digest-952"
+    },
+    {
+      "id": "A-MK-061",
+      "type": "marker",
+      "desc": "fix fix-a-121 present in src/module12.ts",
+      "file": "src/module12.ts",
+      "marker": "PROOFKIT:fix-a-121 socket-gauge-605"
+    },
+    {
+      "id": "A-MK-062",
+      "type": "marker",
+      "desc": "fix fix-a-122 present in src/module12.ts",
+      "file": "src/module12.ts",
+      "marker": "PROOFKIT:fix-a-122 kernel-merkle-736"
+    },
+    {
+      "id": "A-MK-063",
+      "type": "marker",
+      "desc": "fix fix-a-123 present in src/module12.ts",
+      "file": "src/module12.ts",
+      "marker": "PROOFKIT:fix-a-123 witness-anchor-851"
+    },
+    {
+      "id": "A-MK-064",
+      "type": "marker",
+      "desc": "fix fix-a-124 present in src/module12.ts",
+      "file": "src/module12.ts",
+      "marker": "PROOFKIT:fix-a-124 cursor-beacon-383"
+    },
+    {
+      "id": "A-MK-065",
+      "type": "marker",
+      "desc": "fix fix-a-125 present in src/module12.ts",
+      "file": "src/module12.ts",
+      "marker": "PROOFKIT:fix-a-125 ledger-relay-711"
+    },
+    {
+      "id": "A-MK-066",
+      "type": "marker",
+      "desc": "fix fix-a-131 present in src/module13.ts",
+      "file": "src/module13.ts",
+      "marker": "PROOFKIT:fix-a-131 relay-kernel-489"
+    },
+    {
+      "id": "A-MK-067",
+      "type": "marker",
+      "desc": "fix fix-a-132 present in src/module13.ts",
+      "file": "src/module13.ts",
+      "marker": "PROOFKIT:fix-a-132 sentry-cipher-998"
+    },
+    {
+      "id": "A-MK-068",
+      "type": "marker",
+      "desc": "fix fix-a-133 present in src/module13.ts",
+      "file": "src/module13.ts",
+      "marker": "PROOFKIT:fix-a-133 oracle-prism-478"
+    },
+    {
+      "id": "A-MK-069",
+      "type": "marker",
+      "desc": "fix fix-a-134 present in src/module13.ts",
+      "file": "src/module13.ts",
+      "marker": "PROOFKIT:fix-a-134 ledger-relay-849"
+    },
+    {
+      "id": "A-MK-070",
+      "type": "marker",
+      "desc": "fix fix-a-135 present in src/module13.ts",
+      "file": "src/module13.ts",
+      "marker": "PROOFKIT:fix-a-135 anchor-witness-976"
+    },
+    {
+      "id": "A-MK-071",
+      "type": "marker",
+      "desc": "fix fix-a-141 present in src/module14.ts",
+      "file": "src/module14.ts",
+      "marker": "PROOFKIT:fix-a-141 oracle-vault-979"
+    },
+    {
+      "id": "A-MK-072",
+      "type": "marker",
+      "desc": "fix fix-a-142 present in src/module14.ts",
+      "file": "src/module14.ts",
+      "marker": "PROOFKIT:fix-a-142 witness-strata-483"
+    },
+    {
+      "id": "A-MK-073",
+      "type": "marker",
+      "desc": "fix fix-a-143 present in src/module14.ts",
+      "file": "src/module14.ts",
+      "marker": "PROOFKIT:fix-a-143 cipher-digest-477"
+    },
+    {
+      "id": "A-MK-074",
+      "type": "marker",
+      "desc": "fix fix-a-144 present in src/module14.ts",
+      "file": "src/module14.ts",
+      "marker": "PROOFKIT:fix-a-144 socket-cursor-194"
+    },
+    {
+      "id": "A-MK-075",
+      "type": "marker",
+      "desc": "fix fix-a-145 present in src/module14.ts",
+      "file": "src/module14.ts",
+      "marker": "PROOFKIT:fix-a-145 digest-probe-699"
+    },
+    {
+      "id": "A-MK-076",
+      "type": "marker",
+      "desc": "fix fix-a-151 present in src/module15.ts",
+      "file": "src/module15.ts",
+      "marker": "PROOFKIT:fix-a-151 merkle-witness-270"
+    },
+    {
+      "id": "A-MK-077",
+      "type": "marker",
+      "desc": "fix fix-a-152 present in src/module15.ts",
+      "file": "src/module15.ts",
+      "marker": "PROOFKIT:fix-a-152 oracle-witness-817"
+    },
+    {
+      "id": "A-MK-078",
+      "type": "marker",
+      "desc": "fix fix-a-153 present in src/module15.ts",
+      "file": "src/module15.ts",
+      "marker": "PROOFKIT:fix-a-153 lattice-lattice-467"
+    },
+    {
+      "id": "A-MK-079",
+      "type": "marker",
+      "desc": "fix fix-a-154 present in src/module15.ts",
+      "file": "src/module15.ts",
+      "marker": "PROOFKIT:fix-a-154 quorum-vault-648"
+    },
+    {
+      "id": "A-MK-080",
+      "type": "marker",
+      "desc": "fix fix-a-155 present in src/module15.ts",
+      "file": "src/module15.ts",
+      "marker": "PROOFKIT:fix-a-155 pivot-ledger-391"
+    }
+  ]
+}

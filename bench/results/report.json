@@ -1,0 +1,2426 @@
+{
+  "incomplete": false,
+  "provenance": {
+    "benchSchema": "proofseal-bench-report/v1",
+    "startedAt": "2026-06-12T06:48:22.237Z",
+    "gitSha": "4d9511e71de739200946d1acab39f6be6da107d2",
+    "gitDirty": true,
+    "seeds": {
+      "fixtures": 1337,
+      "mutations": 42,
+      "harness": [
+        42,
+        7
+      ]
+    },
+    "os": {
+      "platform": "darwin",
+      "release": "25.5.0",
+      "arch": "arm64",
+      "cpus": "Apple M4 Pro"
+    },
+    "node": "v22.19.0",
+    "python3": "Python 3.9.6",
+    "gitVersion": "git version 2.50.1 (Apple Git-155)",
+    "verifyRunsPerFixture": 20,
+    "setupRunsPerFixture": 3,
+    "wallClockSeconds": 365.4,
+    "finishedAt": "2026-06-12T06:54:27.585Z"
+  },
+  "fixtures": [
+    {
+      "name": "repo-a-npm-lib",
+      "claims": 100
+    },
+    {
+      "name": "repo-b-python-tool",
+      "claims": 100
+    },
+    {
+      "name": "repo-c-docs-site",
+      "claims": 100
+    }
+  ],
+  "mutationCount": 45,
+  "tools": [
+    {
+      "id": "proofkit",
+      "name": "ProofSeal",
+      "status": "ok",
+      "reason": null,
+      "version": "proofkit 0.1.0",
+      "capabilities": {
+        "driftDistinction": true,
+        "history": true,
+        "bisection": true,
+        "tamperEvidentManifest": true
+      },
+      "setup": {
+        "steps": 4,
+        "medianSeconds": 12.14,
+        "configLoc": 7,
+        "secretsCount": 0
+      },
+      "latency": {
+        "all": [
+          117.266334,
+          119.26375,
+          120.579542,
+          113.443,
+          116.380792,
+          116.406917,
+          117.62425,
+          117.761375,
+          118.795625,
+          117.851958,
+          117.136333,
+          116.159583,
+          116.751833,
+          116.559708,
+          116.400625,
+          116.542625,
+          114.324084,
+          115.823583,
+          118.281666,
+          117.84775,
+          266.319875,
+          271.650333,
+          247.539458,
+          265.378375,
+          276.231958,
+          255.472417,
+          263.408042,
+          265.6785,
+          265.740417,
+          255.674875,
+          263.133375,
+          278.967625,
+          263.146792,
+          270.039583,
+          263.673666,
+          268.953375,
+          257.815584,
+          264.0685,
+          267.564083,
+          260.157334,
+          117.038416,
+          112.132416,
+          119.487125,
+          116.935125,
+          115.475083,
+          117.707208,
+          119.770625,
+          117.056125,
+          117.426875,
+          115.278791,
+          119.865167,
+          117.993708,
+          117.483625,
+          118.667375,
+          113.830792,
+          118.63775,
+          116.319584,
+          116.917041,
+          117.102875,
+          117.618625
+        ],
+        "p50": 117.9,
+        "p95": 270,
+        "perFixture": {
+          "repo-a-npm-lib": {
+            "p50": 116.8,
+            "p95": 119.3
+          },
+          "repo-b-python-tool": {
+            "p50": 264.1,
+            "p95": 276.2
+          },
+          "repo-c-docs-site": {
+            "p50": 117.1,
+            "p95": 119.8
+          }
+        }
+      },
+      "mutations": {
+        "total": 45,
+        "signaled": 45,
+        "correct": 45,
+        "byClass": {
+          "manifest-byte": {
+            "total": 12,
+            "signaled": 12,
+            "correct": 12
+          },
+          "marker-removal": {
+            "total": 12,
+            "signaled": 12,
+            "correct": 12
+          },
+          "edit-marker-intact": {
+            "total": 12,
+            "signaled": 12,
+            "correct": 12
+          },
+          "file-deletion": {
+            "total": 9,
+            "signaled": 9,
+            "correct": 9
+          }
+        },
+        "records": [
+          {
+            "id": "M-001",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:integrity.signature",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": false,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 100,\n    \"d",
+            "correctClassification": true
+          },
+          {
+            "id": "M-002",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:claims[].sha256",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": false,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 99,\n    \"dr",
+            "correctClassification": true
+          },
+          {
+            "id": "M-003",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:manifest.summary.verified",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": false,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 100,\n    \"d",
+            "correctClassification": true
+          },
+          {
+            "id": "M-004",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:integrity.manifestHash",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": false,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 100,\n    \"d",
+            "correctClassification": true
+          },
+          {
+            "id": "M-005",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module07.ts#A-MK-037",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 95,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-006",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module14.ts#A-MK-074",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 95,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-007",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module09.ts#A-MK-050",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 95,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-008",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module15.ts#A-MK-077",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 95,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-009",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module10.ts#A-MK-053",
+            "proofsealExpectedClass": "drift",
+            "observed": "drift",
+            "signaled": true,
+            "output": "{\n  \"ok\": true,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 95,\n    \"drif",
+            "correctClassification": true
+          },
+          {
+            "id": "M-010",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module03.ts#A-MK-014",
+            "proofsealExpectedClass": "drift",
+            "observed": "drift",
+            "signaled": true,
+            "output": "{\n  \"ok\": true,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 94,\n    \"drif",
+            "correctClassification": true
+          },
+          {
+            "id": "M-011",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module13.ts#A-MK-067",
+            "proofsealExpectedClass": "drift",
+            "observed": "drift",
+            "signaled": true,
+            "output": "{\n  \"ok\": true,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 95,\n    \"drif",
+            "correctClassification": true
+          },
+          {
+            "id": "M-012",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module08.ts#A-MK-045",
+            "proofsealExpectedClass": "drift",
+            "observed": "drift",
+            "signaled": true,
+            "output": "{\n  \"ok\": true,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 95,\n    \"drif",
+            "correctClassification": true
+          },
+          {
+            "id": "M-013",
+            "class": "file-deletion",
+            "fixture": "repo-a-npm-lib",
+            "target": "dist/module01.js#A-FH-004",
+            "proofsealExpectedClass": "missing",
+            "observed": "missing",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 99,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-014",
+            "class": "file-deletion",
+            "fixture": "repo-a-npm-lib",
+            "target": "dist/module06.js#A-FH-009",
+            "proofsealExpectedClass": "missing",
+            "observed": "missing",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 99,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-015",
+            "class": "file-deletion",
+            "fixture": "repo-a-npm-lib",
+            "target": "dist/module10.js#A-FH-013",
+            "proofsealExpectedClass": "missing",
+            "observed": "missing",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"4cbd2f09e3ea6bf5e6d5164e5f702907bf76f3d6e2ba5bd432d809e9642ddf9b\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 99,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-016",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:integrity.signature",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": false,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 100,\n    \"d",
+            "correctClassification": true
+          },
+          {
+            "id": "M-017",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:claims[].sha256",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": false,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 99,\n    \"dr",
+            "correctClassification": true
+          },
+          {
+            "id": "M-018",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:manifest.summary.verified",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": false,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 100,\n    \"d",
+            "correctClassification": true
+          },
+          {
+            "id": "M-019",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:integrity.manifestHash",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": false,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 100,\n    \"d",
+            "correctClassification": true
+          },
+          {
+            "id": "M-020",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod02.py#B-MK-020",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 93,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-021",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod12.py#B-MK-080",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 94,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-022",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod12.py#B-MK-078",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 94,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-023",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod11.py#B-MK-072",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 94,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-024",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod02.py#B-MK-016",
+            "proofsealExpectedClass": "drift",
+            "observed": "drift",
+            "signaled": true,
+            "output": "{\n  \"ok\": true,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 93,\n    \"drif",
+            "correctClassification": true
+          },
+          {
+            "id": "M-025",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod13.py#B-MK-086",
+            "proofsealExpectedClass": "drift",
+            "observed": "drift",
+            "signaled": true,
+            "output": "{\n  \"ok\": true,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 94,\n    \"drif",
+            "correctClassification": true
+          },
+          {
+            "id": "M-026",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod08.py#B-MK-054",
+            "proofsealExpectedClass": "drift",
+            "observed": "drift",
+            "signaled": true,
+            "output": "{\n  \"ok\": true,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 94,\n    \"drif",
+            "correctClassification": true
+          },
+          {
+            "id": "M-027",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod06.py#B-MK-045",
+            "proofsealExpectedClass": "drift",
+            "observed": "drift",
+            "signaled": true,
+            "output": "{\n  \"ok\": true,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 94,\n    \"drif",
+            "correctClassification": true
+          },
+          {
+            "id": "M-028",
+            "class": "file-deletion",
+            "fixture": "repo-b-python-tool",
+            "target": "README.md#B-FH-002",
+            "proofsealExpectedClass": "missing",
+            "observed": "missing",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 99,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-029",
+            "class": "file-deletion",
+            "fixture": "repo-b-python-tool",
+            "target": "pyproject.toml#B-FH-003",
+            "proofsealExpectedClass": "missing",
+            "observed": "missing",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 99,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-030",
+            "class": "file-deletion",
+            "fixture": "repo-b-python-tool",
+            "target": "LICENSE#B-FH-001",
+            "proofsealExpectedClass": "missing",
+            "observed": "missing",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"7ecce3253f5e90e93527ea265e876c8174cc5c372b3f54e7a0487000c42afca8\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 99,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-031",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:integrity.signature",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": false,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 100,\n    \"d",
+            "correctClassification": true
+          },
+          {
+            "id": "M-032",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:claims[].sha256",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": false,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 99,\n    \"dr",
+            "correctClassification": true
+          },
+          {
+            "id": "M-033",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:manifest.summary.verified",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": false,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 100,\n    \"d",
+            "correctClassification": true
+          },
+          {
+            "id": "M-034",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:integrity.manifestHash",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": false,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 100,\n    \"d",
+            "correctClassification": true
+          },
+          {
+            "id": "M-035",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": ".github/workflows/ci.yml#C-MK-092",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 91,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-036",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page03.md#C-MK-033",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 90,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-037",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page01.md#C-MK-020",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 90,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-038",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": "index.md#C-MK-001",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 90,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-039",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page03.md#C-MK-032",
+            "proofsealExpectedClass": "drift",
+            "observed": "drift",
+            "signaled": true,
+            "output": "{\n  \"ok\": true,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 90,\n    \"drif",
+            "correctClassification": true
+          },
+          {
+            "id": "M-040",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page02.md#C-MK-030",
+            "proofsealExpectedClass": "drift",
+            "observed": "drift",
+            "signaled": true,
+            "output": "{\n  \"ok\": true,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 90,\n    \"drif",
+            "correctClassification": true
+          },
+          {
+            "id": "M-041",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "index.md#C-MK-010",
+            "proofsealExpectedClass": "drift",
+            "observed": "drift",
+            "signaled": true,
+            "output": "{\n  \"ok\": true,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 90,\n    \"drif",
+            "correctClassification": true
+          },
+          {
+            "id": "M-042",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page08.md#C-MK-079",
+            "proofsealExpectedClass": "drift",
+            "observed": "drift",
+            "signaled": true,
+            "output": "{\n  \"ok\": true,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 91,\n    \"drif",
+            "correctClassification": true
+          },
+          {
+            "id": "M-043",
+            "class": "file-deletion",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page09.md#C-FH-003",
+            "proofsealExpectedClass": "missing",
+            "observed": "missing",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 99,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-044",
+            "class": "file-deletion",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page10.md#C-FH-004",
+            "proofsealExpectedClass": "missing",
+            "observed": "missing",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 99,\n    \"dri",
+            "correctClassification": true
+          },
+          {
+            "id": "M-045",
+            "class": "file-deletion",
+            "fixture": "repo-c-docs-site",
+            "target": "LICENSE#C-FH-001",
+            "proofsealExpectedClass": "missing",
+            "observed": "missing",
+            "signaled": true,
+            "output": "{\n  \"ok\": false,\n  \"signature\": {\n    \"valid\": true,\n    \"publicKey\": \"d5ced673eac0a8c607c9864e479a59ed49ffc10b0d290fdd238dabd5ae5348ec\",\n    \"publicKeyReproducible\": true\n  },\n  \"summary\": {\n    \"totalClaims\": 100,\n    \"pass\": 99,\n    \"dri",
+            "correctClassification": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "checksum",
+      "name": "checksum script",
+      "status": "ok",
+      "reason": null,
+      "version": "sha256sum (Darwin) 1.0",
+      "capabilities": {
+        "driftDistinction": false,
+        "history": false,
+        "bisection": false,
+        "tamperEvidentManifest": false
+      },
+      "setup": {
+        "steps": 3,
+        "medianSeconds": 0.03,
+        "configLoc": 109,
+        "secretsCount": 0
+      },
+      "latency": {
+        "all": [
+          504.34525,
+          571.102708,
+          559.382125,
+          570.683958,
+          540.927542,
+          583.793834,
+          597.843375,
+          600.803833,
+          589.562958,
+          560.537667,
+          584.046625,
+          606.193792,
+          594.668125,
+          599.145792,
+          641.471791,
+          636.223542,
+          625.931041,
+          540.246417,
+          588.906166,
+          597.052375,
+          620.098042,
+          682.202875,
+          696.50075,
+          700.951542,
+          677.763209,
+          692.225375,
+          657.917292,
+          679.596125,
+          697.377208,
+          580.084792,
+          595.8535,
+          655.798166,
+          690.048167,
+          697.293,
+          614.82425,
+          638.163291,
+          688.807792,
+          693.749875,
+          677.277875,
+          688.737625,
+          609.4365,
+          703.197166,
+          696.474375,
+          711.646416,
+          679.464166,
+          728.380708,
+          740.958334,
+          684.910584,
+          725.451375,
+          760.499167,
+          710.041083,
+          700.729042,
+          713.052125,
+          733.614333,
+          658.282,
+          689.720333,
+          713.1215,
+          729.400709,
+          694.865417,
+          689.737833
+        ],
+        "p50": 677.3,
+        "p95": 729.4,
+        "perFixture": {
+          "repo-a-npm-lib": {
+            "p50": 588.9,
+            "p95": 636.2
+          },
+          "repo-b-python-tool": {
+            "p50": 679.6,
+            "p95": 697.4
+          },
+          "repo-c-docs-site": {
+            "p50": 703.2,
+            "p95": 741
+          }
+        }
+      },
+      "mutations": {
+        "total": 45,
+        "signaled": 45,
+        "correct": null,
+        "byClass": {
+          "manifest-byte": {
+            "total": 12,
+            "signaled": 12
+          },
+          "marker-removal": {
+            "total": 12,
+            "signaled": 12
+          },
+          "edit-marker-intact": {
+            "total": 12,
+            "signaled": 12
+          },
+          "file-deletion": {
+            "total": 9,
+            "signaled": 9
+          }
+        },
+        "records": [
+          {
+            "id": "M-001",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:integrity.signature",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-002",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:claims[].sha256",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-003",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:manifest.summary.verified",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-004",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:integrity.manifestHash",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-005",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module07.ts#A-MK-037",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "MARKER-GONE src/module07.ts\n"
+          },
+          {
+            "id": "M-006",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module14.ts#A-MK-074",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "MARKER-GONE src/module14.ts\n"
+          },
+          {
+            "id": "M-007",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module09.ts#A-MK-050",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "MARKER-GONE src/module09.ts\n"
+          },
+          {
+            "id": "M-008",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module15.ts#A-MK-077",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "MARKER-GONE src/module15.ts\n"
+          },
+          {
+            "id": "M-009",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module10.ts#A-MK-053",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-010",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module03.ts#A-MK-014",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-011",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module13.ts#A-MK-067",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-012",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module08.ts#A-MK-045",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-013",
+            "class": "file-deletion",
+            "fixture": "repo-a-npm-lib",
+            "target": "dist/module01.js#A-FH-004",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-014",
+            "class": "file-deletion",
+            "fixture": "repo-a-npm-lib",
+            "target": "dist/module06.js#A-FH-009",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-015",
+            "class": "file-deletion",
+            "fixture": "repo-a-npm-lib",
+            "target": "dist/module10.js#A-FH-013",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-016",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:integrity.signature",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-017",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:claims[].sha256",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-018",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:manifest.summary.verified",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-019",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:integrity.manifestHash",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-020",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod02.py#B-MK-020",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "MARKER-GONE pktool/mod02.py\n"
+          },
+          {
+            "id": "M-021",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod12.py#B-MK-080",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "MARKER-GONE pktool/mod12.py\n"
+          },
+          {
+            "id": "M-022",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod12.py#B-MK-078",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "MARKER-GONE pktool/mod12.py\n"
+          },
+          {
+            "id": "M-023",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod11.py#B-MK-072",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "MARKER-GONE pktool/mod11.py\n"
+          },
+          {
+            "id": "M-024",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod02.py#B-MK-016",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-025",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod13.py#B-MK-086",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-026",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod08.py#B-MK-054",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-027",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod06.py#B-MK-045",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-028",
+            "class": "file-deletion",
+            "fixture": "repo-b-python-tool",
+            "target": "README.md#B-FH-002",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-029",
+            "class": "file-deletion",
+            "fixture": "repo-b-python-tool",
+            "target": "pyproject.toml#B-FH-003",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-030",
+            "class": "file-deletion",
+            "fixture": "repo-b-python-tool",
+            "target": "LICENSE#B-FH-001",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-031",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:integrity.signature",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-032",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:claims[].sha256",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-033",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:manifest.summary.verified",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-034",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:integrity.manifestHash",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-035",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": ".github/workflows/ci.yml#C-MK-092",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "MARKER-GONE .github/workflows/ci.yml\n"
+          },
+          {
+            "id": "M-036",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page03.md#C-MK-033",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "MARKER-GONE docs/page03.md\n"
+          },
+          {
+            "id": "M-037",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page01.md#C-MK-020",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "MARKER-GONE docs/page01.md\n"
+          },
+          {
+            "id": "M-038",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": "index.md#C-MK-001",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "MARKER-GONE index.md\n"
+          },
+          {
+            "id": "M-039",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page03.md#C-MK-032",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-040",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page02.md#C-MK-030",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-041",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "index.md#C-MK-010",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-042",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page08.md#C-MK-079",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-043",
+            "class": "file-deletion",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page09.md#C-FH-003",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-044",
+            "class": "file-deletion",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page10.md#C-FH-004",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          },
+          {
+            "id": "M-045",
+            "class": "file-deletion",
+            "fixture": "repo-c-docs-site",
+            "target": "LICENSE#C-FH-001",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": ""
+          }
+        ]
+      }
+    },
+    {
+      "id": "cosign-keyless",
+      "name": "cosign (keyless)",
+      "status": "static",
+      "reason": "keyless signing needs an OIDC identity (interactive browser or ambient CI token); headless run measures setup steps / config LOC / secrets only — set PROOFKIT_BENCH_COSIGN_KEYLESS=1 to opt in to the interactive flow",
+      "version": "GitVersion:    v3.1.1",
+      "capabilities": {
+        "driftDistinction": false,
+        "history": false,
+        "bisection": false,
+        "tamperEvidentManifest": true
+      },
+      "setup": {
+        "steps": 3,
+        "medianSeconds": null,
+        "configLoc": 53,
+        "secretsCount": 0
+      },
+      "latency": {
+        "all": [],
+        "p50": null,
+        "p95": null,
+        "perFixture": {}
+      },
+      "mutations": {
+        "total": 0,
+        "signaled": 0,
+        "correct": null,
+        "byClass": {},
+        "records": []
+      },
+      "naReason": "requires interactive OIDC"
+    },
+    {
+      "id": "cosign-keypair",
+      "name": "cosign (keypair)",
+      "status": "ok",
+      "reason": null,
+      "version": "GitVersion:    v3.1.1",
+      "capabilities": {
+        "driftDistinction": false,
+        "history": false,
+        "bisection": false,
+        "tamperEvidentManifest": true
+      },
+      "setup": {
+        "steps": 3,
+        "medianSeconds": 3.07,
+        "configLoc": 53,
+        "secretsCount": 1
+      },
+      "latency": {
+        "all": [
+          1247.0765,
+          1232.508292,
+          1240.311208,
+          1238.299041,
+          1257.522334,
+          1252.679583,
+          1251.317417,
+          1241.858375,
+          1254.314833,
+          1238.066333,
+          1226.315208,
+          1234.002875,
+          1229.389208,
+          1231.82075,
+          1222.270375,
+          1249.251041,
+          1242.718416,
+          1256.277917,
+          1234.237959,
+          1224.383583,
+          717.525917,
+          716.523166,
+          708.044375,
+          711.703041,
+          712.687625,
+          721.313666,
+          725.168375,
+          718.592292,
+          727.174125,
+          727.3755,
+          714.423,
+          716.880166,
+          707.774167,
+          713.492542,
+          702.146125,
+          709.410792,
+          707.939416,
+          713.520458,
+          715.558459,
+          723.713792,
+          538.502625,
+          541.13,
+          542.158709,
+          547.474625,
+          557.756916,
+          564.753292,
+          528.455084,
+          545.439792,
+          540.518792,
+          543.624375,
+          543.69725,
+          540.434083,
+          542.012708,
+          540.675084,
+          539.868417,
+          537.892917,
+          552.164875,
+          551.909667,
+          519.370375,
+          529.577625
+        ],
+        "p50": 714.4,
+        "p95": 1252.7,
+        "perFixture": {
+          "repo-a-npm-lib": {
+            "p50": 1238.3,
+            "p95": 1256.3
+          },
+          "repo-b-python-tool": {
+            "p50": 714.4,
+            "p95": 727.2
+          },
+          "repo-c-docs-site": {
+            "p50": 541.1,
+            "p95": 557.8
+          }
+        }
+      },
+      "mutations": {
+        "total": 45,
+        "signaled": 45,
+        "correct": null,
+        "byClass": {
+          "manifest-byte": {
+            "total": 12,
+            "signaled": 12
+          },
+          "marker-removal": {
+            "total": 12,
+            "signaled": 12
+          },
+          "edit-marker-intact": {
+            "total": 12,
+            "signaled": 12
+          },
+          "file-deletion": {
+            "total": 9,
+            "signaled": 9
+          }
+        },
+        "records": [
+          {
+            "id": "M-001",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:integrity.signature",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED LICENSE\n"
+          },
+          {
+            "id": "M-002",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:claims[].sha256",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED LICENSE\n"
+          },
+          {
+            "id": "M-003",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:manifest.summary.verified",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED LICENSE\n"
+          },
+          {
+            "id": "M-004",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:integrity.manifestHash",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED LICENSE\n"
+          },
+          {
+            "id": "M-005",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module07.ts#A-MK-037",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED src/module07.ts\n"
+          },
+          {
+            "id": "M-006",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module14.ts#A-MK-074",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED src/module14.ts\n"
+          },
+          {
+            "id": "M-007",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module09.ts#A-MK-050",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED src/module09.ts\n"
+          },
+          {
+            "id": "M-008",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module15.ts#A-MK-077",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED src/module15.ts\n"
+          },
+          {
+            "id": "M-009",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module10.ts#A-MK-053",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED src/module10.ts\n"
+          },
+          {
+            "id": "M-010",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module03.ts#A-MK-014",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED src/module03.ts\n"
+          },
+          {
+            "id": "M-011",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module13.ts#A-MK-067",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED src/module13.ts\n"
+          },
+          {
+            "id": "M-012",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module08.ts#A-MK-045",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED src/module08.ts\n"
+          },
+          {
+            "id": "M-013",
+            "class": "file-deletion",
+            "fixture": "repo-a-npm-lib",
+            "target": "dist/module01.js#A-FH-004",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED dist/module01.js\n"
+          },
+          {
+            "id": "M-014",
+            "class": "file-deletion",
+            "fixture": "repo-a-npm-lib",
+            "target": "dist/module06.js#A-FH-009",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED dist/module06.js\n"
+          },
+          {
+            "id": "M-015",
+            "class": "file-deletion",
+            "fixture": "repo-a-npm-lib",
+            "target": "dist/module10.js#A-FH-013",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED dist/module10.js\n"
+          },
+          {
+            "id": "M-016",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:integrity.signature",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED LICENSE\n"
+          },
+          {
+            "id": "M-017",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:claims[].sha256",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED LICENSE\n"
+          },
+          {
+            "id": "M-018",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:manifest.summary.verified",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED LICENSE\n"
+          },
+          {
+            "id": "M-019",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:integrity.manifestHash",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED LICENSE\n"
+          },
+          {
+            "id": "M-020",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod02.py#B-MK-020",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED pktool/mod02.py\n"
+          },
+          {
+            "id": "M-021",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod12.py#B-MK-080",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED pktool/mod12.py\n"
+          },
+          {
+            "id": "M-022",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod12.py#B-MK-078",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED pktool/mod12.py\n"
+          },
+          {
+            "id": "M-023",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod11.py#B-MK-072",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED pktool/mod11.py\n"
+          },
+          {
+            "id": "M-024",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod02.py#B-MK-016",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED pktool/mod02.py\n"
+          },
+          {
+            "id": "M-025",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod13.py#B-MK-086",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED pktool/mod13.py\n"
+          },
+          {
+            "id": "M-026",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod08.py#B-MK-054",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED pktool/mod08.py\n"
+          },
+          {
+            "id": "M-027",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod06.py#B-MK-045",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED pktool/mod06.py\n"
+          },
+          {
+            "id": "M-028",
+            "class": "file-deletion",
+            "fixture": "repo-b-python-tool",
+            "target": "README.md#B-FH-002",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED README.md\n"
+          },
+          {
+            "id": "M-029",
+            "class": "file-deletion",
+            "fixture": "repo-b-python-tool",
+            "target": "pyproject.toml#B-FH-003",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED pyproject.toml\n"
+          },
+          {
+            "id": "M-030",
+            "class": "file-deletion",
+            "fixture": "repo-b-python-tool",
+            "target": "LICENSE#B-FH-001",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED LICENSE\n"
+          },
+          {
+            "id": "M-031",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:integrity.signature",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED .github/workflows/ci.yml\n"
+          },
+          {
+            "id": "M-032",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:claims[].sha256",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED .github/workflows/ci.yml\n"
+          },
+          {
+            "id": "M-033",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:manifest.summary.verified",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED .github/workflows/ci.yml\n"
+          },
+          {
+            "id": "M-034",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:integrity.manifestHash",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED .github/workflows/ci.yml\n"
+          },
+          {
+            "id": "M-035",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": ".github/workflows/ci.yml#C-MK-092",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED .github/workflows/ci.yml\n"
+          },
+          {
+            "id": "M-036",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page03.md#C-MK-033",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED docs/page03.md\n"
+          },
+          {
+            "id": "M-037",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page01.md#C-MK-020",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED docs/page01.md\n"
+          },
+          {
+            "id": "M-038",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": "index.md#C-MK-001",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED index.md\n"
+          },
+          {
+            "id": "M-039",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page03.md#C-MK-032",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED docs/page03.md\n"
+          },
+          {
+            "id": "M-040",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page02.md#C-MK-030",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED docs/page02.md\n"
+          },
+          {
+            "id": "M-041",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "index.md#C-MK-010",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED index.md\n"
+          },
+          {
+            "id": "M-042",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page08.md#C-MK-079",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED docs/page08.md\n"
+          },
+          {
+            "id": "M-043",
+            "class": "file-deletion",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page09.md#C-FH-003",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED docs/page09.md\n"
+          },
+          {
+            "id": "M-044",
+            "class": "file-deletion",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page10.md#C-FH-004",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED docs/page10.md\n"
+          },
+          {
+            "id": "M-045",
+            "class": "file-deletion",
+            "fixture": "repo-c-docs-site",
+            "target": "LICENSE#C-FH-001",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "VERIFY-FAILED LICENSE\n"
+          }
+        ]
+      }
+    },
+    {
+      "id": "intoto",
+      "name": "in-toto",
+      "status": "ok",
+      "reason": null,
+      "version": "in-toto 1.4.0",
+      "capabilities": {
+        "driftDistinction": false,
+        "history": false,
+        "bisection": false,
+        "tamperEvidentManifest": true
+      },
+      "setup": {
+        "steps": 4,
+        "medianSeconds": 1.47,
+        "configLoc": 64,
+        "secretsCount": 1
+      },
+      "latency": {
+        "all": [
+          274.554791,
+          269.84025,
+          268.833625,
+          268.470166,
+          263.040625,
+          266.489792,
+          272.221583,
+          266.136708,
+          266.861709,
+          269.967417,
+          266.017083,
+          272.777083,
+          255.486042,
+          270.459583,
+          256.453583,
+          262.190959,
+          265.005958,
+          272.418917,
+          266.659625,
+          266.487375,
+          261.832541,
+          272.136,
+          259.647625,
+          260.906291,
+          255.143541,
+          265.93375,
+          263.220208,
+          263.47075,
+          268.120416,
+          268.016125,
+          264.541458,
+          267.522834,
+          264.790417,
+          265.731541,
+          261.886125,
+          268.82725,
+          272.171792,
+          249.835042,
+          261.627375,
+          260.635167,
+          261.442,
+          252.395542,
+          261.534083,
+          263.231833,
+          263.9395,
+          263.822167,
+          269.877375,
+          264.16825,
+          265.236917,
+          268.037459,
+          259.514833,
+          265.135084,
+          264.596,
+          263.663666,
+          263.316875,
+          249.052958,
+          261.652208,
+          256.361333,
+          254.128166,
+          259.859416
+        ],
+        "p50": 264.5,
+        "p95": 272.2,
+        "perFixture": {
+          "repo-a-npm-lib": {
+            "p50": 266.7,
+            "p95": 272.8
+          },
+          "repo-b-python-tool": {
+            "p50": 263.5,
+            "p95": 272.1
+          },
+          "repo-c-docs-site": {
+            "p50": 263.2,
+            "p95": 268
+          }
+        }
+      },
+      "mutations": {
+        "total": 45,
+        "signaled": 45,
+        "correct": null,
+        "byClass": {
+          "manifest-byte": {
+            "total": 12,
+            "signaled": 12
+          },
+          "marker-removal": {
+            "total": 12,
+            "signaled": 12
+          },
+          "edit-marker-intact": {
+            "total": 12,
+            "signaled": 12
+          },
+          "file-deletion": {
+            "total": 9,
+            "signaled": 9
+          }
+        },
+        "records": [
+          {
+            "id": "M-001",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:integrity.signature",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-002",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:claims[].sha256",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-003",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:manifest.summary.verified",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-004",
+            "class": "manifest-byte",
+            "fixture": "repo-a-npm-lib",
+            "target": "manifest:integrity.manifestHash",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-005",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module07.ts#A-MK-037",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-006",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module14.ts#A-MK-074",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-007",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module09.ts#A-MK-050",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-008",
+            "class": "marker-removal",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module15.ts#A-MK-077",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-009",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module10.ts#A-MK-053",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-010",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module03.ts#A-MK-014",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-011",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module13.ts#A-MK-067",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-012",
+            "class": "edit-marker-intact",
+            "fixture": "repo-a-npm-lib",
+            "target": "src/module08.ts#A-MK-045",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-013",
+            "class": "file-deletion",
+            "fixture": "repo-a-npm-lib",
+            "target": "dist/module01.js#A-FH-004",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-014",
+            "class": "file-deletion",
+            "fixture": "repo-a-npm-lib",
+            "target": "dist/module06.js#A-FH-009",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-015",
+            "class": "file-deletion",
+            "fixture": "repo-a-npm-lib",
+            "target": "dist/module10.js#A-FH-013",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-016",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:integrity.signature",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-017",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:claims[].sha256",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-018",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:manifest.summary.verified",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-019",
+            "class": "manifest-byte",
+            "fixture": "repo-b-python-tool",
+            "target": "manifest:integrity.manifestHash",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-020",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod02.py#B-MK-020",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-021",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod12.py#B-MK-080",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-022",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod12.py#B-MK-078",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-023",
+            "class": "marker-removal",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod11.py#B-MK-072",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-024",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod02.py#B-MK-016",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-025",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod13.py#B-MK-086",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-026",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod08.py#B-MK-054",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-027",
+            "class": "edit-marker-intact",
+            "fixture": "repo-b-python-tool",
+            "target": "pktool/mod06.py#B-MK-045",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-028",
+            "class": "file-deletion",
+            "fixture": "repo-b-python-tool",
+            "target": "README.md#B-FH-002",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-029",
+            "class": "file-deletion",
+            "fixture": "repo-b-python-tool",
+            "target": "pyproject.toml#B-FH-003",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-030",
+            "class": "file-deletion",
+            "fixture": "repo-b-python-tool",
+            "target": "LICENSE#B-FH-001",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-031",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:integrity.signature",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-032",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:claims[].sha256",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-033",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:manifest.summary.verified",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-034",
+            "class": "manifest-byte",
+            "fixture": "repo-c-docs-site",
+            "target": "manifest:integrity.manifestHash",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-035",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": ".github/workflows/ci.yml#C-MK-092",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-036",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page03.md#C-MK-033",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-037",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page01.md#C-MK-020",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-038",
+            "class": "marker-removal",
+            "fixture": "repo-c-docs-site",
+            "target": "index.md#C-MK-001",
+            "proofsealExpectedClass": "fail",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-039",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page03.md#C-MK-032",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-040",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page02.md#C-MK-030",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-041",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "index.md#C-MK-010",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-042",
+            "class": "edit-marker-intact",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page08.md#C-MK-079",
+            "proofsealExpectedClass": "drift",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-043",
+            "class": "file-deletion",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page09.md#C-FH-003",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-044",
+            "class": "file-deletion",
+            "fixture": "repo-c-docs-site",
+            "target": "docs/page10.md#C-FH-004",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          },
+          {
+            "id": "M-045",
+            "class": "file-deletion",
+            "fixture": "repo-c-docs-site",
+            "target": "LICENSE#C-FH-001",
+            "proofsealExpectedClass": "missing",
+            "observed": "fail",
+            "signaled": true,
+            "output": "/Users/rudycelekli/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3"
+          }
+        ]
+      }
+    }
+  ],
+  "selfCheckProblems": []
+}

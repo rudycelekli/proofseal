@@ -1,0 +1,17 @@
+name: docs-ci
+on: [push]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo lint-ok
+# PROOFKIT:fix-c-101 ledger-oracle-490
+# PROOFKIT:fix-c-102 strata-gauge-108
+# PROOFKIT:fix-c-103 anchor-quorum-992
+# PROOFKIT:fix-c-104 socket-pivot-222
+# PROOFKIT:fix-c-105 gauge-quorum-175
+# PROOFKIT:fix-c-106 gauge-quorum-743
+# PROOFKIT:fix-c-107 kernel-mantle-898
+# PROOFKIT:fix-c-108 cursor-beacon-895
+# PROOFKIT:fix-c-109 ledger-witness-465

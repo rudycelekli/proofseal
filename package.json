@@ -1,0 +1,59 @@
+{
+  "name": "proofseal",
+  "version": "0.1.0",
+  "description": "Witness-chained, tamper-evident claim verification for any git repo — commit-bound integrity seals, zero key management.",
+  "type": "module",
+  "license": "MIT",
+  "author": "rudycelekli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rudycelekli/proofseal.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rudycelekli/proofseal/issues"
+  },
+  "homepage": "https://github.com/rudycelekli/proofseal#readme",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "proofseal": "dist/cli/index.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "NOTICE",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "pretest": "npm run build",
+    "test": "node --test \"tests/unit/**/*.test.mjs\"",
+    "test:integration": "node --test \"tests/integration/**/*.test.{mjs,js}\"",
+    "smoke:tarball": "node scripts/tarball-smoke.mjs"
+  },
+  "keywords": [
+    "verification",
+    "tamper-evidence",
+    "integrity-seal",
+    "witness",
+    "claims",
+    "provenance"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "commander": "^12.1.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0"
+  }
+}

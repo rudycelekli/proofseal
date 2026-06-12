@@ -1,0 +1,707 @@
+{
+  "schema": "proofkit-bench-claims/v1",
+  "fixture": "repo-c-docs-site",
+  "generatorSeed": 1337,
+  "claims": [
+    {
+      "id": "C-FH-001",
+      "type": "file-hash",
+      "desc": "byte-stable: LICENSE",
+      "file": "LICENSE",
+      "sha256": "52922228b23305e794a076834f31e539d15c41ed115e694b551145a5469e34f9"
+    },
+    {
+      "id": "C-FH-002",
+      "type": "file-hash",
+      "desc": "byte-stable: README.md",
+      "file": "README.md",
+      "sha256": "2adb19a1f653f0c82f4bae26214c0524e45b23844af5ee0bc61d46eb7a1a2b9f"
+    },
+    {
+      "id": "C-FH-003",
+      "type": "file-hash",
+      "desc": "byte-stable: docs/page09.md",
+      "file": "docs/page09.md",
+      "sha256": "a35356aad03c9fa9d19436ba064f8f383e6a5a790abb6053388adcd6236d64b6"
+    },
+    {
+      "id": "C-FH-004",
+      "type": "file-hash",
+      "desc": "byte-stable: docs/page10.md",
+      "file": "docs/page10.md",
+      "sha256": "0985007fe39e5b324a52c1ebdce1375e617462c9b8f4900a0ebf1121359dc526"
+    },
+    {
+      "id": "C-FH-005",
+      "type": "file-hash",
+      "desc": "byte-stable: mkdocs.yml",
+      "file": "mkdocs.yml",
+      "sha256": "3ca3b463242d1d0a15af10f5a6477a44d808fbc51631d6fbc700b380398b205a"
+    },
+    {
+      "id": "C-MK-001",
+      "type": "marker",
+      "desc": "fix fix-c-011 present in index.md",
+      "file": "index.md",
+      "marker": "PROOFKIT:fix-c-011 tally-anchor-249"
+    },
+    {
+      "id": "C-MK-002",
+      "type": "marker",
+      "desc": "fix fix-c-012 present in index.md",
+      "file": "index.md",
+      "marker": "PROOFKIT:fix-c-012 sentry-anchor-315"
+    },
+    {
+      "id": "C-MK-003",
+      "type": "marker",
+      "desc": "fix fix-c-013 present in index.md",
+      "file": "index.md",
+      "marker": "PROOFKIT:fix-c-013 shard-digest-334"
+    },
+    {
+      "id": "C-MK-004",
+      "type": "marker",
+      "desc": "fix fix-c-014 present in index.md",
+      "file": "index.md",
+      "marker": "PROOFKIT:fix-c-014 probe-digest-881"
+    },
+    {
+      "id": "C-MK-005",
+      "type": "marker",
+      "desc": "fix fix-c-015 present in index.md",
+      "file": "index.md",
+      "marker": "PROOFKIT:fix-c-015 pivot-anchor-857"
+    },
+    {
+      "id": "C-MK-006",
+      "type": "marker",
+      "desc": "fix fix-c-016 present in index.md",
+      "file": "index.md",
+      "marker": "PROOFKIT:fix-c-016 prism-shard-119"
+    },
+    {
+      "id": "C-MK-007",
+      "type": "marker",
+      "desc": "fix fix-c-017 present in index.md",
+      "file": "index.md",
+      "marker": "PROOFKIT:fix-c-017 quorum-witness-379"
+    },
+    {
+      "id": "C-MK-008",
+      "type": "marker",
+      "desc": "fix fix-c-018 present in index.md",
+      "file": "index.md",
+      "marker": "PROOFKIT:fix-c-018 shard-lattice-990"
+    },
+    {
+      "id": "C-MK-009",
+      "type": "marker",
+      "desc": "fix fix-c-019 present in index.md",
+      "file": "index.md",
+      "marker": "PROOFKIT:fix-c-019 digest-relay-265"
+    },
+    {
+      "id": "C-MK-010",
+      "type": "marker",
+      "desc": "fix fix-c-0110 present in index.md",
+      "file": "index.md",
+      "marker": "PROOFKIT:fix-c-0110 gauge-anchor-660"
+    },
+    {
+      "id": "C-MK-011",
+      "type": "marker",
+      "desc": "fix fix-c-021 present in docs/page01.md",
+      "file": "docs/page01.md",
+      "marker": "PROOFKIT:fix-c-021 beacon-lattice-123"
+    },
+    {
+      "id": "C-MK-012",
+      "type": "marker",
+      "desc": "fix fix-c-022 present in docs/page01.md",
+      "file": "docs/page01.md",
+      "marker": "PROOFKIT:fix-c-022 tally-digest-555"
+    },
+    {
+      "id": "C-MK-013",
+      "type": "marker",
+      "desc": "fix fix-c-023 present in docs/page01.md",
+      "file": "docs/page01.md",
+      "marker": "PROOFKIT:fix-c-023 anchor-cipher-260"
+    },
+    {
+      "id": "C-MK-014",
+      "type": "marker",
+      "desc": "fix fix-c-024 present in docs/page01.md",
+      "file": "docs/page01.md",
+      "marker": "PROOFKIT:fix-c-024 anchor-anchor-337"
+    },
+    {
+      "id": "C-MK-015",
+      "type": "marker",
+      "desc": "fix fix-c-025 present in docs/page01.md",
+      "file": "docs/page01.md",
+      "marker": "PROOFKIT:fix-c-025 shard-mantle-229"
+    },
+    {
+      "id": "C-MK-016",
+      "type": "marker",
+      "desc": "fix fix-c-026 present in docs/page01.md",
+      "file": "docs/page01.md",
+      "marker": "PROOFKIT:fix-c-026 anchor-tally-581"
+    },
+    {
+      "id": "C-MK-017",
+      "type": "marker",
+      "desc": "fix fix-c-027 present in docs/page01.md",
+      "file": "docs/page01.md",
+      "marker": "PROOFKIT:fix-c-027 quorum-kernel-872"
+    },
+    {
+      "id": "C-MK-018",
+      "type": "marker",
+      "desc": "fix fix-c-028 present in docs/page01.md",
+      "file": "docs/page01.md",
+      "marker": "PROOFKIT:fix-c-028 prism-probe-186"
+    },
+    {
+      "id": "C-MK-019",
+      "type": "marker",
+      "desc": "fix fix-c-029 present in docs/page01.md",
+      "file": "docs/page01.md",
+      "marker": "PROOFKIT:fix-c-029 pivot-witness-145"
+    },
+    {
+      "id": "C-MK-020",
+      "type": "marker",
+      "desc": "fix fix-c-0210 present in docs/page01.md",
+      "file": "docs/page01.md",
+      "marker": "PROOFKIT:fix-c-0210 prism-mantle-245"
+    },
+    {
+      "id": "C-MK-021",
+      "type": "marker",
+      "desc": "fix fix-c-031 present in docs/page02.md",
+      "file": "docs/page02.md",
+      "marker": "PROOFKIT:fix-c-031 pivot-cursor-937"
+    },
+    {
+      "id": "C-MK-022",
+      "type": "marker",
+      "desc": "fix fix-c-032 present in docs/page02.md",
+      "file": "docs/page02.md",
+      "marker": "PROOFKIT:fix-c-032 digest-ledger-643"
+    },
+    {
+      "id": "C-MK-023",
+      "type": "marker",
+      "desc": "fix fix-c-033 present in docs/page02.md",
+      "file": "docs/page02.md",
+      "marker": "PROOFKIT:fix-c-033 gauge-vault-286"
+    },
+    {
+      "id": "C-MK-024",
+      "type": "marker",
+      "desc": "fix fix-c-034 present in docs/page02.md",
+      "file": "docs/page02.md",
+      "marker": "PROOFKIT:fix-c-034 oracle-quorum-967"
+    },
+    {
+      "id": "C-MK-025",
+      "type": "marker",
+      "desc": "fix fix-c-035 present in docs/page02.md",
+      "file": "docs/page02.md",
+      "marker": "PROOFKIT:fix-c-035 cipher-mantle-132"
+    },
+    {
+      "id": "C-MK-026",
+      "type": "marker",
+      "desc": "fix fix-c-036 present in docs/page02.md",
+      "file": "docs/page02.md",
+      "marker": "PROOFKIT:fix-c-036 probe-vault-201"
+    },
+    {
+      "id": "C-MK-027",
+      "type": "marker",
+      "desc": "fix fix-c-037 present in docs/page02.md",
+      "file": "docs/page02.md",
+      "marker": "PROOFKIT:fix-c-037 ledger-anchor-469"
+    },
+    {
+      "id": "C-MK-028",
+      "type": "marker",
+      "desc": "fix fix-c-038 present in docs/page02.md",
+      "file": "docs/page02.md",
+      "marker": "PROOFKIT:fix-c-038 beacon-quorum-807"
+    },
+    {
+      "id": "C-MK-029",
+      "type": "marker",
+      "desc": "fix fix-c-039 present in docs/page02.md",
+      "file": "docs/page02.md",
+      "marker": "PROOFKIT:fix-c-039 mantle-quorum-437"
+    },
+    {
+      "id": "C-MK-030",
+      "type": "marker",
+      "desc": "fix fix-c-0310 present in docs/page02.md",
+      "file": "docs/page02.md",
+      "marker": "PROOFKIT:fix-c-0310 socket-lattice-473"
+    },
+    {
+      "id": "C-MK-031",
+      "type": "marker",
+      "desc": "fix fix-c-041 present in docs/page03.md",
+      "file": "docs/page03.md",
+      "marker": "PROOFKIT:fix-c-041 relay-cipher-538"
+    },
+    {
+      "id": "C-MK-032",
+      "type": "marker",
+      "desc": "fix fix-c-042 present in docs/page03.md",
+      "file": "docs/page03.md",
+      "marker": "PROOFKIT:fix-c-042 ledger-tally-684"
+    },
+    {
+      "id": "C-MK-033",
+      "type": "marker",
+      "desc": "fix fix-c-043 present in docs/page03.md",
+      "file": "docs/page03.md",
+      "marker": "PROOFKIT:fix-c-043 witness-relay-685"
+    },
+    {
+      "id": "C-MK-034",
+      "type": "marker",
+      "desc": "fix fix-c-044 present in docs/page03.md",
+      "file": "docs/page03.md",
+      "marker": "PROOFKIT:fix-c-044 sentry-gauge-674"
+    },
+    {
+      "id": "C-MK-035",
+      "type": "marker",
+      "desc": "fix fix-c-045 present in docs/page03.md",
+      "file": "docs/page03.md",
+      "marker": "PROOFKIT:fix-c-045 strata-beacon-656"
+    },
+    {
+      "id": "C-MK-036",
+      "type": "marker",
+      "desc": "fix fix-c-046 present in docs/page03.md",
+      "file": "docs/page03.md",
+      "marker": "PROOFKIT:fix-c-046 anchor-witness-130"
+    },
+    {
+      "id": "C-MK-037",
+      "type": "marker",
+      "desc": "fix fix-c-047 present in docs/page03.md",
+      "file": "docs/page03.md",
+      "marker": "PROOFKIT:fix-c-047 relay-socket-960"
+    },
+    {
+      "id": "C-MK-038",
+      "type": "marker",
+      "desc": "fix fix-c-048 present in docs/page03.md",
+      "file": "docs/page03.md",
+      "marker": "PROOFKIT:fix-c-048 vault-quorum-764"
+    },
+    {
+      "id": "C-MK-039",
+      "type": "marker",
+      "desc": "fix fix-c-049 present in docs/page03.md",
+      "file": "docs/page03.md",
+      "marker": "PROOFKIT:fix-c-049 socket-shard-681"
+    },
+    {
+      "id": "C-MK-040",
+      "type": "marker",
+      "desc": "fix fix-c-0410 present in docs/page03.md",
+      "file": "docs/page03.md",
+      "marker": "PROOFKIT:fix-c-0410 kernel-pivot-332"
+    },
+    {
+      "id": "C-MK-041",
+      "type": "marker",
+      "desc": "fix fix-c-051 present in docs/page04.md",
+      "file": "docs/page04.md",
+      "marker": "PROOFKIT:fix-c-051 socket-strata-480"
+    },
+    {
+      "id": "C-MK-042",
+      "type": "marker",
+      "desc": "fix fix-c-052 present in docs/page04.md",
+      "file": "docs/page04.md",
+      "marker": "PROOFKIT:fix-c-052 digest-oracle-104"
+    },
+    {
+      "id": "C-MK-043",
+      "type": "marker",
+      "desc": "fix fix-c-053 present in docs/page04.md",
+      "file": "docs/page04.md",
+      "marker": "PROOFKIT:fix-c-053 gauge-shard-920"
+    },
+    {
+      "id": "C-MK-044",
+      "type": "marker",
+      "desc": "fix fix-c-054 present in docs/page04.md",
+      "file": "docs/page04.md",
+      "marker": "PROOFKIT:fix-c-054 beacon-strata-658"
+    },
+    {
+      "id": "C-MK-045",
+      "type": "marker",
+      "desc": "fix fix-c-055 present in docs/page04.md",
+      "file": "docs/page04.md",
+      "marker": "PROOFKIT:fix-c-055 digest-merkle-186"
+    },
+    {
+      "id": "C-MK-046",
+      "type": "marker",
+      "desc": "fix fix-c-056 present in docs/page04.md",
+      "file": "docs/page04.md",
+      "marker": "PROOFKIT:fix-c-056 prism-sentry-662"
+    },
+    {
+      "id": "C-MK-047",
+      "type": "marker",
+      "desc": "fix fix-c-057 present in docs/page04.md",
+      "file": "docs/page04.md",
+      "marker": "PROOFKIT:fix-c-057 cipher-ledger-896"
+    },
+    {
+      "id": "C-MK-048",
+      "type": "marker",
+      "desc": "fix fix-c-058 present in docs/page04.md",
+      "file": "docs/page04.md",
+      "marker": "PROOFKIT:fix-c-058 ledger-strata-365"
+    },
+    {
+      "id": "C-MK-049",
+      "type": "marker",
+      "desc": "fix fix-c-059 present in docs/page04.md",
+      "file": "docs/page04.md",
+      "marker": "PROOFKIT:fix-c-059 sentry-ledger-369"
+    },
+    {
+      "id": "C-MK-050",
+      "type": "marker",
+      "desc": "fix fix-c-0510 present in docs/page04.md",
+      "file": "docs/page04.md",
+      "marker": "PROOFKIT:fix-c-0510 probe-pivot-138"
+    },
+    {
+      "id": "C-MK-051",
+      "type": "marker",
+      "desc": "fix fix-c-061 present in docs/page05.md",
+      "file": "docs/page05.md",
+      "marker": "PROOFKIT:fix-c-061 witness-sentry-576"
+    },
+    {
+      "id": "C-MK-052",
+      "type": "marker",
+      "desc": "fix fix-c-062 present in docs/page05.md",
+      "file": "docs/page05.md",
+      "marker": "PROOFKIT:fix-c-062 socket-sentry-130"
+    },
+    {
+      "id": "C-MK-053",
+      "type": "marker",
+      "desc": "fix fix-c-063 present in docs/page05.md",
+      "file": "docs/page05.md",
+      "marker": "PROOFKIT:fix-c-063 ledger-beacon-448"
+    },
+    {
+      "id": "C-MK-054",
+      "type": "marker",
+      "desc": "fix fix-c-064 present in docs/page05.md",
+      "file": "docs/page05.md",
+      "marker": "PROOFKIT:fix-c-064 tally-cipher-570"
+    },
+    {
+      "id": "C-MK-055",
+      "type": "marker",
+      "desc": "fix fix-c-065 present in docs/page05.md",
+      "file": "docs/page05.md",
+      "marker": "PROOFKIT:fix-c-065 witness-relay-447"
+    },
+    {
+      "id": "C-MK-056",
+      "type": "marker",
+      "desc": "fix fix-c-066 present in docs/page05.md",
+      "file": "docs/page05.md",
+      "marker": "PROOFKIT:fix-c-066 vault-oracle-764"
+    },
+    {
+      "id": "C-MK-057",
+      "type": "marker",
+      "desc": "fix fix-c-067 present in docs/page05.md",
+      "file": "docs/page05.md",
+      "marker": "PROOFKIT:fix-c-067 lattice-relay-677"
+    },
+    {
+      "id": "C-MK-058",
+      "type": "marker",
+      "desc": "fix fix-c-068 present in docs/page05.md",
+      "file": "docs/page05.md",
+      "marker": "PROOFKIT:fix-c-068 pivot-lattice-138"
+    },
+    {
+      "id": "C-MK-059",
+      "type": "marker",
+      "desc": "fix fix-c-069 present in docs/page05.md",
+      "file": "docs/page05.md",
+      "marker": "PROOFKIT:fix-c-069 tally-anchor-278"
+    },
+    {
+      "id": "C-MK-060",
+      "type": "marker",
+      "desc": "fix fix-c-071 present in docs/page06.md",
+      "file": "docs/page06.md",
+      "marker": "PROOFKIT:fix-c-071 merkle-cursor-804"
+    },
+    {
+      "id": "C-MK-061",
+      "type": "marker",
+      "desc": "fix fix-c-072 present in docs/page06.md",
+      "file": "docs/page06.md",
+      "marker": "PROOFKIT:fix-c-072 cipher-lattice-912"
+    },
+    {
+      "id": "C-MK-062",
+      "type": "marker",
+      "desc": "fix fix-c-073 present in docs/page06.md",
+      "file": "docs/page06.md",
+      "marker": "PROOFKIT:fix-c-073 sentry-witness-736"
+    },
+    {
+      "id": "C-MK-063",
+      "type": "marker",
+      "desc": "fix fix-c-074 present in docs/page06.md",
+      "file": "docs/page06.md",
+      "marker": "PROOFKIT:fix-c-074 mantle-merkle-791"
+    },
+    {
+      "id": "C-MK-064",
+      "type": "marker",
+      "desc": "fix fix-c-075 present in docs/page06.md",
+      "file": "docs/page06.md",
+      "marker": "PROOFKIT:fix-c-075 cursor-prism-191"
+    },
+    {
+      "id": "C-MK-065",
+      "type": "marker",
+      "desc": "fix fix-c-076 present in docs/page06.md",
+      "file": "docs/page06.md",
+      "marker": "PROOFKIT:fix-c-076 strata-beacon-721"
+    },
+    {
+      "id": "C-MK-066",
+      "type": "marker",
+      "desc": "fix fix-c-077 present in docs/page06.md",
+      "file": "docs/page06.md",
+      "marker": "PROOFKIT:fix-c-077 probe-strata-835"
+    },
+    {
+      "id": "C-MK-067",
+      "type": "marker",
+      "desc": "fix fix-c-078 present in docs/page06.md",
+      "file": "docs/page06.md",
+      "marker": "PROOFKIT:fix-c-078 prism-beacon-243"
+    },
+    {
+      "id": "C-MK-068",
+      "type": "marker",
+      "desc": "fix fix-c-079 present in docs/page06.md",
+      "file": "docs/page06.md",
+      "marker": "PROOFKIT:fix-c-079 socket-kernel-702"
+    },
+    {
+      "id": "C-MK-069",
+      "type": "marker",
+      "desc": "fix fix-c-081 present in docs/page07.md",
+      "file": "docs/page07.md",
+      "marker": "PROOFKIT:fix-c-081 pivot-strata-782"
+    },
+    {
+      "id": "C-MK-070",
+      "type": "marker",
+      "desc": "fix fix-c-082 present in docs/page07.md",
+      "file": "docs/page07.md",
+      "marker": "PROOFKIT:fix-c-082 pivot-strata-555"
+    },
+    {
+      "id": "C-MK-071",
+      "type": "marker",
+      "desc": "fix fix-c-083 present in docs/page07.md",
+      "file": "docs/page07.md",
+      "marker": "PROOFKIT:fix-c-083 merkle-quorum-809"
+    },
+    {
+      "id": "C-MK-072",
+      "type": "marker",
+      "desc": "fix fix-c-084 present in docs/page07.md",
+      "file": "docs/page07.md",
+      "marker": "PROOFKIT:fix-c-084 anchor-shard-693"
+    },
+    {
+      "id": "C-MK-073",
+      "type": "marker",
+      "desc": "fix fix-c-085 present in docs/page07.md",
+      "file": "docs/page07.md",
+      "marker": "PROOFKIT:fix-c-085 ledger-shard-821"
+    },
+    {
+      "id": "C-MK-074",
+      "type": "marker",
+      "desc": "fix fix-c-086 present in docs/page07.md",
+      "file": "docs/page07.md",
+      "marker": "PROOFKIT:fix-c-086 relay-lattice-639"
+    },
+    {
+      "id": "C-MK-075",
+      "type": "marker",
+      "desc": "fix fix-c-087 present in docs/page07.md",
+      "file": "docs/page07.md",
+      "marker": "PROOFKIT:fix-c-087 cursor-tally-307"
+    },
+    {
+      "id": "C-MK-076",
+      "type": "marker",
+      "desc": "fix fix-c-088 present in docs/page07.md",
+      "file": "docs/page07.md",
+      "marker": "PROOFKIT:fix-c-088 socket-witness-404"
+    },
+    {
+      "id": "C-MK-077",
+      "type": "marker",
+      "desc": "fix fix-c-089 present in docs/page07.md",
+      "file": "docs/page07.md",
+      "marker": "PROOFKIT:fix-c-089 vault-sentry-837"
+    },
+    {
+      "id": "C-MK-078",
+      "type": "marker",
+      "desc": "fix fix-c-091 present in docs/page08.md",
+      "file": "docs/page08.md",
+      "marker": "PROOFKIT:fix-c-091 quorum-cursor-856"
+    },
+    {
+      "id": "C-MK-079",
+      "type": "marker",
+      "desc": "fix fix-c-092 present in docs/page08.md",
+      "file": "docs/page08.md",
+      "marker": "PROOFKIT:fix-c-092 cipher-lattice-963"
+    },
+    {
+      "id": "C-MK-080",
+      "type": "marker",
+      "desc": "fix fix-c-093 present in docs/page08.md",
+      "file": "docs/page08.md",
+      "marker": "PROOFKIT:fix-c-093 pivot-probe-405"
+    },
+    {
+      "id": "C-MK-081",
+      "type": "marker",
+      "desc": "fix fix-c-094 present in docs/page08.md",
+      "file": "docs/page08.md",
+      "marker": "PROOFKIT:fix-c-094 prism-cipher-191"
+    },
+    {
+      "id": "C-MK-082",
+      "type": "marker",
+      "desc": "fix fix-c-095 present in docs/page08.md",
+      "file": "docs/page08.md",
+      "marker": "PROOFKIT:fix-c-095 anchor-oracle-894"
+    },
+    {
+      "id": "C-MK-083",
+      "type": "marker",
+      "desc": "fix fix-c-096 present in docs/page08.md",
+      "file": "docs/page08.md",
+      "marker": "PROOFKIT:fix-c-096 kernel-socket-465"
+    },
+    {
+      "id": "C-MK-084",
+      "type": "marker",
+      "desc": "fix fix-c-097 present in docs/page08.md",
+      "file": "docs/page08.md",
+      "marker": "PROOFKIT:fix-c-097 witness-digest-759"
+    },
+    {
+      "id": "C-MK-085",
+      "type": "marker",
+      "desc": "fix fix-c-098 present in docs/page08.md",
+      "file": "docs/page08.md",
+      "marker": "PROOFKIT:fix-c-098 anchor-strata-970"
+    },
+    {
+      "id": "C-MK-086",
+      "type": "marker",
+      "desc": "fix fix-c-099 present in docs/page08.md",
+      "file": "docs/page08.md",
+      "marker": "PROOFKIT:fix-c-099 witness-cursor-500"
+    },
+    {
+      "id": "C-MK-087",
+      "type": "marker",
+      "desc": "fix fix-c-101 present in .github/workflows/ci.yml",
+      "file": ".github/workflows/ci.yml",
+      "marker": "PROOFKIT:fix-c-101 ledger-oracle-490"
+    },
+    {
+      "id": "C-MK-088",
+      "type": "marker",
+      "desc": "fix fix-c-102 present in .github/workflows/ci.yml",
+      "file": ".github/workflows/ci.yml",
+      "marker": "PROOFKIT:fix-c-102 strata-gauge-108"
+    },
+    {
+      "id": "C-MK-089",
+      "type": "marker",
+      "desc": "fix fix-c-103 present in .github/workflows/ci.yml",
+      "file": ".github/workflows/ci.yml",
+      "marker": "PROOFKIT:fix-c-103 anchor-quorum-992"
+    },
+    {
+      "id": "C-MK-090",
+      "type": "marker",
+      "desc": "fix fix-c-104 present in .github/workflows/ci.yml",
+      "file": ".github/workflows/ci.yml",
+      "marker": "PROOFKIT:fix-c-104 socket-pivot-222"
+    },
+    {
+      "id": "C-MK-091",
+      "type": "marker",
+      "desc": "fix fix-c-105 present in .github/workflows/ci.yml",
+      "file": ".github/workflows/ci.yml",
+      "marker": "PROOFKIT:fix-c-105 gauge-quorum-175"
+    },
+    {
+      "id": "C-MK-092",
+      "type": "marker",
+      "desc": "fix fix-c-106 present in .github/workflows/ci.yml",
+      "file": ".github/workflows/ci.yml",
+      "marker": "PROOFKIT:fix-c-106 gauge-quorum-743"
+    },
+    {
+      "id": "C-MK-093",
+      "type": "marker",
+      "desc": "fix fix-c-107 present in .github/workflows/ci.yml",
+      "file": ".github/workflows/ci.yml",
+      "marker": "PROOFKIT:fix-c-107 kernel-mantle-898"
+    },
+    {
+      "id": "C-MK-094",
+      "type": "marker",
+      "desc": "fix fix-c-108 present in .github/workflows/ci.yml",
+      "file": ".github/workflows/ci.yml",
+      "marker": "PROOFKIT:fix-c-108 cursor-beacon-895"
+    },
+    {
+      "id": "C-MK-095",
+      "type": "marker",
+      "desc": "fix fix-c-109 present in .github/workflows/ci.yml",
+      "file": ".github/workflows/ci.yml",
+      "marker": "PROOFKIT:fix-c-109 ledger-witness-465"
+    }
+  ]
+}
