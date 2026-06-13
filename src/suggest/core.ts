@@ -91,28 +91,32 @@ export function pickMarker(addedLines: string[], fileText: string): string | und
 }
 
 /**
- * Build the suggested claim for one changed file. Always returns a
- * suggestion (marker when one qualifies, file-hash otherwise) — the caller
- * decides whether to skip files already covered.
+ * Build the suggested claim for one changed file, or `undefined` when nothing
+ * worth pinning is found. A robust single-line marker is always suggested.
+ * The whole-file-hash fallback is OPT-IN (`includeFileHash`): a file-hash
+ * claim trips on any edit to the file, so auto-suggesting one on every
+ * recently-touched file is a drift-spam machine by construction. Default off
+ * — a run that suggests nothing beats one that suggests noise.
  */
 export function suggestForFile(
   file: string,
   addedLines: string[],
   fileText: string,
   existingIds: Set<string>,
-): SuggestedClaim {
-  const id = makeId(file, existingIds);
+  includeFileHash = false,
+): SuggestedClaim | undefined {
   const marker = pickMarker(addedLines, fileText);
   if (marker) {
     return {
-      claim: { id, type: 'marker', file, marker, desc: 'auto-suggested from diff' },
+      claim: { id: makeId(file, existingIds), type: 'marker', file, marker, desc: 'auto-suggested from diff' },
       confidence: 'high',
       reason: `distinctive added line reads like code and is unique in ${file}`,
     };
   }
+  if (!includeFileHash) return undefined;
   return {
-    claim: { id, type: 'file-hash', file, desc: 'auto-suggested from diff' },
+    claim: { id: makeId(file, existingIds), type: 'file-hash', file, desc: 'auto-suggested from diff' },
     confidence: 'medium',
-    reason: 'no robust single-line marker found — sealing the whole-file hash (trips on any edit)',
+    reason: 'no robust single-line marker found — sealing the whole-file hash (trips on any edit; opted in via --include-file-hash)',
   };
 }

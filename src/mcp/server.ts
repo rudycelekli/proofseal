@@ -44,8 +44,15 @@ async function failOpen(hint: string, fn: () => Promise<unknown> | unknown): Pro
  * broke a claim could also launder it green and the only trace is the history
  * log (which helps only if a human reads it). We refuse resealing over MCP
  * unless a HUMAN authorized it out-of-band via the server env, since the agent
- * cannot set its own server's environment. The CLI `proofseal seal` is
- * unaffected — that path is the human's. Set PROOFSEAL_ALLOW_RESEAL=1 to allow.
+ * cannot set its own server's environment.
+ *
+ * Perimeter (be honest): this fully closes the loop only for SHELL-LESS agents
+ * reaching proofseal solely through MCP. A shell-ful coding agent can bypass it
+ * by running `proofseal seal` in its own shell — for those, real enforcement is
+ * CI re-verifying the committed manifest plus a permission config that
+ * deny-lists `proofseal seal`. The gate still earns its place: it sets the norm
+ * and turns laundering into a visibly deliberate shell command with an
+ * auditable refusal here. Set PROOFSEAL_ALLOW_RESEAL=1 to allow.
  */
 const RESEAL_ENV = 'PROOFSEAL_ALLOW_RESEAL';
 function resealAuthorized(): boolean {
@@ -87,7 +94,7 @@ function installStdioShutdownHandlers(): void {
 
 export async function startMcpServer(): Promise<void> {
   installStdioShutdownHandlers();
-  const server = new McpServer({ name: 'proofseal', version: '0.3.0' });
+  const server = new McpServer({ name: 'proofseal', version: '0.3.1' });
 
   server.tool(
     'verify_claims',

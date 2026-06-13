@@ -53,6 +53,8 @@ Seven tools, every one fail-open (a broken repo returns `{ok:false, warn:true, e
 
 `seal_manifest` is the one tool that overwrites the very claims an agent verifies against — so over MCP it is **refused by default** (`{ok:false, gated:true}`). Resealing belongs to a human: set `PROOFSEAL_ALLOW_RESEAL=1` in the server env to authorize it, or just run `proofseal seal` in your own shell. This keeps an in-session agent from resealing away a regression it just introduced.
 
+**Know the gate's perimeter.** It fully closes the laundering loop only for *shell-less* agents (Cowork, chat, sandboxed tool-callers) that can reach proofseal solely through MCP. A *shell-ful* coding agent can sidestep it by running `proofseal seal` in Bash directly — so for those, the real enforcement is **CI re-verifying the committed manifest on `main`** plus your agent's **permission config deny-listing `proofseal seal`**. The MCP gate still earns its place even there: it sets the norm, produces an auditable `gated:true` refusal, and forces any laundering to be a visibly deliberate shell command rather than a quiet tool call.
+
 The pattern: **the agent calls `check_drift` (or `verify_claims`) in its pre-commit step.** If anything it touched is `regressed`, it fixes or reverts before the commit lands — the regression never reaches your history.
 
 This isn't aspirational — here's a [captured trajectory](docs/demo/agent-catch-trajectory.md) of an agent (Claude, over MCP) catching a silent 7% error in a financial calculation that no test covered, and reverting it before the commit. Reproducible end-to-end.
@@ -80,7 +82,8 @@ npx proofseal claim add --id finance-totals --type harness \
   --cmd "node scripts/report-totals.mjs" --desc "Quarterly totals stay deterministic"
 
 # Or let it propose claims from your working diff (then commit the ones worth keeping):
-npx proofseal suggest                 # prints suggested marker/file-hash claims for changed files
+npx proofseal suggest                 # proposes robust MARKER claims for changed files (quiet by default)
+npx proofseal suggest --include-file-hash  # also fall back to whole-file-hash claims (trips on any edit)
 npx proofseal suggest --staged --write  # append the suggestions straight into proofseal.json
 
 npx proofseal seal                 # run + record, seal manifest, append history snapshot

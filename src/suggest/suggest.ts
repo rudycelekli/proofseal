@@ -34,10 +34,15 @@ function looksBinary(text: string): boolean {
   return text.includes('\u0000');
 }
 
+export type SuggestOptions = DiffOptions & {
+  /** Opt in to whole-file-hash fallback claims (default: marker-only). */
+  includeFileHash?: boolean;
+};
+
 export function suggestClaims(
   root: string,
   config: ProofSealConfig,
-  opts: DiffOptions = {},
+  opts: SuggestOptions = {},
 ): SuggestResult {
   if (!insideGitRepo(root)) {
     throw new Error('not a git repository (suggest reads a git diff) — run inside a repo, or pass --root');
@@ -79,7 +84,17 @@ export function suggestClaims(
       skipped.push({ file, reason: 'binary' });
       continue;
     }
-    const suggestion = suggestForFile(file, addedLines(root, file, opts), fileText, existingIds);
+    const suggestion = suggestForFile(
+      file,
+      addedLines(root, file, opts),
+      fileText,
+      existingIds,
+      opts.includeFileHash,
+    );
+    if (!suggestion) {
+      skipped.push({ file, reason: 'no robust marker found (pass --include-file-hash to seal the whole-file hash)' });
+      continue;
+    }
     existingIds.add(suggestion.claim.id); // keep ids unique across this run
     suggestions.push(suggestion);
   }

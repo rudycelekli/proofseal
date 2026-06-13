@@ -434,14 +434,19 @@ program
   .description('Suggest claims from the current git diff (marker for distinctive edits, file-hash otherwise)')
   .option('--base <ref>', 'diff against a ref (e.g. main, HEAD~3) instead of the working tree')
   .option('--staged', 'use staged changes (index vs HEAD)')
+  .option('--include-file-hash', 'also suggest whole-file-hash claims when no robust marker is found (off by default — file-hash claims trip on any edit)')
   .option('--write', 'append the suggestions to proofseal.json (skips ids/files already present)')
   .option('--root <path>', 'repo root', '.')
   .option('--json', 'machine-readable output')
-  .action((o: { base?: string; staged?: boolean; write?: boolean; root: string; json?: boolean }) => {
+  .action((o: { base?: string; staged?: boolean; includeFileHash?: boolean; write?: boolean; root: string; json?: boolean }) => {
     const json = !!o.json;
     try {
       const { root, config } = loadConfig(o.root ?? '.');
-      const { suggestions, skipped } = suggestClaims(root, config, { base: o.base, staged: o.staged });
+      const { suggestions, skipped } = suggestClaims(root, config, {
+        base: o.base,
+        staged: o.staged,
+        includeFileHash: o.includeFileHash,
+      });
 
       if (o.write) {
         // Re-validate through the schema before persisting (suggestions are
@@ -470,6 +475,9 @@ program
       emit(json, { ok: true, suggestions, skipped }, () => {
         if (suggestions.length === 0) {
           console.log('No new claims to suggest from the current diff.');
+          if (!o.includeFileHash && skipped.some((s) => s.reason.startsWith('no robust marker'))) {
+            console.log('Some files had no robust marker — re-run with --include-file-hash to seal their whole-file hash.');
+          }
           return;
         }
         for (const s of suggestions) {

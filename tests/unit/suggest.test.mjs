@@ -67,16 +67,30 @@ test('suggestForFile: emits a high-confidence marker claim when one qualifies', 
   assert.equal(s.claim.marker, 'export const guardThreshold = clampValue(input, 0, 1);');
 });
 
-test('suggestForFile: falls back to a medium-confidence file-hash claim', () => {
+test('suggestForFile: no marker + file-hash NOT opted in → returns undefined', () => {
+  // Default behavior: a file with no robust marker suggests NOTHING. A run
+  // that suggests nothing beats one that suggests file-hash noise (drift-spam).
   const file = 'x\n';
-  const s = suggestForFile('src/calc.ts', ['x'], file, new Set());
+  assert.equal(suggestForFile('src/calc.ts', ['x'], file, new Set()), undefined);
+});
+
+test('suggestForFile: file-hash fallback only when explicitly opted in', () => {
+  const file = 'x\n';
+  const s = suggestForFile('src/calc.ts', ['x'], file, new Set(), true);
   assert.equal(s.confidence, 'medium');
   assert.equal(s.claim.type, 'file-hash');
   assert.equal(s.claim.file, 'src/calc.ts');
 });
 
+test('suggestForFile: a qualifying marker is suggested even without the file-hash opt-in', () => {
+  const file = 'export const guardThreshold = clampValue(input, 0, 1);\n';
+  const s = suggestForFile('src/calc.ts', ['export const guardThreshold = clampValue(input, 0, 1);'], file, new Set());
+  assert.equal(s.confidence, 'high');
+  assert.equal(s.claim.type, 'marker');
+});
+
 test('suggestForFile: respects ids already taken in the run', () => {
   const file = 'noop\n';
-  const s = suggestForFile('src/calc.ts', ['noop'], file, new Set(['calc']));
+  const s = suggestForFile('src/calc.ts', ['noop'], file, new Set(['calc']), true);
   assert.equal(s.claim.id, 'calc-2');
 });
