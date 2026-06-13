@@ -1,0 +1,53 @@
+{
+  "schema": "proofseal/v1",
+  "salt": "proofseal-self",
+  "manifest": "proofs/manifest.json",
+  "history": "proofs/history.jsonl",
+  "claims": [
+    {
+      "id": "version-numeric",
+      "desc": "Parses `proofseal --version` into [major, minor, patch]. Realistic 'seal build metadata' case — requires `npm install && npm run build` to verify on a fresh clone.",
+      "type": "harness",
+      "harness": "version-numeric",
+      "cmd": "node dist/cli/index.js --version | sed 's/[^0-9.]//g' | awk -F. '{print \"[\"$1\",\"$2\",\"$3\"]\"}'",
+      "seed": 42,
+      "quantizeDecimals": 6,
+      "expectedSha256": "7931967d97a43a5151d50bfe304bb39ff9048b88259dcfb690369ec044f6abcb",
+      "referenceVector": "proofs/version-numeric.reference.json",
+      "tolerance": {
+        "rtol": 0.0001,
+        "atol": 0.000001
+      }
+    },
+    {
+      "id": "bench-fixture-counts",
+      "desc": "Extracts the per-fixture claim counts from bench/results/report.json. Realistic 'seal CI metrics' case — verifies on a fresh clone after `npm install` since report.json is committed.",
+      "type": "harness",
+      "harness": "bench-fixture-counts",
+      "cmd": "node -e \"const r=JSON.parse(require('fs').readFileSync('bench/results/report.json','utf8'));process.stdout.write(JSON.stringify(r.fixtures.map(f=>f.claims)))\"",
+      "seed": 42,
+      "quantizeDecimals": 6,
+      "expectedSha256": "26ed860a0b531ffa287c7c2008df3bfcfb558fdfa4dd6d87169a5464080f54f4",
+      "referenceVector": "proofs/bench-fixture-counts.reference.json",
+      "tolerance": {
+        "rtol": 0.0001,
+        "atol": 0.000001
+      }
+    },
+    {
+      "id": "license-sha-bytes",
+      "desc": "SHA-256 of LICENSE as a flat byte vector. Realistic 'seal a build artifact hash' case — verifies on any clone with zero preconditions.",
+      "type": "harness",
+      "harness": "license-sha-bytes",
+      "cmd": "node -e \"const c=require('crypto');const h=c.createHash('sha256').update(require('fs').readFileSync('LICENSE')).digest();process.stdout.write(JSON.stringify([...h]))\"",
+      "seed": 42,
+      "quantizeDecimals": 6,
+      "expectedSha256": "5c105568d8b290ccd7a0f99fac6ec430ad55ea901c79cf387df96853af967a8f",
+      "referenceVector": "proofs/license-sha-bytes.reference.json",
+      "tolerance": {
+        "rtol": 0.0001,
+        "atol": 0.000001
+      }
+    }
+  ]
+}
