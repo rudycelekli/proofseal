@@ -18,6 +18,8 @@ import {
   DEFAULT_TOLERANCE,
   type AllCloseResult,
 } from './quantize.js';
+import { applyNormalizers, type AppliedNormalizer } from './normalize.js';
+import type { NormalizerSpec } from '../manifest/schema.js';
 
 export interface HarnessDef {
   name: string;
@@ -29,6 +31,12 @@ export interface HarnessDef {
   quantizeDecimals?: number;
   /** Named output blocks to skip when stdout is a JSON object (pitfall 6). */
   exclude?: string[];
+  /**
+   * Opt-in normalizers applied to stdout BEFORE numeric parsing. Same list
+   * must reach runHarness at seal AND verify time — verify gets it off the
+   * SIGNED manifest claim, not local config.
+   */
+  normalizers?: NormalizerSpec[];
   /** Committed expectation hash; absent = no expectation yet. */
   expectedSha256?: string;
   /** Path to committed JSON array of full-precision reference numbers. */
@@ -51,6 +59,12 @@ export interface HarnessResult {
   /** Full-precision parsed values (for --update reference regeneration). */
   values?: number[];
   quantized?: number[];
+  /**
+   * Per-normalizer audit trail. Every normalizer on the claim produces one
+   * entry — including count=0 ("tried, matched nothing") and noop entries
+   * — so a reader can see exactly what was masked at seal/verify time.
+   */
+  appliedNormalizers?: AppliedNormalizer[];
   seed: number;
   quantizeDecimals: number;
   exitCode: number | null;
@@ -157,17 +171,22 @@ export async function runHarness(def: HarnessDef): Promise<HarnessResult> {
     };
   }
 
-  const values = parseNumericOutput(run.stdout, def.exclude ?? []);
+  // Normalize BEFORE numeric parsing — same code path at seal and verify
+  // (both reach runHarness with claim.normalizers off the signed manifest).
+  const { text: normalized, applied: appliedNormalizers } = applyNormalizers(run.stdout, def.normalizers);
+  const audit = appliedNormalizers.length > 0 ? { appliedNormalizers } : {};
+
+  const values = parseNumericOutput(normalized, def.exclude ?? []);
   const quantized = quantizeValues(values, decimals);
   const hash = hashQuantized(values, decimals);
 
   if (!def.expectedSha256) {
-    return { ...base, status: 'missing', exitCode: run.exitCode, hash, values, quantized, error: 'no committed expectedSha256 — run `proofseal harness run --update`' };
+    return { ...base, ...audit, status: 'missing', exitCode: run.exitCode, hash, values, quantized, error: 'no committed expectedSha256 — run `proofseal harness run --update`' };
   }
 
   const hashMatch = hash === def.expectedSha256;
   if (hashMatch) {
-    return { ...base, status: 'pass', exitCode: run.exitCode, hash, expectedSha256: def.expectedSha256, hashMatch, values, quantized };
+    return { ...base, ...audit, status: 'pass', exitCode: run.exitCode, hash, expectedSha256: def.expectedSha256, hashMatch, values, quantized };
   }
 
   // Tolerance fallback against the committed full-precision reference vector.
@@ -190,6 +209,7 @@ export async function runHarness(def: HarnessDef): Promise<HarnessResult> {
   return {
     ...(referenceVectorMissing ? { referenceVectorMissing: true } : {}),
     ...base,
+    ...audit,
     status: toleranceMatch ? 'drift' : 'regressed',
     exitCode: run.exitCode,
     hash,

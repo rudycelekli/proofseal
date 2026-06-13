@@ -17,6 +17,7 @@ import {
 } from '../core/hash.js';
 import { deriveKey, verifyBytes, signingMessage } from '../keys/derive.js';
 import { runHarness } from '../harness/run.js';
+import type { AppliedNormalizer } from '../harness/normalize.js';
 import { loadConfig, DEFAULT_MANIFEST_PATH } from '../config.js';
 import type { Claim, ClaimStatus, SignerMode, Witness } from './schema.js';
 
@@ -84,6 +85,12 @@ export interface ClaimResult {
   preconditionSuspect?: boolean;
   /** Harness claim whose committed reference vector file is absent. */
   referenceVectorMissing?: boolean;
+  /**
+   * Per-normalizer audit trail (harness claims only) — copied from the
+   * harness run result, surfaced on verify so a reader can SEE exactly
+   * what was masked at verify time without diffing raw stdout themselves.
+   */
+  appliedNormalizers?: AppliedNormalizer[];
 }
 
 export interface VerifySummary {
@@ -274,6 +281,10 @@ async function classifyHarnessClaim(root: string, claim: Claim): Promise<ClaimRe
     seed: claim.seed,
     quantizeDecimals: claim.quantizeDecimals,
     exclude: claim.exclude,
+    // The audit-critical line: normalizers come off the SIGNED manifest
+    // claim, NEVER from a fresh loadConfig — editing proofseal.json after
+    // sealing cannot change what verify masks. See ADR rule in normalize.ts.
+    normalizers: claim.normalizers,
     expectedSha256: claim.expectedSha256,
     referenceVector: claim.referenceVector ? normalizeClaimPath(claim.referenceVector) : undefined,
     tolerance: claim.tolerance,
@@ -290,6 +301,7 @@ async function classifyHarnessClaim(root: string, claim: Claim): Promise<ClaimRe
       : result.error,
     ...(result.commandNotFound ? { preconditionSuspect: true } : {}),
     ...(result.referenceVectorMissing ? { referenceVectorMissing: true } : {}),
+    ...(result.appliedNormalizers ? { appliedNormalizers: result.appliedNormalizers } : {}),
   };
 }
 

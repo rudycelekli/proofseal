@@ -31,6 +31,7 @@ export {
   PlatformSchema,
   WitnessSchema,
   ConfigSchema,
+  NormalizerSpecSchema,
   type ManifestPlatform,
   type Claim,
   type ClaimState,
@@ -45,6 +46,8 @@ export {
   type Tolerance,
   type ProofSealConfig,
   type SignerMode,
+  type NormalizerSpec,
+  type NormalizerName,
 } from './manifest/schema.js';
 
 export {
@@ -101,6 +104,19 @@ export {
   DEFAULT_TOLERANCE,
   type AllCloseResult,
 } from './harness/quantize.js';
+export {
+  applyNormalizers,
+  canonicalizeNormalizers,
+  classifySpan,
+  type AppliedNormalizer,
+  type NormalizeResult,
+} from './harness/normalize.js';
+export {
+  diagnose,
+  type DiagnoseOptions,
+  type DiagnoseResult,
+  type VaryingSpan,
+} from './harness/diagnose.js';
 
 export {
   loadConfig,

@@ -23,6 +23,9 @@ import {
 } from '../history/queries.js';
 import { enrichRegressionsWithGit, UNREACHABLE_TAG } from '../history/gitinfo.js';
 import { runHarness } from '../harness/run.js';
+import { diagnose } from '../harness/diagnose.js';
+import { canonicalizeNormalizers } from '../harness/normalize.js';
+import { NormalizerSpecSchema, type NormalizerSpec } from '../manifest/schema.js';
 import { DEFAULT_TOLERANCE } from '../harness/quantize.js';
 import { loadConfig, saveConfig, defaultConfig, configPathFor } from '../config.js';
 import type { Claim, HarnessClaim } from '../manifest/schema.js';
@@ -164,6 +167,37 @@ function claimAddFromFile(json: boolean, root: string, config: ReturnType<typeof
   );
 }
 
+/**
+ * Parse a single --normalize value: `name` or `name:param=value` (for
+ * params like mask-hex:minLen=40). Throws via `fail()` on malformed input
+ * — schema validation is the gate, no silent fallthroughs.
+ */
+function parseNormalizeFlag(raw: string, json: boolean): NormalizerSpec {
+  const colonIdx = raw.indexOf(':');
+  let name = raw;
+  const params: Record<string, unknown> = {};
+  if (colonIdx >= 0) {
+    name = raw.slice(0, colonIdx);
+    const rest = raw.slice(colonIdx + 1);
+    for (const kv of rest.split(',')) {
+      const eq = kv.indexOf('=');
+      if (eq < 0) fail(json, 2, `--normalize: malformed param '${kv}' in '${raw}' (expected key=value)`);
+      const k = kv.slice(0, eq).trim();
+      const v = kv.slice(eq + 1).trim();
+      const asNum = Number(v);
+      params[k] = Number.isFinite(asNum) && v !== '' ? asNum : v;
+    }
+  }
+  const parsed = NormalizerSpecSchema.safeParse({ name, ...params });
+  if (!parsed.success) {
+    const reasons = parsed.error.issues
+      .map((iss) => `${iss.path.join('.') || '(root)'}: ${iss.message}`)
+      .join('; ');
+    fail(json, 2, `--normalize '${raw}': ${reasons}`);
+  }
+  return parsed.data;
+}
+
 claim
   .command('add')
   .option('--id <id>', 'claim id')
@@ -174,6 +208,11 @@ claim
   .option('--cmd <command>', 'harness command (harness)')
   .option('--seed <n>', 'harness seed', '42')
   .option('--quantize-decimals <n>', 'quantize decimals', '6')
+  .option(
+    '--normalize <spec>',
+    'opt-in stdout normalizer (harness only). Repeatable. Forms: `name` or `name:key=val`. Names: strip-ansi, mask-timestamps, mask-uuids, mask-hex[:minLen=N], mask-paths, canonicalize-json',
+    (val: string, prior: string[] = []) => [...prior, val],
+  )
   .option('--desc <text>', 'claim description')
   .option('--from-file <path>', 'JSON array of claim objects — all-or-nothing batch add')
   .option('--root <path>', 'repo root', '.')
@@ -197,6 +236,12 @@ claim
         entry = { id: o.id!, type: 'marker', file: o.file!, marker: o.marker!, desc: o.desc };
       } else if (o.type === 'harness') {
         if (!o.cmd) fail(json, 2, '--cmd required for harness claims');
+        // --normalize is repeatable; commander gathers it into a string[].
+        const rawNormalizers = (o as unknown as { normalize?: string[] }).normalize;
+        const normalizerSpecs = Array.isArray(rawNormalizers)
+          ? rawNormalizers.map((raw) => parseNormalizeFlag(raw, json))
+          : undefined;
+        const normalizers = canonicalizeNormalizers(normalizerSpecs);
         entry = {
           id: o.id!,
           type: 'harness',
@@ -204,6 +249,7 @@ claim
           cmd: o.cmd!,
           seed: Number(o.seed ?? 42),
           quantizeDecimals: Number(o.quantizeDecimals ?? 6),
+          ...(normalizers ? { normalizers } : {}),
           desc: o.desc,
         };
       } else {
@@ -500,6 +546,10 @@ harness
         seed: def.seed,
         quantizeDecimals: def.quantizeDecimals,
         exclude: def.exclude,
+        // CLI `harness run` is the same code path seal/verify take — must
+        // use the SAME normalizers off the claim, or --update would mint
+        // a hash that verify then rejects.
+        normalizers: def.normalizers,
         expectedSha256: o.update ? undefined : def.expectedSha256,
         referenceVector: def.referenceVector,
         tolerance: def.tolerance,
@@ -533,6 +583,53 @@ harness
         }
       });
       process.exit(result.status === 'pass' || result.status === 'drift' ? 0 : 1);
+    } catch (e) {
+      fail(json, 2, (e as Error).message);
+    }
+  });
+
+harness
+  .command('diagnose <name>')
+  .description('Run a harness N times and classify nondeterminism — read-only triage, exits 0 always')
+  .option('--runs <n>', 'number of runs', '5')
+  .option('--root <path>', 'repo root', '.')
+  .option('--json', 'machine-readable output')
+  .action(async (name: string, o: { runs: string; root: string; json?: boolean }) => {
+    const json = !!o.json;
+    try {
+      const { root, config } = loadConfig(o.root);
+      const claimDef = config.claims.find(
+        (c): c is HarnessClaim => c.type === 'harness' && (c.harness === name || c.id === name),
+      );
+      if (!claimDef) fail(json, 2, `no harness claim named '${name}'`);
+      const def = claimDef!;
+      const report = await diagnose({
+        cwd: root,
+        cmd: def.cmd,
+        seed: def.seed ?? 42,
+        runs: Number(o.runs ?? 5),
+      });
+      emit(json, { ok: true, report }, () => {
+        console.log(`harness '${name}': ${report.deterministic ? 'deterministic' : 'NONDETERMINISTIC'} across ${report.runs} runs`);
+        if (report.deterministic) return;
+        if (report.lineCountUnstable) console.log('  line counts varied between runs');
+        if (report.varyingSpans.length > 0) {
+          console.log(`  ${report.varyingSpans.length} varying span(s):`);
+          for (const s of report.varyingSpans.slice(0, 10)) {
+            const tag = s.classification ?? 'unclassified';
+            console.log(`    line ${s.line} [${tag}]: ${s.samples.slice(0, 2).join(' | ')}${s.samples.length > 2 ? ' | …' : ''}`);
+          }
+          if (report.varyingSpans.length > 10) console.log(`    … ${report.varyingSpans.length - 10} more`);
+        }
+        if (report.recommended.length > 0) {
+          console.log('  recommended normalizers:');
+          for (const n of report.recommended) console.log(`    --normalize ${n}`);
+        }
+        for (const h of report.hints) console.log(`  hint: ${h}`);
+        for (const e of report.runErrors) console.log(`  run ${e.runIndex}: exit ${e.exitCode}${e.error ? ` (${e.error})` : ''}`);
+      });
+      // Diagnose is advisory — exit 0 always (matches `history --stale`).
+      process.exit(0);
     } catch (e) {
       fail(json, 2, (e as Error).message);
     }

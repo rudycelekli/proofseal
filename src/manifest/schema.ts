@@ -39,6 +39,28 @@ export const MarkerClaimSchema = z.object({
 });
 export type MarkerClaim = z.infer<typeof MarkerClaimSchema>;
 
+/**
+ * Opt-in, named, explicit normalizers applied to harness stdout BEFORE
+ * numeric parsing + hashing. Each entry is recorded on the claim and sealed
+ * with the manifest — verify reads this list off the SIGNED manifest, not
+ * local config, so editing proofseal.json after sealing cannot change what
+ * verify masks. See src/harness/normalize.ts for the application order and
+ * the regex sources. NOTE: the hash is still over the quantized numeric
+ * vector — these normalizers harden the existing numeric harness; they do
+ * NOT make arbitrary text/JSON output sealable (the hash never sees the
+ * text directly).
+ */
+export const NormalizerSpecSchema = z.discriminatedUnion('name', [
+  z.object({ name: z.literal('strip-ansi') }),
+  z.object({ name: z.literal('mask-timestamps') }),
+  z.object({ name: z.literal('mask-uuids') }),
+  z.object({ name: z.literal('mask-hex'), minLen: z.number().int().min(8).default(32) }),
+  z.object({ name: z.literal('mask-paths') }),
+  z.object({ name: z.literal('canonicalize-json') }),
+]);
+export type NormalizerSpec = z.infer<typeof NormalizerSpecSchema>;
+export type NormalizerName = NormalizerSpec['name'];
+
 export const HarnessClaimSchema = z.object({
   ...claimBase,
   type: z.literal('harness'),
@@ -50,6 +72,12 @@ export const HarnessClaimSchema = z.object({
   quantizeDecimals: z.number().int().min(0).max(15).optional(),
   /** Named output blocks to exclude from hashing (pitfall 6: un-hashable features). */
   exclude: z.array(z.string()).optional(),
+  /**
+   * Opt-in normalizers applied to stdout before numeric parsing.
+   * Stored in canonical form (sorted by name, deduped, defaults inlined)
+   * so the same logical set always serializes identically.
+   */
+  normalizers: z.array(NormalizerSpecSchema).optional(),
   /** Committed expectation — set by `proofseal harness run --update`. */
   expectedSha256: z.string().optional(),
   /** Path (relative to root) to a committed JSON array of reference numbers. */

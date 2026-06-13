@@ -122,6 +122,9 @@ export async function seal(opts: SealOptions = {}): Promise<SealResult> {
       seed: c.seed,
       quantizeDecimals: c.quantizeDecimals,
       exclude: c.exclude,
+      // First-seal mint must hash the SAME normalized text verify will see.
+      // (Verify reads off the signed manifest — see verify.ts.)
+      normalizers: c.normalizers,
     });
     if (r.hash && r.values) {
       const refRel = normalizeClaimPath(c.referenceVector ?? `proofs/${c.harness || c.id}.reference.json`);
