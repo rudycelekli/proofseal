@@ -14,6 +14,7 @@ import { enrichRegressionsWithGit } from '../history/gitinfo.js';
 import { runHarness } from '../harness/run.js';
 import { loadConfig } from '../config.js';
 import { readFileSync } from 'node:fs';
+import { VERSION } from '../version.js';
 import type { Witness, HarnessClaim } from '../manifest/schema.js';
 
 type ToolText = {
@@ -94,7 +95,7 @@ function installStdioShutdownHandlers(): void {
 
 export async function startMcpServer(): Promise<void> {
   installStdioShutdownHandlers();
-  const server = new McpServer({ name: 'proofseal', version: '0.3.1' });
+  const server = new McpServer({ name: 'proofseal', version: VERSION });
 
   server.tool(
     'verify_claims',

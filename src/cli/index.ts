@@ -19,9 +19,10 @@ import { loadConfig, saveConfig, defaultConfig, configPathFor } from '../config.
 import type { Claim, HarnessClaim } from '../manifest/schema.js';
 import { suggestClaims } from '../suggest/suggest.js';
 import { startMcpServer } from '../mcp/server.js';
+import { VERSION } from '../version.js';
 
 const program = new Command();
-program.name('proofseal').description('Regression memory for coding agents — seal repo behavior, verify edits over MCP or in CI').version('0.3.0');
+program.name('proofseal').description('Regression memory for coding agents — seal repo behavior, verify edits over MCP or in CI').version(VERSION);
 
 function emit(json: boolean, data: unknown, human: () => void): void {
   if (json) console.log(JSON.stringify(data, null, 2));

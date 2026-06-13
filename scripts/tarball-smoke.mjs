@@ -128,6 +128,13 @@ try {
   sh('npx proofseal --help', { cwd: projDir });
   console.log('  ok: `npx proofseal --help` exited 0');
 
+  // 5b. The INSTALLED bin must report the version it was published as. v0.3.1
+  // shipped a hardcoded `--version` of 0.3.0; this asserts the installed path
+  // (not just the source tree) agrees with package.json.
+  const installedPkg = sh('npm pkg get version', { cwd: ROOT }).trim().replace(/"/g, '');
+  const reported = sh('npx proofseal --version', { cwd: projDir }).trim();
+  check(reported === installedPkg, `installed \`npx proofseal --version\` reports ${installedPkg} (got ${reported})`);
+
   console.log('\nTARBALL SMOKE PASS');
 } finally {
   rmSync(packDest, { recursive: true, force: true });
