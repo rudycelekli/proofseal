@@ -1,12 +1,20 @@
-dist/
+# Dependencies
 node_modules/
-*.db
-ruvector.db
-.DS_Store
-*.log
+
+# Build output (rebuilt on publish via prepublishOnly)
+/dist/
+
+# Agent-orchestration / local tooling artifacts — never ship these
 .swarm/
 .claude-flow/
-.claude/
+*.db
+*.db-wal
+*.db-shm
+ruvector.db
+
+# Local env / logs / OS cruft
 .env
 .env.*
+*.log
 coverage/
+.DS_Store

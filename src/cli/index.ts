@@ -4,18 +4,20 @@
  * Exit-code contract: 0 ok/drift · 1 regressed/missing/seal-mismatch · 2 precondition.
  */
 import { Command } from 'commander';
+import { execSync } from 'node:child_process';
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { seal } from '../manifest/seal.js';
 import { verify, toVerifyJson } from '../manifest/verify.js';
 import { lintMarker } from '../core/marker-lint.js';
-import { ClaimSchema } from '../manifest/schema.js';
-import { loadHistory } from '../history/jsonl.js';
+import { ClaimSchema, type ClaimStatus } from '../manifest/schema.js';
+import { loadHistory, appendVerifyEntry } from '../history/jsonl.js';
 import {
   fixTimeline,
   diffLatest,
   findRegressionIntroductions,
   findStaleClaims,
+  findResealedOverBreaks,
   DEFAULT_STALE_COMMITS,
   DEFAULT_STALE_DAYS,
 } from '../history/queries.js';
@@ -287,13 +289,42 @@ program
   .option('--json', 'machine-readable output')
   .option('--require-signed', 'fail unless the manifest was sealed with a real key (signerMode=key)')
   .option('--pubkey <hex>', 'fail unless the manifest public key equals this pinned 64-hex key (TOFU authentication)')
-  .action(async (o: { manifest?: string; root: string; json?: boolean; requireSigned?: boolean; pubkey?: string }) => {
+  .option('--no-log-outcome', 'skip writing this verify outcome to proofs/history.jsonl (default: ON — needed for `history --laundered` detection)')
+  .action(async (o: { manifest?: string; root: string; json?: boolean; requireSigned?: boolean; pubkey?: string; logOutcome?: boolean }) => {
     const result = await verify({
       root: o.root,
       manifestPath: o.manifest,
       requireSigned: o.requireSigned,
       pinnedPublicKey: o.pubkey,
     });
+    // Verify-outcome log (on by default — `--no-log-outcome` flips logOutcome
+    // to false via commander). Skip when there are no per-claim verdicts to
+    // record (precondition, pin failure). Append failure is a stderr warning,
+    // NEVER a verify failure — exit code is per-claim semantics, not per-
+    // side-effect (mirrors seal's best-effort append).
+    if (o.logOutcome !== false && result.results.length > 0) {
+      try {
+        const { historyPath, root: cfgRoot, config } = loadConfig(o.root);
+        const manifestPath = resolve(o.manifest ?? join(cfgRoot, config.manifest ?? 'proofs/manifest.json'));
+        const witness = JSON.parse(readFileSync(manifestPath, 'utf8'));
+        const manifestHash: string = witness?.integrity?.manifestHash ?? '';
+        const commit = execSync('git rev-parse HEAD', { cwd: cfgRoot }).toString().trim();
+        const branch = execSync('git rev-parse --abbrev-ref HEAD', { cwd: cfgRoot }).toString().trim();
+        const results: Record<string, { sha256: string; status: ClaimStatus }> = {};
+        for (const r of result.results) {
+          results[r.id] = { sha256: r.localSha256 ?? '', status: r.status };
+        }
+        appendVerifyEntry(historyPath, {
+          commit,
+          issuedAt: new Date().toISOString(),
+          branch,
+          manifestHash,
+          results,
+        });
+      } catch (e) {
+        console.warn(`warning: could not log verify outcome to history: ${(e as Error).message}`);
+      }
+    }
     emit(!!o.json, toVerifyJson(result), () => {
       if (result.precondition) {
         console.error(`precondition: ${result.precondition}`);
@@ -327,14 +358,16 @@ program
 // ─── history ────────────────────────────────────────────────────────
 program
   .command('history')
-  .description('Timeline per claim, latest diff, regression bisection, staleness')
+  .description('Timeline per claim, latest diff, regression bisection, staleness, laundering')
   .option('--id <claimId>', 'timeline for a single claim')
   .option('--diff', 'latest-vs-previous transitions')
   .option('--bisect', 'find regression-introducing commit ranges')
   .option('--stale', 'list claims gone dormant or never once verified (advisory; never affects exit code)')
   .option('--stale-after-commits <n>', `dormant after this many distinct commits without a verified=true seal (default ${DEFAULT_STALE_COMMITS})`)
   .option('--stale-after-days <n>', `dormant after this many days without a verified=true seal (default ${DEFAULT_STALE_DAYS})`)
-  .option('--as-of <commit>', 'anchor the staleness picture at this commit instead of the latest seal')
+  .option('--laundered', 'list resealed-over-break events (claim broke, then reseal changed its sha with no verify pass in between)')
+  .option('--strict', 'with --laundered, exit 1 if any event exists in the bounded window (CI release-gate)')
+  .option('--as-of <commit>', 'anchor the staleness / laundering scan at this commit instead of the latest seal')
   .option('--root <path>', 'repo root', '.')
   .option('--json', 'machine-readable output')
   .action((o: {
@@ -344,6 +377,8 @@ program
     stale?: boolean;
     staleAfterCommits?: string;
     staleAfterDays?: string;
+    laundered?: boolean;
+    strict?: boolean;
     asOf?: string;
     root: string;
     json?: boolean;
@@ -389,6 +424,22 @@ program
             }
           }
         });
+      } else if (o.laundered) {
+        // Bounded scan via opts.asOfCommit — strict reads THIS bounded result
+        // (the CI-gate-at-a-tag semantic), never the full history.
+        const laundered = findResealedOverBreaks(history, { asOfCommit: o.asOf });
+        emit(!!o.json, { ok: true, laundered }, () => {
+          if (laundered.length === 0) {
+            console.log('No resealed-over-break events.');
+            return;
+          }
+          for (const e of laundered) {
+            console.log(
+              `${e.claimId}\t${e.brokeKind}\tbroke at ${e.brokeAtCommit.slice(0, 12)}\tresealed at ${e.resealedAtCommit.slice(0, 12)}\t${(e.brokenSha ?? '<none>').slice(0, 12)} → ${e.resealedSha.slice(0, 12)}`,
+            );
+          }
+        });
+        if (o.strict && laundered.length > 0) process.exit(1);
       } else if (o.bisect) {
         const regressions = enrichRegressionsWithGit(root, findRegressionIntroductions(history));
         emit(!!o.json, { ok: true, regressions }, () => {
@@ -409,7 +460,14 @@ program
       } else {
         emit(!!o.json, { ok: true, entries: history }, () => {
           for (const e of history) {
-            console.log(`${e.issuedAt}  ${e.commit.slice(0, 12)}  claims=${e.summary.totalClaims} verified=${e.summary.verified} missing=${e.summary.missing}`);
+            if (e.kind === 'seal') {
+              console.log(`${e.issuedAt}  ${e.commit.slice(0, 12)}  seal     claims=${e.summary.totalClaims} verified=${e.summary.verified} missing=${e.summary.missing}`);
+            } else {
+              const ids = Object.keys(e.results);
+              const pass = ids.filter((id) => e.results[id].status === 'pass').length;
+              const fail = ids.length - pass;
+              console.log(`${e.issuedAt}  ${e.commit.slice(0, 12)}  verify   results=${ids.length} pass=${pass} fail=${fail}`);
+            }
           }
           if (history.length === 0) console.log('(no history)');
         });

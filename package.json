@@ -1,6 +1,6 @@
 {
   "name": "proofseal",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "Regression memory for coding agents — seal how your repo behaves, then check over MCP (or in CI) that an edit didn't regress it: pass/drift/regressed/missing.",
   "type": "module",
   "license": "MIT",

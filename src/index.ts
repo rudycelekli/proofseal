@@ -50,15 +50,22 @@ export {
 export {
   loadHistory,
   appendHistory,
+  appendVerifyEntry,
   claimVerified,
+  isSealEntry,
+  isVerifyEntry,
   type HistoryEntry,
+  type SealHistoryEntry,
+  type VerifyHistoryEntry,
   type HistoryClaimState,
+  type AppendVerifyOptions,
 } from './history/jsonl.js';
 export {
   fixTimeline,
   diffLatest,
   findRegressionIntroductions,
   findStaleClaims,
+  findResealedOverBreaks,
   sortByIssuedAt,
   DEFAULT_STALE_COMMITS,
   DEFAULT_STALE_DAYS,
@@ -67,6 +74,8 @@ export {
   type RegressionIntroduction,
   type StaleClaim,
   type FindStaleClaimsOptions,
+  type ResealedBreak,
+  type FindResealedOverBreaksOptions,
 } from './history/queries.js';
 export {
   enrichRegressionsWithGit,

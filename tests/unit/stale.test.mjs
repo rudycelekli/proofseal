@@ -8,9 +8,10 @@ import {
   DEFAULT_STALE_DAYS,
 } from '../../dist/index.js';
 
-/** Compact entry factory — matches the {@link HistoryEntry} shape. */
+/** Compact entry factory — matches the v:2 SealHistoryEntry shape. */
 const mk = (commit, issuedAt, claims, branch = 'main') => ({
-  v: 1,
+  v: 2,
+  kind: 'seal',
   commit,
   issuedAt,
   branch,

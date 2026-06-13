@@ -109,6 +109,26 @@ npx proofseal history --stale
 
 `--stale` is advisory — exit code is always 0. A claim is **dormant** if its most recent `verified: true` snapshot is older than the threshold (default 10 commits OR 90 days, whichever first; override with `--stale-after-commits` / `--stale-after-days`). A claim is **never-verified** if it has never once been confirmed at seal time. Claims absent from the latest snapshot are *removed*, not stale, and aren't reported. `--as-of <commit>` re-runs the query as of an earlier seal — useful for "was this dormant before the recent refactor?" without re-running anything. Same `{ ok, stale: [...] }` shape over `--json` for agents.
 
+Or to detect **resealing over a broken claim** — the laundering pattern where a claim regresses, then a later `seal` quietly buries the failure under a new "passing" snapshot:
+
+```bash
+npx proofseal history --laundered
+# finance-totals  broke at a91c03ffe002 (verify-regressed)  →  resealed-over at 7b3e9e22f1c0
+```
+
+`--laundered` answers a different question than `--bisect`. Bisect tells you *when a claim broke*; laundered tells you *when a broken claim was resealed without an honest fix*. A real fix shows up here too — but only after an independent `verify` (or `verify_claims` over MCP) **passes** the claim again. **The only thing that clears an open break is an independent verification that passes** — never a reseal alone. That's the integrity core: an agent can't seal away its own regression.
+
+To make this work, `verify` now records its outcome to `proofs/history.jsonl` alongside the seal snapshots — a `kind: "verify"` entry per run, with per-claim pass/drift/regressed/missing. Opt out with `--no-log-outcome`. The history log keeps full back-compat: old `v:1` lines load fine; new entries are `v:2` discriminated `{kind: "seal"} | {kind: "verify"}`.
+
+Pair `--laundered` with `--strict` in CI for a hard gate:
+
+```bash
+npx proofseal history --laundered --strict --as-of release-1.2.0
+# exit 1 if any launder exists within the bounded window
+```
+
+`--strict` only inspects the bounded result, so a tag-pinned check stays bounded.
+
 Bisect localizes between **seal snapshots**, not commits. For commit-level localization you don't even need this tool — `git bisect run npx proofseal verify` does it for free, at the cost of re-running the suite per probed commit. ProofSeal's `history --bisect` is the instant version: it reads already-recorded snapshots, so it answers without re-running anything, and that same answer is available to agents over MCP as `find_regression`. Seal in CI on main (single writer, linear history) for the tightest ranges; if branches seal concurrently, add `proofs/history.jsonl merge=union` to `.gitattributes` (entries are ordered by `issuedAt`, so union-merge interleaving is safe).
 
 ## Run it in CI

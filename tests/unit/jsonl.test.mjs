@@ -65,7 +65,7 @@ test('appendHistory: exactly one \\n per line; round-trips through loadHistory',
 
 test('history queries: timeline, diff, bisection (lib.mjs port)', () => {
   const mk = (commit, verified) => ({
-    v: 1, commit, issuedAt: 't', branch: 'main', manifestHash: 'x',
+    v: 2, kind: 'seal', commit, issuedAt: 't', branch: 'main', manifestHash: 'x',
     summary: { totalClaims: 1, verified: verified ? 1 : 0, missing: 0 },
     claims: { c1: { sha256: 'h', verified } },
   });
