@@ -58,10 +58,15 @@ export {
   fixTimeline,
   diffLatest,
   findRegressionIntroductions,
+  findStaleClaims,
   sortByIssuedAt,
+  DEFAULT_STALE_COMMITS,
+  DEFAULT_STALE_DAYS,
   type TimelinePoint,
   type LatestDiff,
   type RegressionIntroduction,
+  type StaleClaim,
+  type FindStaleClaimsOptions,
 } from './history/queries.js';
 export {
   enrichRegressionsWithGit,

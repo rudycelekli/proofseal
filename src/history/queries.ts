@@ -81,6 +81,154 @@ export function fixTimeline(unordered: HistoryEntry[], claimId: string): Timelin
   }));
 }
 
+/**
+ * Default staleness thresholds. Exported so the CLI's --help text reads from
+ * the same source as the function's defaults — the documented value can never
+ * drift from the implemented one.
+ */
+export const DEFAULT_STALE_COMMITS = 10;
+export const DEFAULT_STALE_DAYS = 90;
+
+export interface StaleClaim {
+  claimId: string;
+  lastVerifiedCommit: string | null;
+  lastVerifiedAt: string | null;
+  commitsSinceVerified: number | null;
+  daysSinceVerified: number | null;
+  reason: 'dormant' | 'never-verified';
+}
+
+export interface FindStaleClaimsOptions {
+  staleAfterCommits?: number;
+  staleAfterDays?: number;
+  /** Anchor the staleness picture at this commit instead of the latest seal. */
+  asOfCommit?: string;
+  /**
+   * "Now" as an ISO 8601 string. Passed in (not read from the wall clock) so
+   * the function stays pure: same inputs → same output, tests can pin time.
+   * The CLI always supplies this. Ignored when asOfCommit is set (the anchor
+   * entry's issuedAt is used instead).
+   */
+  now?: string;
+}
+
+/**
+ * Flag claims that have gone dormant (no recent verified=true) or were never
+ * once verified. Read-only over the history log — no schema changes.
+ *
+ * Universe: claims present in the anchor entry (latest by issuedAt, or the
+ * asOfCommit entry). Claims absent from the anchor are removed-not-stale and
+ * silently ignored. A claim with no verified=true entry at-or-before the
+ * anchor is reported as 'never-verified'. Otherwise, its lastPass is the
+ * max-issuedAt entry (at-or-before the anchor) where it was verified=true,
+ * and it is reported as 'dormant' iff commitsSinceVerified >=
+ * staleAfterCommits OR daysSinceVerified >= staleAfterDays.
+ *
+ * commitsSinceVerified counts DISTINCT commit SHAs in entries strictly after
+ * lastPass and at-or-before the anchor — by issuedAt order, never file order
+ * (union-merge can interleave lines). Distinct because the same commit can be
+ * resealed across branches.
+ *
+ * Sort: never-verified first (claimId asc), then dormant by daysSinceVerified
+ * DESC, commitsSinceVerified DESC, claimId asc.
+ *
+ * Empty history returns []. asOfCommit not found throws.
+ */
+export function findStaleClaims(unordered: HistoryEntry[], opts: FindStaleClaimsOptions = {}): StaleClaim[] {
+  if (unordered.length === 0) return [];
+  const staleAfterCommits = opts.staleAfterCommits ?? DEFAULT_STALE_COMMITS;
+  const staleAfterDays = opts.staleAfterDays ?? DEFAULT_STALE_DAYS;
+  const history = sortByIssuedAt(unordered);
+
+  // Anchor entry. If asOfCommit is supplied, find its latest-by-issuedAt
+  // occurrence (resealings of the same commit pick the most recent one).
+  let anchorIdx = history.length - 1;
+  if (opts.asOfCommit) {
+    anchorIdx = -1;
+    for (let i = history.length - 1; i >= 0; i--) {
+      if (history[i].commit === opts.asOfCommit) {
+        anchorIdx = i;
+        break;
+      }
+    }
+    if (anchorIdx === -1) {
+      throw new Error(`asOfCommit '${opts.asOfCommit}' not found in history`);
+    }
+  }
+  const anchor = history[anchorIdx];
+
+  // "Now" for days math. asOfCommit anchors days to the anchor entry's seal
+  // time (deterministic). Otherwise we trust opts.now (the CLI always passes
+  // it); only fall back to wall-clock when nothing was supplied, so a fully
+  // specified call is pure.
+  const nowMs = opts.asOfCommit
+    ? Date.parse(anchor.issuedAt)
+    : Date.parse(opts.now ?? new Date().toISOString());
+
+  const scan = history.slice(0, anchorIdx + 1);
+  const out: StaleClaim[] = [];
+
+  for (const claimId of Object.keys(anchor.claims)) {
+    // lastPass = max-issuedAt entry in scan where this claim was verified=true.
+    let lastPass: HistoryEntry | null = null;
+    let lastPassIdx = -1;
+    for (let i = scan.length - 1; i >= 0; i--) {
+      const s = scan[i].claims[claimId];
+      if (s && s.verified) {
+        lastPass = scan[i];
+        lastPassIdx = i;
+        break;
+      }
+    }
+
+    if (!lastPass) {
+      out.push({
+        claimId,
+        lastVerifiedCommit: null,
+        lastVerifiedAt: null,
+        commitsSinceVerified: null,
+        daysSinceVerified: null,
+        reason: 'never-verified',
+      });
+      continue;
+    }
+
+    // Distinct commits in (lastPass, anchor] — issuedAt-ordered, bounded at
+    // the anchor BEFORE the distinct-count so an --as-of in the past never
+    // counts later commits.
+    const distinctCommits = new Set<string>();
+    for (let i = lastPassIdx + 1; i < scan.length; i++) {
+      distinctCommits.add(scan[i].commit);
+    }
+    const commitsSinceVerified = distinctCommits.size;
+    const daysSinceVerified = Math.floor((nowMs - Date.parse(lastPass.issuedAt)) / 86_400_000);
+
+    if (commitsSinceVerified >= staleAfterCommits || daysSinceVerified >= staleAfterDays) {
+      out.push({
+        claimId,
+        lastVerifiedCommit: lastPass.commit,
+        lastVerifiedAt: lastPass.issuedAt,
+        commitsSinceVerified,
+        daysSinceVerified,
+        reason: 'dormant',
+      });
+    }
+  }
+
+  out.sort((a, b) => {
+    if (a.reason !== b.reason) return a.reason === 'never-verified' ? -1 : 1;
+    if (a.reason === 'dormant') {
+      const dd = (b.daysSinceVerified ?? 0) - (a.daysSinceVerified ?? 0);
+      if (dd !== 0) return dd;
+      const dc = (b.commitsSinceVerified ?? 0) - (a.commitsSinceVerified ?? 0);
+      if (dc !== 0) return dc;
+    }
+    return a.claimId < b.claimId ? -1 : a.claimId > b.claimId ? 1 : 0;
+  });
+
+  return out;
+}
+
 export interface LatestDiff {
   newlyRegressed: string[];
   newlyPassing: string[];

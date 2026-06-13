@@ -11,7 +11,14 @@ import { verify, toVerifyJson } from '../manifest/verify.js';
 import { lintMarker } from '../core/marker-lint.js';
 import { ClaimSchema } from '../manifest/schema.js';
 import { loadHistory } from '../history/jsonl.js';
-import { fixTimeline, diffLatest, findRegressionIntroductions } from '../history/queries.js';
+import {
+  fixTimeline,
+  diffLatest,
+  findRegressionIntroductions,
+  findStaleClaims,
+  DEFAULT_STALE_COMMITS,
+  DEFAULT_STALE_DAYS,
+} from '../history/queries.js';
 import { enrichRegressionsWithGit, UNREACHABLE_TAG } from '../history/gitinfo.js';
 import { runHarness } from '../harness/run.js';
 import { DEFAULT_TOLERANCE } from '../harness/quantize.js';
@@ -320,13 +327,27 @@ program
 // ─── history ────────────────────────────────────────────────────────
 program
   .command('history')
-  .description('Timeline per claim, latest diff, regression bisection')
+  .description('Timeline per claim, latest diff, regression bisection, staleness')
   .option('--id <claimId>', 'timeline for a single claim')
   .option('--diff', 'latest-vs-previous transitions')
   .option('--bisect', 'find regression-introducing commit ranges')
+  .option('--stale', 'list claims gone dormant or never once verified (advisory; never affects exit code)')
+  .option('--stale-after-commits <n>', `dormant after this many distinct commits without a verified=true seal (default ${DEFAULT_STALE_COMMITS})`)
+  .option('--stale-after-days <n>', `dormant after this many days without a verified=true seal (default ${DEFAULT_STALE_DAYS})`)
+  .option('--as-of <commit>', 'anchor the staleness picture at this commit instead of the latest seal')
   .option('--root <path>', 'repo root', '.')
   .option('--json', 'machine-readable output')
-  .action((o: { id?: string; diff?: boolean; bisect?: boolean; root: string; json?: boolean }) => {
+  .action((o: {
+    id?: string;
+    diff?: boolean;
+    bisect?: boolean;
+    stale?: boolean;
+    staleAfterCommits?: string;
+    staleAfterDays?: string;
+    asOf?: string;
+    root: string;
+    json?: boolean;
+  }) => {
     try {
       const { historyPath, root } = loadConfig(o.root);
       const history = loadHistory(historyPath);
@@ -338,6 +359,36 @@ program
       } else if (o.diff) {
         const diff = diffLatest(history);
         emit(!!o.json, { ok: true, diff }, () => console.log(JSON.stringify(diff, null, 2)));
+      } else if (o.stale) {
+        const parseN = (v: string | undefined, name: string): number | undefined => {
+          if (v === undefined) return undefined;
+          const n = Number(v);
+          if (!Number.isFinite(n) || n < 0) fail(!!o.json, 2, `${name} must be a non-negative number`);
+          return n;
+        };
+        // Always thread "now" in at the CLI boundary so findStaleClaims itself
+        // never reaches the wall clock — keeps the library function pure.
+        const stale = findStaleClaims(history, {
+          staleAfterCommits: parseN(o.staleAfterCommits, '--stale-after-commits'),
+          staleAfterDays: parseN(o.staleAfterDays, '--stale-after-days'),
+          asOfCommit: o.asOf,
+          now: new Date().toISOString(),
+        });
+        emit(!!o.json, { ok: true, stale }, () => {
+          if (stale.length === 0) {
+            console.log('No stale claims.');
+            return;
+          }
+          for (const s of stale) {
+            if (s.reason === 'never-verified') {
+              console.log(`${s.claimId}\tnever-verified\t(no verified=true seal on record)`);
+            } else {
+              console.log(
+                `${s.claimId}\tdormant\tlast pass ${s.lastVerifiedCommit!.slice(0, 12)}\t${s.commitsSinceVerified} commit${s.commitsSinceVerified === 1 ? '' : 's'}\t${s.daysSinceVerified} day${s.daysSinceVerified === 1 ? '' : 's'}`,
+              );
+            }
+          }
+        });
       } else if (o.bisect) {
         const regressions = enrichRegressionsWithGit(root, findRegressionIntroductions(history));
         emit(!!o.json, { ok: true, regressions }, () => {

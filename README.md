@@ -99,6 +99,16 @@ npx proofseal history --bisect
 #   range spans 14 commits — seal more often (e.g. in CI on main) for tighter localization
 ```
 
+Or to surface claims that have quietly fallen out of the verified set:
+
+```bash
+npx proofseal history --stale
+# auth-token-rotation    dormant         last pass 7b3e9e22f1c0   12 commits   118 days
+# legacy-export-format   never-verified  (no verified=true seal on record)
+```
+
+`--stale` is advisory — exit code is always 0. A claim is **dormant** if its most recent `verified: true` snapshot is older than the threshold (default 10 commits OR 90 days, whichever first; override with `--stale-after-commits` / `--stale-after-days`). A claim is **never-verified** if it has never once been confirmed at seal time. Claims absent from the latest snapshot are *removed*, not stale, and aren't reported. `--as-of <commit>` re-runs the query as of an earlier seal — useful for "was this dormant before the recent refactor?" without re-running anything. Same `{ ok, stale: [...] }` shape over `--json` for agents.
+
 Bisect localizes between **seal snapshots**, not commits. For commit-level localization you don't even need this tool — `git bisect run npx proofseal verify` does it for free, at the cost of re-running the suite per probed commit. ProofSeal's `history --bisect` is the instant version: it reads already-recorded snapshots, so it answers without re-running anything, and that same answer is available to agents over MCP as `find_regression`. Seal in CI on main (single writer, linear history) for the tightest ranges; if branches seal concurrently, add `proofs/history.jsonl merge=union` to `.gitattributes` (entries are ordered by `issuedAt`, so union-merge interleaving is safe).
 
 ## Run it in CI
