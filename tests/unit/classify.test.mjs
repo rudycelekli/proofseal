@@ -99,7 +99,14 @@ test('end-to-end: seal → verify ok; single-byte manifest tamper → exit 1', a
   const good = await verify({ root });
   assert.equal(good.ok, true);
   assert.equal(good.exitCode, 0);
-  assert.deepEqual(good.signature, { manifestHashOk: true, publicKeyReproducible: true, signatureValid: true, publicKey: good.signature.publicKey });
+  assert.deepEqual(good.signature, {
+    manifestHashOk: true,
+    publicKeyReproducible: true,
+    signatureValid: true,
+    publicKey: good.signature.publicKey,
+    signerMode: 'derived',
+    guarantee: good.signature.guarantee,
+  });
   assert.match(good.signature.publicKey, /^[0-9a-f]{64}$/);
   assert.equal(good.summary.pass, 2);
 

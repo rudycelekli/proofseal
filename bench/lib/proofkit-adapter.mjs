@@ -1,5 +1,5 @@
 // bench/lib/proofkit-adapter.mjs — drives ProofKit through its REAL CLI
-// endpoints only (Playbook rule 2c; ADR §4.1), never internals.
+// endpoints only (ADR §4.1), never internals.
 //
 // ProofKit may not be built yet (it is developed in parallel). detect()
 // degrades gracefully: when dist/cli/index.js is absent, the orchestrator

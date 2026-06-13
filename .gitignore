@@ -1,2 +1,12 @@
-node_modules/
 dist/
+node_modules/
+*.db
+ruvector.db
+.DS_Store
+*.log
+.swarm/
+.claude-flow/
+.claude/
+.env
+.env.*
+coverage/

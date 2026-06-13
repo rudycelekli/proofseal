@@ -39,8 +39,8 @@ test('golden path: init -> claim add -> seal -> verify (exit 0, all pass)', { sk
     );
 
     // Idempotence guard: re-init without --force refuses with exit 2
-    // (extraction-map pitfall #13: hand-edited/overwritten state breaks
-    // signatures; regeneration is the only legal mutation).
+    // (hand-edited/overwritten state breaks signatures; regeneration is
+    // the only legal mutation).
     expectExit(
       await runCli(['init'], { cwd: dir }),
       2,

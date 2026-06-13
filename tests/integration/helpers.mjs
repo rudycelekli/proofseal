@@ -1,6 +1,6 @@
 // Shared helpers for ProofSeal integration tests.
 //
-// HARD RULE (ADR-0001 §4.3 / D10, Playbook 2c): tests spawn the REAL CLI
+// HARD RULE (ADR-0001 §4.3 / D10): tests spawn the REAL CLI
 // (`node dist/cli/index.js ...`) and the REAL MCP stdio server. Nothing in
 // src/ is ever imported. The only on-disk artifacts tests may read are the
 // *contracted* ones: proofseal.json, proofs/manifest.json, proofs/history.jsonl.
@@ -42,7 +42,7 @@ if (SKIP && process.env.CI) {
   throw new Error(`CI=true but the CLI is not built — refusing to skip integration tests. ${SKIP}`);
 }
 
-// Distinctive, semantically load-bearing marker (extraction-map §6.11).
+// Distinctive, semantically load-bearing marker.
 export const MARKER = 'PROOFSEAL_WITNESS_FIX_1859_BUBBLES';
 
 // Deterministic environment for every spawned process.

@@ -69,7 +69,7 @@ test('tamper: flipped byte in a claim sha256 -> verify exit 1, bad signature', {
     // Crucial distinction: the live file on disk still matches the ORIGINAL
     // hash, so a naive verifier might call this a claim failure. The contract
     // says the manifest hash/signature check must catch the edit itself —
-    // hand-edited manifests break signatures (extraction-map pitfall #13).
+    // hand-edited manifests break signatures.
     const res = await runCli(['verify', '--json'], { cwd: dir });
     expectExit(res, 1, 'verify with mutated claim sha256');
     assertBadSignatureReported(res, parseJsonOut(res));

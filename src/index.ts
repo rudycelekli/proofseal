@@ -6,7 +6,7 @@ export { canonicalize } from './core/canonical.js';
 export { sha256Hex, sha256Bytes, fileSha256, fileSha256CrlfNormalized, fileContains, markerPresent, markerOccurrences } from './core/hash.js';
 export { normalizeClaimPath } from './core/paths.js';
 export { lintMarker } from './core/marker-lint.js';
-export { deriveKey, signBytes, verifyBytes, SEED_DERIVATION, type DerivedKey } from './keys/derive.js';
+export { deriveKey, signBytes, verifyBytes, signingMessage, loadExternalSigningKey, SEED_DERIVATION, type DerivedKey, type ExternalKey } from './keys/derive.js';
 
 export { seal, refreshClaim, type SealOptions, type SealResult, type SealWarning } from './manifest/seal.js';
 export {
@@ -44,6 +44,7 @@ export {
   type Integrity,
   type Tolerance,
   type ProofSealConfig,
+  type SignerMode,
 } from './manifest/schema.js';
 
 export {

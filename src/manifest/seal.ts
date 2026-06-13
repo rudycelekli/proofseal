@@ -10,12 +10,12 @@ import { execSync, execFileSync } from 'node:child_process';
 import { canonicalize } from '../core/canonical.js';
 import { normalizeClaimPath } from '../core/paths.js';
 import { sha256Hex, fileSha256, markerPresent, markerOccurrences } from '../core/hash.js';
-import { deriveKey, signBytes, SEED_DERIVATION } from '../keys/derive.js';
+import { deriveKey, signBytes, signingMessage, loadExternalSigningKey, SEED_DERIVATION } from '../keys/derive.js';
 import { appendHistory, claimVerified, type HistoryEntry } from '../history/jsonl.js';
 import { runHarness } from '../harness/run.js';
 import { DEFAULT_TOLERANCE } from '../harness/quantize.js';
 import { loadConfig, saveConfig, CONFIG_FILENAME } from '../config.js';
-import { SCHEMA_ID, type Claim, type ClaimState, type Manifest, type Witness } from './schema.js';
+import { SCHEMA_ID, type Claim, type ClaimState, type Manifest, type SignerMode, type Witness } from './schema.js';
 
 /** Refresh a single claim against the live tree (synchronous, seal-time). */
 export function refreshClaim(root: string, claim: Claim): ClaimState {
@@ -175,8 +175,16 @@ export async function seal(opts: SealOptions = {}): Promise<SealResult> {
   };
 
   const manifestHash = sha256Hex(canonicalize(manifest));
-  const key = deriveKey(gitCommit, salt);
-  const signature = signBytes(key.privateKey, Buffer.from(manifestHash, 'hex'));
+  // Real key if the operator brought one (PROOFSEAL_SIGNING_KEY[_FILE]),
+  // else the commit-derived key. A present-but-malformed real key throws
+  // (loadExternalSigningKey) rather than silently downgrading to derived.
+  const external = loadExternalSigningKey();
+  const signerMode: SignerMode = external ? 'key' : 'derived';
+  const signer = external ?? deriveKey(gitCommit, salt);
+  const { publicKeyHex, privateKey } = signer;
+  // v2 signed message binds signerMode + publicKey so the mode cannot be
+  // flipped, nor the pubkey swapped, without invalidating the signature.
+  const signature = signBytes(privateKey, signingMessage(manifestHash, signerMode, publicKeyHex));
 
   const witness: Witness = {
     manifest,
@@ -184,9 +192,10 @@ export async function seal(opts: SealOptions = {}): Promise<SealResult> {
       manifestHashAlgo: 'sha256',
       manifestHash,
       signatureAlgo: 'ed25519',
-      publicKey: key.publicKeyHex,
+      publicKey: publicKeyHex,
       signature,
       seedDerivation: SEED_DERIVATION,
+      signerMode,
     },
   };
 

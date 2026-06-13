@@ -1,7 +1,7 @@
 {
   "name": "proofseal",
-  "version": "0.1.0",
-  "description": "Witness-chained, tamper-evident claim verification for any git repo — commit-bound integrity seals, zero key management.",
+  "version": "0.2.0",
+  "description": "Regression memory for coding agents — seal how your repo behaves, then check over MCP (or in CI) that an edit didn't regress it: pass/drift/regressed/missing.",
   "type": "module",
   "license": "MIT",
   "author": "rudycelekli",
@@ -37,14 +37,17 @@
     "pretest": "npm run build",
     "test": "node --test \"tests/unit/**/*.test.mjs\"",
     "test:integration": "node --test \"tests/integration/**/*.test.{mjs,js}\"",
-    "smoke:tarball": "node scripts/tarball-smoke.mjs"
+    "smoke:tarball": "node scripts/tarball-smoke.mjs",
+    "prepublishOnly": "npm run build && npm test && npm run smoke:tarball"
   },
   "keywords": [
+    "mcp",
+    "ai-agents",
+    "regression",
     "verification",
-    "tamper-evidence",
-    "integrity-seal",
-    "witness",
     "claims",
+    "drift-detection",
+    "harness",
     "provenance"
   ],
   "dependencies": {

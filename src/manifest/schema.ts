@@ -98,6 +98,18 @@ export const ManifestSchema = z.object({
 });
 export type Manifest = z.infer<typeof ManifestSchema>;
 
+/**
+ * Who held the signing key.
+ *  - 'derived': key = sha256(gitCommit+salt+...) — re-derivable from the
+ *    committed manifest, so the signature is commit-bound tamper-evidence
+ *    only (the default; no key management).
+ *  - 'key': an external Ed25519 key (PROOFSEAL_SIGNING_KEY[_FILE]) the
+ *    repo never stores. A passing key-mode verify proves the keyholder
+ *    sealed it — real authentication — but ONLY against a pinned pubkey.
+ */
+export type SignerMode = 'derived' | 'key';
+export const SignerModeSchema = z.enum(['derived', 'key']);
+
 export const IntegritySchema = z.object({
   manifestHashAlgo: z.literal('sha256'),
   manifestHash: Hex64,
@@ -105,6 +117,12 @@ export const IntegritySchema = z.object({
   publicKey: Hex64,
   signature: Hex128,
   seedDerivation: z.string(),
+  /**
+   * Optional for backward compat: manifests sealed before signer modes
+   * existed validate and are treated as 'derived'. Bound INTO the signed
+   * message (not just stored) so a downgrade flip invalidates the signature.
+   */
+  signerMode: SignerModeSchema.optional(),
 });
 export type Integrity = z.infer<typeof IntegritySchema>;
 

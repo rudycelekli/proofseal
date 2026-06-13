@@ -1,7 +1,7 @@
 /**
  * Append-only JSONL history (proofs/history.jsonl) — ADR-0001 §5.5.
  *
- * JSONL hygiene (extraction-map pitfall 9): reads tolerate blank lines
+ * JSONL hygiene: reads tolerate blank lines
  * and a missing trailing newline; writes emit exactly one '\n' per line;
  * parse errors surface 1-indexed line numbers.
  */

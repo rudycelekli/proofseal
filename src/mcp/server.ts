@@ -72,15 +72,20 @@ function installStdioShutdownHandlers(): void {
 
 export async function startMcpServer(): Promise<void> {
   installStdioShutdownHandlers();
-  const server = new McpServer({ name: 'proofseal', version: '0.1.0' });
+  const server = new McpServer({ name: 'proofseal', version: '0.2.0' });
 
   server.tool(
     'verify_claims',
-    'Verify the sealed ProofSeal manifest against the live tree: integrity-seal triple-check plus per-claim pass/drift/regressed/missing classification. Use when raw Bash (sha256sum, grep) is wrong because it cannot detect manifest tampering or distinguish benign drift from a real regression.',
-    { root: z.string().optional(), manifest: z.string().optional() },
-    async ({ root, manifest }) =>
+    'Verify the sealed ProofSeal manifest against the live tree: integrity-seal check (signer-mode aware) plus per-claim pass/drift/regressed/missing classification. Use when raw Bash (sha256sum, grep) is wrong because it cannot detect manifest tampering or distinguish benign drift from a real regression. Pass pubkey to pin a real signing key (TOFU authentication); requireSigned to refuse the ornamental derived seal.',
+    {
+      root: z.string().optional(),
+      manifest: z.string().optional(),
+      requireSigned: z.boolean().optional(),
+      pubkey: z.string().regex(/^[0-9a-f]{64}$/).optional(),
+    },
+    async ({ root, manifest, requireSigned, pubkey }) =>
       failOpen('run `proofseal init` then `proofseal seal` in the repo', async () => {
-        const r = await verify({ root, manifestPath: manifest });
+        const r = await verify({ root, manifestPath: manifest, requireSigned, pinnedPublicKey: pubkey });
         // verify() never throws on broken repos — surface preconditions in the
         // fail-open shape so agent sessions get {ok:false, warn:true, error, hint}.
         if (r.precondition) {

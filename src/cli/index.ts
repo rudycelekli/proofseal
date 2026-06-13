@@ -20,7 +20,7 @@ import type { Claim, HarnessClaim } from '../manifest/schema.js';
 import { startMcpServer } from '../mcp/server.js';
 
 const program = new Command();
-program.name('proofseal').description('Witness-chained, tamper-evident claim verification').version('0.1.0');
+program.name('proofseal').description('Regression memory for coding agents — seal repo behavior, verify edits over MCP or in CI').version('0.2.0');
 
 function emit(json: boolean, data: unknown, human: () => void): void {
   if (json) console.log(JSON.stringify(data, null, 2));
@@ -276,8 +276,15 @@ program
   .option('--manifest <path>', 'manifest path')
   .option('--root <path>', 'repo root', '.')
   .option('--json', 'machine-readable output')
-  .action(async (o: { manifest?: string; root: string; json?: boolean }) => {
-    const result = await verify({ root: o.root, manifestPath: o.manifest });
+  .option('--require-signed', 'fail unless the manifest was sealed with a real key (signerMode=key)')
+  .option('--pubkey <hex>', 'fail unless the manifest public key equals this pinned 64-hex key (TOFU authentication)')
+  .action(async (o: { manifest?: string; root: string; json?: boolean; requireSigned?: boolean; pubkey?: string }) => {
+    const result = await verify({
+      root: o.root,
+      manifestPath: o.manifest,
+      requireSigned: o.requireSigned,
+      pinnedPublicKey: o.pubkey,
+    });
     emit(!!o.json, toVerifyJson(result), () => {
       if (result.precondition) {
         console.error(`precondition: ${result.precondition}`);
@@ -290,9 +297,14 @@ program
       }
       const s = result.signature;
       console.log('Manifest integrity seal:');
+      console.log(`  signer mode:              ${s.signerMode}`);
       console.log(`  hash matches:             ${s.manifestHashOk ? 'yes' : 'SEAL MISMATCH'}`);
-      console.log(`  public key reproducible:  ${s.publicKeyReproducible ? 'yes' : 'SEAL MISMATCH'}`);
+      if (s.signerMode === 'derived') {
+        console.log(`  public key reproducible:  ${s.publicKeyReproducible ? 'yes' : 'SEAL MISMATCH'}`);
+      }
       console.log(`  seal valid:               ${s.signatureValid ? 'yes' : 'SEAL MISMATCH'}`);
+      console.log(`  guarantee:                ${s.guarantee}`);
+      if (s.warning) console.log(`  WARNING:                  ${s.warning}`);
       console.log('');
       console.log(`Summary: pass=${result.summary.pass} drift=${result.summary.drift} regressed=${result.summary.regressed} missing=${result.summary.missing}`);
       for (const r of result.results.filter((r) => r.status === 'regressed' || r.status === 'missing')) {

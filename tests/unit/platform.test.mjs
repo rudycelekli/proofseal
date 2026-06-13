@@ -14,6 +14,7 @@ import {
   sha256Hex,
   deriveKey,
   signBytes,
+  signingMessage,
   SCHEMA_ID,
 } from '../../dist/index.js';
 
@@ -91,7 +92,10 @@ test('backward compat: manifest without platform ⇒ no warning, even cross-OS',
   const key = deriveKey(doc.manifest.gitCommit, doc.manifest.salt);
   doc.integrity.manifestHash = manifestHash;
   doc.integrity.publicKey = key.publicKeyHex;
-  doc.integrity.signature = signBytes(key.privateKey, Buffer.from(manifestHash, 'hex'));
+  doc.integrity.signature = signBytes(
+    key.privateKey,
+    signingMessage(manifestHash, 'derived', key.publicKeyHex),
+  );
   writeFileSync(mPath, JSON.stringify(doc, null, 2) + '\n');
 
   const r = await verify({ root, currentPlatform: 'definitely-not-this-os' });

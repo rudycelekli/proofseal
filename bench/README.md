@@ -2,7 +2,7 @@
 
 The benchmark defined in **ADR-0001 §3** — the only place the ProofKit v0.1
 headline claim is allowed to come from. The README claim is copy-pasted *from*
-`bench/results/report.md`, never written first (Playbook rule 2b).
+`bench/results/report.md`, never written first.
 
 ## Run it
 

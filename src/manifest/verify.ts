@@ -15,13 +15,13 @@ import {
   fileSha256CrlfNormalized,
   markerPresent as markerPresentIn,
 } from '../core/hash.js';
-import { deriveKey, verifyBytes } from '../keys/derive.js';
+import { deriveKey, verifyBytes, signingMessage } from '../keys/derive.js';
 import { runHarness } from '../harness/run.js';
 import { loadConfig, DEFAULT_MANIFEST_PATH } from '../config.js';
-import type { Claim, ClaimStatus, Witness } from './schema.js';
+import type { Claim, ClaimStatus, SignerMode, Witness } from './schema.js';
 
 export const THREAT_MODEL_NOTE =
-  'commit-bound tamper-evidence, not third-party authentication';
+  'commit-bound checksum (re-derivable by anyone with the manifest), not third-party authentication';
 
 /** Detail attached to a regressed file-hash claim caused by git autocrlf. */
 export const CRLF_DETAIL =
@@ -40,6 +40,20 @@ export interface SignatureCheck {
   signatureValid: boolean;
   /** Hex public key from the witness ('' when no manifest is present). */
   publicKey: string;
+  /** Which key sealed it. Defaults to 'derived' for pre-mode manifests. */
+  signerMode: SignerMode;
+  /**
+   * The single honest sentence about what a passing seal proves in THIS
+   * mode/pin combination — surfaced so a key-mode-without-pin reader never
+   * infers authentication they did not actually get.
+   */
+  guarantee: string;
+  /**
+   * Set when signerMode === 'key' but the stored pubkey is re-derivable from
+   * (gitCommit, salt) — i.e. a "key"-labelled seal that is really the
+   * ornamental derived key (adversarial review: hybrid-confusion). Advisory.
+   */
+  warning?: string;
 }
 
 export interface ClaimResult {
@@ -92,7 +106,17 @@ export interface VerifyResult {
 /** Pinned `verify --json` schema, v1 (CONTRACT-RESOLUTIONS §4). */
 export interface VerifyJson {
   ok: boolean;
-  signature: { valid: boolean; publicKey: string; publicKeyReproducible: boolean };
+  signature: {
+    valid: boolean;
+    publicKey: string;
+    publicKeyReproducible: boolean;
+    /** Additive (v1-compatible): 'derived' for pre-mode manifests. */
+    signerMode: SignerMode;
+    /** Additive: the one honest sentence about what this seal proves. */
+    guarantee: string;
+    /** Additive: present only when the signer identity is unverified/confused. */
+    warning?: string;
+  };
   summary: { totalClaims: number; pass: number; drift: number; regressed: number; missing: number };
   results: Array<{ id: string; type: string; status: ClaimStatus; file: string; detail: string }>;
   precondition: { reason: string; hint: string } | null;
@@ -105,9 +129,12 @@ export function toVerifyJson(r: VerifyResult): VerifyJson {
   return {
     ok: r.ok,
     signature: {
-      valid: r.signature.manifestHashOk && r.signature.publicKeyReproducible && r.signature.signatureValid,
+      valid: sealValid(r.signature),
       publicKey: r.signature.publicKey,
       publicKeyReproducible: r.signature.publicKeyReproducible,
+      signerMode: r.signature.signerMode,
+      guarantee: r.signature.guarantee,
+      ...(r.signature.warning ? { warning: r.signature.warning } : {}),
     },
     summary: { totalClaims: r.results.length, ...r.summary },
     results: r.results.map((c) => ({
@@ -129,20 +156,60 @@ export interface VerifyOptions {
   runHarnesses?: boolean;
   /** Current OS for platform-mismatch detection; injectable for tests. */
   currentPlatform?: string;
+  /** Fail (seal-mismatch) unless signerMode === 'key' (defeats the derived downgrade). */
+  requireSigned?: boolean;
+  /** Fail (seal-mismatch) unless integrity.publicKey === this pinned hex (TOFU authentication). */
+  pinnedPublicKey?: string;
 }
 
-/** Integrity-seal triple-check (ADR §5.4). */
-export function checkSignature(witness: Witness): SignatureCheck {
+/** The honest, per-mode guarantee a passing seal carries (no overclaiming). */
+function guaranteeFor(signerMode: SignerMode, pinnedPublicKey: boolean): string {
+  if (signerMode === 'derived') {
+    return 'commit-bound checksum: the manifest matches the commit it sealed — detects edits, but the key is re-derivable by anyone, so this is integrity-vs-accident, NOT authentication. Seal in key mode for that.';
+  }
+  return pinnedPublicKey
+    ? 'authenticated: the holder of the pinned key sealed this exact manifest (trust-on-first-use)'
+    : 'signed by a real key, but signer UNVERIFIED: pin it with `--pubkey <hex>` to get authentication';
+}
+
+/** Integrity-seal check (ADR §5.4), signer-mode aware. */
+export function checkSignature(witness: Witness, pinnedPublicKey?: string): SignatureCheck {
+  const signerMode: SignerMode = witness.integrity.signerMode ?? 'derived';
   const recomputed = sha256Hex(canonicalize(witness.manifest));
   const manifestHashOk = recomputed === witness.integrity.manifestHash;
-  const key = deriveKey(witness.manifest.gitCommit, witness.manifest.salt);
-  const publicKeyReproducible = key.publicKeyHex === witness.integrity.publicKey;
+  const derived = deriveKey(witness.manifest.gitCommit, witness.manifest.salt);
+  const publicKeyReproducible = derived.publicKeyHex === witness.integrity.publicKey;
+  // v2: the signature covers manifestHash + signerMode + publicKey.
   const signatureValid = verifyBytes(
     witness.integrity.publicKey,
-    Buffer.from(witness.integrity.manifestHash, 'hex'),
+    signingMessage(witness.integrity.manifestHash, signerMode, witness.integrity.publicKey),
     witness.integrity.signature,
   );
-  return { manifestHashOk, publicKeyReproducible, signatureValid, publicKey: witness.integrity.publicKey };
+  // Hybrid-confusion: a "key"-labelled seal whose pubkey is the derived one
+  // is really ornamental — flag it rather than let it masquerade as real.
+  const warning =
+    signerMode === 'key' && publicKeyReproducible
+      ? 'signerMode=key but the public key is the commit-derived key — this seal is NOT externally authenticated'
+      : signerMode === 'key' && !pinnedPublicKey
+        ? 'signerMode=key but no --pubkey pin — signer identity is unverified'
+        : undefined;
+  return {
+    manifestHashOk,
+    publicKeyReproducible,
+    signatureValid,
+    publicKey: witness.integrity.publicKey,
+    signerMode,
+    guarantee: guaranteeFor(signerMode, Boolean(pinnedPublicKey)),
+    ...(warning ? { warning } : {}),
+  };
+}
+
+/** Whole-seal validity, signer-mode aware (the function the exit code uses). */
+export function sealValid(sig: SignatureCheck): boolean {
+  if (!sig.manifestHashOk || !sig.signatureValid) return false;
+  // derived mode keeps the legacy triple-check (pubkey must re-derive);
+  // key mode deliberately does NOT require reproducibility (that is the point).
+  return sig.signerMode === 'key' ? true : sig.publicKeyReproducible;
 }
 
 /** Classify a file-backed (file-hash | marker) claim against the live tree. */
@@ -219,6 +286,8 @@ const EMPTY_SIG: SignatureCheck = {
   publicKeyReproducible: false,
   signatureValid: false,
   publicKey: '',
+  signerMode: 'derived',
+  guarantee: 'no manifest',
 };
 
 function precondition(reason: string, hint: string, summary?: VerifySummary, signature?: SignatureCheck, results?: ClaimResult[]): VerifyResult {
@@ -262,7 +331,7 @@ export async function verify(opts: VerifyOptions = {}): Promise<VerifyResult> {
     return precondition('manifest-unparseable', `could not parse ${manifestPath}: ${(e as Error).message}`);
   }
 
-  const signature = checkSignature(witness);
+  const signature = checkSignature(witness, opts.pinnedPublicKey);
 
   // Platform honesty (premortem #3): warn — never fail — when the verifying
   // OS differs from the (sealed) sealing OS. Manifests sealed before the
@@ -273,6 +342,32 @@ export async function verify(opts: VerifyOptions = {}): Promise<VerifyResult> {
     sealedOs && sealedOs !== currentPlatform
       ? `sealed on ${sealedOs}, verifying on ${currentPlatform} — file-hash mismatches on built/binary artifacts may be platform drift, not tampering`
       : undefined;
+
+  // Pins (adversarial review): the ONLY controls that actually defeat the
+  // derived downgrade / key-substitution. A failed pin is a seal-mismatch
+  // (exit 1) regardless of claim status — refuse rather than over-trust.
+  if (opts.requireSigned && signature.signerMode !== 'key') {
+    return {
+      ok: false,
+      exitCode: 1,
+      signature,
+      summary: { pass: 0, drift: 0, regressed: 0, missing: 0 },
+      results: [],
+      note: '--require-signed: manifest is not key-signed (signerMode=derived)',
+      ...(platformWarning ? { platformWarning } : {}),
+    };
+  }
+  if (opts.pinnedPublicKey && opts.pinnedPublicKey !== signature.publicKey) {
+    return {
+      ok: false,
+      exitCode: 1,
+      signature,
+      summary: { pass: 0, drift: 0, regressed: 0, missing: 0 },
+      results: [],
+      note: `--pubkey pin mismatch: expected ${opts.pinnedPublicKey}, manifest has ${signature.publicKey}`,
+      ...(platformWarning ? { platformWarning } : {}),
+    };
+  }
 
   const results: ClaimResult[] = [];
   for (const claim of witness.manifest.claims) {
@@ -338,8 +433,7 @@ export async function verify(opts: VerifyOptions = {}): Promise<VerifyResult> {
     };
   }
 
-  const sigOk = signature.manifestHashOk && signature.publicKeyReproducible && signature.signatureValid;
-  const ok = sigOk && summary.regressed === 0 && summary.missing === 0;
+  const ok = sealValid(signature) && summary.regressed === 0 && summary.missing === 0;
   return {
     ok,
     exitCode: ok ? 0 : 1,
