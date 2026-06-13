@@ -48,8 +48,10 @@ Seven tools, every one fail-open (a broken repo returns `{ok:false, warn:true, e
 | `run_harness` | runs one seeded command, compares numeric output under tolerance | raw float output hashes diverge across CPUs; this quantizes first |
 | `find_regression` | the seal-snapshot range that introduced a regression | `git bisect` needs a runnable predicate per commit; this answers from recorded snapshots instantly |
 | `claim_history` | status timeline for one claim across every seal | `git log` shows commits, not whether a claim held |
-| `seal_manifest` | reseal + append a snapshot | hand-editing the manifest always breaks it; resealing is the only legal mutation |
+| `seal_manifest` | reseal + append a snapshot — **gated** | hand-editing the manifest always breaks it; resealing is the only legal mutation |
 | `list_claims` | the configured claims, schema-validated | reading the JSON by hand skips validation + defaults |
+
+`seal_manifest` is the one tool that overwrites the very claims an agent verifies against — so over MCP it is **refused by default** (`{ok:false, gated:true}`). Resealing belongs to a human: set `PROOFSEAL_ALLOW_RESEAL=1` in the server env to authorize it, or just run `proofseal seal` in your own shell. This keeps an in-session agent from resealing away a regression it just introduced.
 
 The pattern: **the agent calls `check_drift` (or `verify_claims`) in its pre-commit step.** If anything it touched is `regressed`, it fixes or reverts before the commit lands — the regression never reaches your history.
 
@@ -76,6 +78,10 @@ npx proofseal init                 # scaffolds proofseal.json + proofs/ + a samp
 # The claim that matters most — a deterministic numeric harness:
 npx proofseal claim add --id finance-totals --type harness \
   --cmd "node scripts/report-totals.mjs" --desc "Quarterly totals stay deterministic"
+
+# Or let it propose claims from your working diff (then commit the ones worth keeping):
+npx proofseal suggest                 # prints suggested marker/file-hash claims for changed files
+npx proofseal suggest --staged --write  # append the suggestions straight into proofseal.json
 
 npx proofseal seal                 # run + record, seal manifest, append history snapshot
                                    # → prints "Now commit these files: …" — commit them all
@@ -144,7 +150,7 @@ npx proofseal verify --pubkey <hex>                     # pin it: TOFU authentic
 npx proofseal verify --require-signed                   # refuse the derived downgrade
 ```
 
-`--pubkey <hex>` is the strong check: it fails unless the manifest was signed by *that* key, so it closes both the derived downgrade and a key-substitution. `--require-signed` only rules out the naive derived seal (an attacker with their own real key still passes it — use `--pubkey` when that matters). The signed message binds `signerMode` + `publicKey`, so a signature can't be replayed across modes or have its pubkey field swapped. If a manifest claims `key` mode but its pubkey is still re-derivable from the commit, verify warns that it is **not** externally authenticated.
+`--pubkey <hex>` is the strong check: it fails unless the manifest was signed by *that* key, so it closes both the derived downgrade and a key-substitution. `--require-signed` only rules out the naive derived seal (an attacker with their own real key still passes it — use `--pubkey` when that matters). The signed message binds `signerMode` + `publicKey`, so a signature can't be replayed across modes or have its pubkey field swapped. If a manifest claims `key` mode but its pubkey is still re-derivable from the commit, verify warns that it is **not** externally authenticated. For agents, the verdict is a structured boolean — `signature.authenticated` is `true` **only** for key mode + a matching `--pubkey` pin; branch on it rather than on `signature.valid` (which is also `true` for the derived and no-pin cases).
 
 The TOFU caveat is real: a pin is exactly as trustworthy as the channel that delivered the pubkey. If you need full keyless identity / transparency-log provenance, run [cosign](https://github.com/sigstore/cosign) on top — the two compose.
 
