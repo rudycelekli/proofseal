@@ -86,9 +86,26 @@ npx proofseal suggest                 # proposes robust MARKER claims for change
 npx proofseal suggest --include-file-hash  # also fall back to whole-file-hash claims (trips on any edit)
 npx proofseal suggest --staged --write  # append the suggestions straight into proofseal.json
 
+# Opt-in AI-assisted suggest (Build 2). The AI proposes; determinism disposes.
+# Proposals are quarantined in proofs/pending.json and are NEVER auto-sealed.
+ANTHROPIC_API_KEY=sk-ant-… npx proofseal suggest --ai  # → proofs/pending.json
+# Review them, run the printed `proofseal claim add …` lines yourself, then seal.
+# Honest scope: AI helps you *find* candidate claims; it never writes the manifest,
+# never bypasses the harness/verify path, and (iron rule) the AI module is
+# structurally unreachable from seal / verify / harness — enforced by an
+# import-graph test that fails the build if the boundary erodes.
+
 npx proofseal seal                 # run + record, seal manifest, append history snapshot
                                    # → prints "Now commit these files: …" — commit them all
 npx proofseal verify               # exit 0 = pass/drift, 1 = regressed/missing, 2 = precondition
+
+# Opt-in AI failure triage (Build 3). Annotates failures with a plain-language
+# guess at what changed and what to try — strictly after the verdict is
+# computed and deep-frozen. Verdict bytes are byte-equal whether --explain is
+# on or off; exit code is unchanged; the AI cannot reseal or clear a break.
+ANTHROPIC_API_KEY=sk-ant-… npx proofseal verify --explain
+# Every annotation line is prefixed [AI opinion] and ends with a hard reminder
+# that resealing requires a human-owned shell (or PROOFSEAL_ALLOW_RESEAL=1).
 ```
 
 When something regresses later:
@@ -169,6 +186,25 @@ Two things first-time CI users hit:
 - **Commit the seal outputs.** `seal` writes the manifest, the rewritten `proofseal.json`, and any harness reference vectors — and prints the exact list. If CI says `reference-vector-not-found`, you sealed locally and didn't commit the outputs.
 - **`manifest.gitCommit` ≠ HEAD is normal.** It records the commit at seal time. Verification works against it directly.
 
+## AI as an assistant, never an authority (the iron rule)
+
+ProofSeal has two opt-in AI features — `suggest --ai` and `verify --explain` — that exist to help humans and agents move faster without ever standing in for the verdict. The rule that holds the trust story together:
+
+**The AI proposes; determinism disposes. The AI explains; never decides.**
+
+Concretely, in this codebase:
+
+- `seal`, `verify`, `harness/run`, and `harness/normalize` are the *verdict path*. Their import graph is **structurally forbidden** from reaching `src/suggest/ai/*` — a BFS test (`tests/unit/ai-import-isolation.test.mjs`) walks every static import from each verdict-path entry point and fails the build if any path lands in the AI module. A future refactor that accidentally couples them produces a red CI line that names the offending file. The boundary cannot erode by accident.
+- The `ANTHROPIC_API_KEY` environment variable is **only ever read** from inside `src/suggest/ai/*`. The same test grep-asserts that no other file in the project reads it — so even a careful refactor can't move the key check into a verdict-path module without a build failure.
+- `suggest --ai` writes to `proofs/pending.json` (a quarantine file the manifest does not consider). Promotion to a real claim is a `proofseal claim add …` line you run yourself. The AI never writes the manifest.
+- `verify --explain` runs *after* `verify` has finalized and **deep-frozen** the `VerifyResult`. The triage layer can only read it; mutation throws. The verdict bytes printed (and the exit code returned) are byte-equal whether `--explain` is on or off.
+- The triage layer cannot reseal. It emits a `SUGGESTION ONLY` disclaimer on every annotation; resealing still requires a human-owned shell running `proofseal seal`, or `PROOFSEAL_ALLOW_RESEAL=1` set explicitly in the MCP server environment. The AI module imports nothing from `manifest/seal` (also test-asserted).
+- Every recommendation line is prefixed `[AI opinion]` so the disclaimer can't visually detach from the suggestion it qualifies, even in narrow terminals or when output is grepped.
+
+Both AI features are pure additions. If you never set `ANTHROPIC_API_KEY` and never pass `--ai` / `--explain`, ProofSeal behaves exactly as the deterministic tool it has always been — the AI modules are not loaded, not reached, and not in the verdict path.
+
+If the iron-rule test ever fails on a PR, that PR does not merge. That is the whole story.
+
 ## The seal — two modes, and which one you actually get
 
 ProofSeal signs the manifest with Ed25519 in one of two modes. `verify` tells you which one you're looking at (`signerMode`) and prints an honest one-line `guarantee` so the tool can never overclaim.
@@ -225,6 +261,18 @@ Reading the table: every real tool signals 100% of the 45 seeded mutations, each
 **Why does `seal` exit 1 but still write history when a claim fails?**
 
 A failing snapshot is what lets `find_regression` / `history --bisect` localize the regression later. Skipping the snapshot would destroy the evidence.
+
+**Does `suggest --ai` ever modify my manifest or seal anything?**
+
+No. It writes proposals to `proofs/pending.json` (a quarantine file the manifest does not consider) and prints the exact `proofseal claim add …` commands you would run to promote any proposal you want to keep. The AI cannot reach `seal`, `verify`, or the harness path — the iron-rule test enforces that structurally. If you never look at `proofs/pending.json`, nothing about your repo changes.
+
+**Can `verify --explain` change the exit code or hide a regression?**
+
+No. Triage runs only after `verify` has finalized and deep-frozen the `VerifyResult`. The verdict bytes and exit code are byte-equal whether `--explain` is on or off — a CI job that pipes both runs through `diff` will see zero difference in the verdict block. Triage adds a separate annotation block beneath the verdict (and a sibling `triage` field in `--json` output that never touches `results[]`). The reseal gate is preserved: triage emits a `SUGGESTION ONLY` disclaimer, never reads `PROOFSEAL_ALLOW_RESEAL`, and cannot call `seal`.
+
+**What happens if I pass `--ai` / `--explain` without `ANTHROPIC_API_KEY`?**
+
+Graceful degradation. `suggest --ai` reports a clear error and exits 2 (precondition). `verify --explain` returns the unchanged verdict plus a `triageError` field describing the missing key — your exit code is whatever `verify` would have returned without `--explain`. Neither command silently swallows a failure or pretends the AI ran.
 
 **Can I use `verify --json` in CI?**
 
