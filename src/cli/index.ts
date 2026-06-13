@@ -30,6 +30,13 @@ import { DEFAULT_TOLERANCE } from '../harness/quantize.js';
 import { loadConfig, saveConfig, defaultConfig, configPathFor } from '../config.js';
 import type { Claim, HarnessClaim } from '../manifest/schema.js';
 import { suggestClaims } from '../suggest/suggest.js';
+// AI-suggest entry points. Dynamic import is NOT required for correctness
+// (the iron rule is enforced by tests/unit/ai/import-isolation.test.mjs at
+// the seal/verify/harness boundary, not at the CLI boundary), but we keep
+// the imports together so a future reader sees the AI surface in one place.
+import { proposeAiClaims, MissingApiKeyError, NetworkError, MalformedResponseError } from '../suggest/ai/propose.js';
+import { appendPending, claimAddCommandFor } from '../suggest/ai/pending.js';
+import { triageVerify, renderTriageHuman, toTriageJson } from '../suggest/ai/triage.js';
 import { startMcpServer } from '../mcp/server.js';
 import { VERSION } from '../version.js';
 
@@ -336,7 +343,8 @@ program
   .option('--require-signed', 'fail unless the manifest was sealed with a real key (signerMode=key)')
   .option('--pubkey <hex>', 'fail unless the manifest public key equals this pinned 64-hex key (TOFU authentication)')
   .option('--no-log-outcome', 'skip writing this verify outcome to proofs/history.jsonl (default: ON — needed for `history --laundered` detection)')
-  .action(async (o: { manifest?: string; root: string; json?: boolean; requireSigned?: boolean; pubkey?: string; logOutcome?: boolean }) => {
+  .option('--explain', 'after the verdict, ask the AI to annotate failing claims (requires ANTHROPIC_API_KEY; verdict prints unchanged if unavailable)')
+  .action(async (o: { manifest?: string; root: string; json?: boolean; requireSigned?: boolean; pubkey?: string; logOutcome?: boolean; explain?: boolean }) => {
     const result = await verify({
       root: o.root,
       manifestPath: o.manifest,
@@ -371,7 +379,13 @@ program
         console.warn(`warning: could not log verify outcome to history: ${(e as Error).message}`);
       }
     }
-    emit(!!o.json, toVerifyJson(result), () => {
+    // Triage runs ONLY when --explain is set. It is a pure post-processor over
+    // the already-finalized `result`; it cannot mutate the verdict or change
+    // the exit code. If triage is unavailable (no key, network, malformed),
+    // the verdict prints exactly the same and triageError is shown as a note.
+    const triaged = o.explain ? await triageVerify(result, { root: o.root }) : null;
+
+    emit(!!o.json, { ...toVerifyJson(result), ...(triaged ? { triage: toTriageJson(triaged) } : {}) }, () => {
       if (result.precondition) {
         console.error(`precondition: ${result.precondition}`);
         if (result.hint) console.error(`hint: ${result.hint}`);
@@ -397,6 +411,12 @@ program
         console.log(`  ${r.status.toUpperCase()}  ${r.id}  ${r.file ?? ''}${r.detail ? `  (${r.detail})` : ''}`);
       }
       console.log(`\nnote: ${result.note}`);
+      // Triage block goes AFTER the verdict + note, never before. Visual
+      // primacy belongs to the deterministic verdict.
+      if (triaged) {
+        const block = renderTriageHuman(triaged);
+        if (block) console.log(block);
+      }
     });
     process.exit(result.exitCode);
   });
@@ -642,11 +662,85 @@ program
   .option('--base <ref>', 'diff against a ref (e.g. main, HEAD~3) instead of the working tree')
   .option('--staged', 'use staged changes (index vs HEAD)')
   .option('--include-file-hash', 'also suggest whole-file-hash claims when no robust marker is found (off by default — file-hash claims trip on any edit)')
-  .option('--write', 'append the suggestions to proofseal.json (skips ids/files already present)')
+  .option('--write', 'append the suggestions to proofseal.json (skips ids/files already present); with --ai, writes to proofs/pending.json (NEVER proofseal.json)')
+  .option('--ai', 'use AI claim sourcing (requires ANTHROPIC_API_KEY); proposes only — never seals')
   .option('--root <path>', 'repo root', '.')
   .option('--json', 'machine-readable output')
-  .action((o: { base?: string; staged?: boolean; includeFileHash?: boolean; write?: boolean; root: string; json?: boolean }) => {
+  .action(async (o: { base?: string; staged?: boolean; includeFileHash?: boolean; write?: boolean; ai?: boolean; root: string; json?: boolean }) => {
     const json = !!o.json;
+    // ── --ai branch. Iron rule: this path never writes to proofseal.json,
+    // never invokes seal/verify, never blocks if the key is missing.
+    if (o.ai) {
+      const { root, config } = loadConfig(o.root ?? '.');
+      try {
+        const { accepted, needsHuman, skipped } = await proposeAiClaims({
+          root,
+          base: o.base,
+          staged: o.staged,
+        });
+        let writtenIds: string[] = [];
+        let writeSkipped: string[] = [];
+        if (o.write) {
+          const sealedIds = new Set(config.claims.map((c) => c.id));
+          const r = appendPending(root, accepted, sealedIds);
+          writtenIds = r.written;
+          writeSkipped = r.skipped;
+        }
+        emit(
+          json,
+          { ok: true, accepted, needsHuman, skipped, written: writtenIds, writeSkipped },
+          () => {
+            if (accepted.length === 0 && needsHuman.length === 0) {
+              console.log('AI returned no proposals from the current diff.');
+            }
+            for (const a of accepted) {
+              const dot = a.confidence === 'high' ? '●' : a.confidence === 'medium' ? '◐' : '○';
+              const detail = a.claim.type === 'marker' ? `marker="${a.claim.marker}"` : a.claim.type === 'harness' ? `cmd="${a.claim.cmd}"` : `file=${a.claim.file}`;
+              console.log(`${dot} ${a.claim.id}\t${a.claim.type}\t${a.reason}`);
+              console.log(`   ${detail}`);
+              console.log(`   $ ${claimAddCommandFor(a)}`);
+            }
+            if (needsHuman.length > 0) {
+              console.log('');
+              console.log('needs-human (AI declined to propose a deterministic check):');
+              for (const n of needsHuman) console.log(`  • ${n.target} — ${n.reason}`);
+            }
+            if (skipped.length > 0) {
+              console.log('');
+              console.log(`skipped: ${skipped.length}`);
+              for (const s of skipped.slice(0, 5)) console.log(`  • ${s.ref}: ${s.reason}`);
+            }
+            console.log('');
+            console.log('● high  ◐ medium  ○ low confidence');
+            if (o.write) {
+              console.log(`Wrote ${writtenIds.length} proposal${writtenIds.length === 1 ? '' : 's'} to proofs/pending.json (UNVERIFIED — promote with the printed claim add command).`);
+            } else {
+              console.log('To quarantine these for later review: rerun with --write (appends to proofs/pending.json, NEVER proofseal.json).');
+            }
+          },
+        );
+      } catch (e) {
+        if (e instanceof MissingApiKeyError) {
+          // Honest degradation: clean exit, point at the offline path.
+          emit(
+            json,
+            { ok: false, error: 'ANTHROPIC_API_KEY is not set', offlineHint: 'plain `proofseal suggest` works offline' },
+            () => {
+              console.error('proofseal: set ANTHROPIC_API_KEY to use AI suggestions; plain `proofseal suggest` works offline.');
+            },
+          );
+          process.exit(2);
+        }
+        if (e instanceof NetworkError) {
+          fail(json, 2, `AI API call failed: ${(e as NetworkError).message}`);
+        }
+        if (e instanceof MalformedResponseError) {
+          fail(json, 2, `AI returned malformed response: ${(e as MalformedResponseError).message}`);
+        }
+        fail(json, 2, (e as Error).message);
+      }
+      return;
+    }
     try {
       const { root, config } = loadConfig(o.root ?? '.');
       const { suggestions, skipped } = suggestClaims(root, config, {

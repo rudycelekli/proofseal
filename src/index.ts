@@ -144,3 +144,52 @@ export {
   type SuggestResult,
   type SkippedFile,
 } from './suggest/suggest.js';
+
+// ── AI-assisted suggest (Build 2). Opt-in: nothing here is ever invoked by
+// seal / verify / harness paths. Iron rule enforced by
+// tests/unit/ai/import-isolation.test.mjs.
+export {
+  proposeAiClaims,
+  MissingApiKeyError,
+  NetworkError,
+  MalformedResponseError,
+  type AcceptedProposal,
+  type SkippedProposal,
+  type ProposeResult,
+  type ProposeOptions,
+} from './suggest/ai/propose.js';
+export {
+  appendPending,
+  readPending,
+  pendingPath,
+  claimAddCommandFor,
+  PENDING_SCHEMA,
+  PENDING_REL_PATH,
+  type PendingFile,
+  type PendingProposal,
+} from './suggest/ai/pending.js';
+export {
+  AiResponseSchema,
+  AiProposalSchema,
+  type AiProposal,
+  type AiResponse,
+  type NeedsHumanProposal,
+} from './suggest/ai/schema.js';
+
+// ── AI failure triage (Build 3). Strict post-processor over an already-
+// computed VerifyResult — cannot mutate the verdict. Iron rule enforced by
+// the same import-graph BFS test (manifest/verify.ts → suggest/ai/* is forbidden).
+export {
+  triageVerify,
+  renderTriageHuman,
+  toTriageJson,
+  RESEAL_GATE_NOTICE,
+  type TriageAnnotation,
+  type TriagedVerifyResult,
+  type TriageOptions,
+  type TriageCallContext,
+  type TriageClassification,
+  type TriageRecommendation,
+  type TriageConfidence,
+  type TriageJsonBlock,
+} from './suggest/ai/triage.js';
