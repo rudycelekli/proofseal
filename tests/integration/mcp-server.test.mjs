@@ -115,6 +115,33 @@ test('mcp: verify_claims on a broken repo fails OPEN ({ok:false, warn:true, erro
   }
 });
 
+test('mcp: seal_manifest is GATED by default (refuses with gated:true), authorized by env', { skip: SKIP }, async () => {
+  let dir;
+  let client;
+  try {
+    dir = await sealedFixture();
+
+    // Default: no PROOFSEAL_ALLOW_RESEAL → the in-session agent is refused.
+    client = new McpClient({ cwd: dir });
+    await client.initialize();
+    const refused = McpClient.toolPayload(await client.callTool('seal_manifest', {}));
+    assert.equal(refused.ok, false, 'reseal must be refused by default');
+    assert.equal(refused.gated, true, 'refusal carries machine-readable gated:true');
+    assert.match(refused.hint ?? '', /PROOFSEAL_ALLOW_RESEAL/, 'hint names the human override');
+    await client.close();
+
+    // Human authorizes out-of-band via server env → reseal proceeds.
+    client = new McpClient({ cwd: dir, env: { PROOFSEAL_ALLOW_RESEAL: '1' } });
+    await client.initialize();
+    const allowed = McpClient.toolPayload(await client.callTool('seal_manifest', {}));
+    assert.equal(allowed.ok, true, `authorized reseal must succeed; got ${JSON.stringify(allowed)}`);
+    assert.ok(allowed.manifestHash, 'authorized reseal returns the new manifestHash');
+  } finally {
+    await client?.close();
+    await cleanup(dir);
+  }
+});
+
 test('mcp: client disconnect mid-write (EPIPE) exits 0 quietly, no stack trace', { skip: SKIP }, async () => {
   let dir;
   let client;

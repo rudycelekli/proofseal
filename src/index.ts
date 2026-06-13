@@ -95,3 +95,22 @@ export {
   CONFIG_FILENAME,
   type ResolvedConfig,
 } from './config.js';
+
+export {
+  pickMarker,
+  makeId,
+  suggestForFile,
+  type SuggestedClaim,
+  type Confidence,
+} from './suggest/core.js';
+export {
+  changedFiles,
+  addedLines,
+  insideGitRepo,
+  type DiffOptions,
+} from './suggest/diff.js';
+export {
+  suggestClaims,
+  type SuggestResult,
+  type SkippedFile,
+} from './suggest/suggest.js';

@@ -39,6 +39,21 @@ async function failOpen(hint: string, fn: () => Promise<unknown> | unknown): Pro
 }
 
 /**
+ * Reseal trust boundary. seal_manifest is the ONE mutation that overwrites the
+ * very claims an agent verifies against — so the in-session agent that just
+ * broke a claim could also launder it green and the only trace is the history
+ * log (which helps only if a human reads it). We refuse resealing over MCP
+ * unless a HUMAN authorized it out-of-band via the server env, since the agent
+ * cannot set its own server's environment. The CLI `proofseal seal` is
+ * unaffected — that path is the human's. Set PROOFSEAL_ALLOW_RESEAL=1 to allow.
+ */
+const RESEAL_ENV = 'PROOFSEAL_ALLOW_RESEAL';
+function resealAuthorized(): boolean {
+  const v = process.env[RESEAL_ENV];
+  return v === '1' || v === 'true';
+}
+
+/**
  * Client-disconnect hygiene: when the MCP client goes away mid-write, the
  * stdio transport surfaces `write EPIPE` (and stdin sees EOF). A vanished
  * client is a normal shutdown, not an error — exit 0 quietly. Anything that
@@ -72,11 +87,11 @@ function installStdioShutdownHandlers(): void {
 
 export async function startMcpServer(): Promise<void> {
   installStdioShutdownHandlers();
-  const server = new McpServer({ name: 'proofseal', version: '0.2.0' });
+  const server = new McpServer({ name: 'proofseal', version: '0.3.0' });
 
   server.tool(
     'verify_claims',
-    'Verify the sealed ProofSeal manifest against the live tree: integrity-seal check (signer-mode aware) plus per-claim pass/drift/regressed/missing classification. Use when raw Bash (sha256sum, grep) is wrong because it cannot detect manifest tampering or distinguish benign drift from a real regression. Pass pubkey to pin a real signing key (TOFU authentication); requireSigned to refuse the ornamental derived seal.',
+    'Verify the sealed ProofSeal manifest against the live tree: integrity-seal check (signer-mode aware) plus per-claim pass/drift/regressed/missing classification. Use when raw Bash (sha256sum, grep) is wrong because it cannot detect manifest tampering or distinguish benign drift from a real regression. Pass pubkey to pin a real signing key (TOFU authentication); requireSigned to refuse the ornamental derived seal. Branch on the structured signature.authenticated boolean (NOT signature.valid): it is true ONLY for a pinned external key — a valid key-mode seal with no pin reports authenticated=false.',
     {
       root: z.string().optional(),
       manifest: z.string().optional(),
@@ -97,10 +112,21 @@ export async function startMcpServer(): Promise<void> {
 
   server.tool(
     'seal_manifest',
-    'Refresh all claims against the tree, derive the commit-bound key, seal the manifest, and append a history snapshot. Use when manually editing proofs/manifest.json is wrong because hand-edited manifests always break the seal — resealing is the only legal mutation.',
+    `Refresh all claims against the tree, derive the commit-bound key, seal the manifest, and append a history snapshot. Use when manually editing proofs/manifest.json is wrong because hand-edited manifests always break the seal — resealing is the only legal mutation. GATED: resealing overwrites the claims you verify against, so over MCP it is REFUSED (structured gated:true) unless a human authorized it by setting ${RESEAL_ENV}=1 in the server env. Run \`proofseal seal\` in a human-owned shell otherwise.`,
     { root: z.string().optional() },
     async ({ root }) =>
       failOpen('ensure the repo has proofseal.json (run `proofseal init`) and is a git checkout', async () => {
+        // Trust boundary (agent-loop safety): the agent cannot reseal away a
+        // regression it just introduced unless a human flipped the env switch.
+        if (!resealAuthorized()) {
+          return {
+            ok: false,
+            warn: true,
+            gated: true,
+            error: 'reseal refused: an in-session agent may not mint a new sealed snapshot',
+            hint: `resealing overwrites the very claims you verify against — that mutation belongs to a human. Set ${RESEAL_ENV}=1 in the MCP server env to authorize, or run \`proofseal seal\` yourself.`,
+          };
+        }
         const r = await seal({ root });
         return { ok: r.ok, summary: r.summary, manifestPath: r.manifestPath, manifestHash: r.witness.integrity.manifestHash, warnings: r.warnings, filesWritten: r.filesWritten };
       }),

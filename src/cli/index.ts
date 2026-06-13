@@ -17,10 +17,11 @@ import { runHarness } from '../harness/run.js';
 import { DEFAULT_TOLERANCE } from '../harness/quantize.js';
 import { loadConfig, saveConfig, defaultConfig, configPathFor } from '../config.js';
 import type { Claim, HarnessClaim } from '../manifest/schema.js';
+import { suggestClaims } from '../suggest/suggest.js';
 import { startMcpServer } from '../mcp/server.js';
 
 const program = new Command();
-program.name('proofseal').description('Regression memory for coding agents — seal repo behavior, verify edits over MCP or in CI').version('0.2.0');
+program.name('proofseal').description('Regression memory for coding agents — seal repo behavior, verify edits over MCP or in CI').version('0.3.0');
 
 function emit(json: boolean, data: unknown, human: () => void): void {
   if (json) console.log(JSON.stringify(data, null, 2));
@@ -422,6 +423,64 @@ harness
         }
       });
       process.exit(result.status === 'pass' || result.status === 'drift' ? 0 : 1);
+    } catch (e) {
+      fail(json, 2, (e as Error).message);
+    }
+  });
+
+// ─── suggest ────────────────────────────────────────────────────────
+program
+  .command('suggest')
+  .description('Suggest claims from the current git diff (marker for distinctive edits, file-hash otherwise)')
+  .option('--base <ref>', 'diff against a ref (e.g. main, HEAD~3) instead of the working tree')
+  .option('--staged', 'use staged changes (index vs HEAD)')
+  .option('--write', 'append the suggestions to proofseal.json (skips ids/files already present)')
+  .option('--root <path>', 'repo root', '.')
+  .option('--json', 'machine-readable output')
+  .action((o: { base?: string; staged?: boolean; write?: boolean; root: string; json?: boolean }) => {
+    const json = !!o.json;
+    try {
+      const { root, config } = loadConfig(o.root ?? '.');
+      const { suggestions, skipped } = suggestClaims(root, config, { base: o.base, staged: o.staged });
+
+      if (o.write) {
+        // Re-validate through the schema before persisting (suggestions are
+        // built in-process, but the config file is a contract — never write
+        // an entry that wouldn't load back). Skip any id that now collides.
+        const have = new Set(config.claims.map((c) => c.id));
+        const added: Claim[] = [];
+        for (const s of suggestions) {
+          if (have.has(s.claim.id)) continue;
+          const parsed = ClaimSchema.safeParse(s.claim);
+          if (!parsed.success) continue;
+          have.add(parsed.data.id);
+          added.push(parsed.data);
+        }
+        if (added.length > 0) {
+          config.claims.push(...added);
+          saveConfig(root, config);
+        }
+        emit(json, { ok: true, written: added.length, ids: added.map((c) => c.id), skipped }, () => {
+          console.log(`Wrote ${added.length} claim${added.length === 1 ? '' : 's'} to proofseal.json.`);
+          if (added.length > 0) console.log('Next: review the entries, then `proofseal seal`.');
+        });
+        return;
+      }
+
+      emit(json, { ok: true, suggestions, skipped }, () => {
+        if (suggestions.length === 0) {
+          console.log('No new claims to suggest from the current diff.');
+          return;
+        }
+        for (const s of suggestions) {
+          const dot = s.confidence === 'high' ? '●' : '○';
+          const detail = s.claim.type === 'marker' ? `marker="${s.claim.marker}"` : 'whole-file hash';
+          console.log(`${dot} ${s.claim.id}\t${s.claim.type}\t${s.claim.file}\t${detail}`);
+        }
+        console.log('');
+        console.log('● high confidence (robust marker)   ○ medium (whole-file hash)');
+        console.log('Review, then apply with: proofseal suggest --write');
+      });
     } catch (e) {
       fail(json, 2, (e as Error).message);
     }

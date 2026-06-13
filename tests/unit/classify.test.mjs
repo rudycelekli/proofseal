@@ -106,6 +106,7 @@ test('end-to-end: seal → verify ok; single-byte manifest tamper → exit 1', a
     publicKey: good.signature.publicKey,
     signerMode: 'derived',
     guarantee: good.signature.guarantee,
+    authenticated: false,
   });
   assert.match(good.signature.publicKey, /^[0-9a-f]{64}$/);
   assert.equal(good.summary.pass, 2);

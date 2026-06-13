@@ -49,6 +49,14 @@ export interface SignatureCheck {
    */
   guarantee: string;
   /**
+   * Machine-readable verdict: did a real EXTERNAL key sign this exact manifest
+   * AND did the verifier pin it? True ONLY for key mode + matching `--pubkey`
+   * pin + non-re-derivable key. `signatureValid` can be true without this
+   * (derived mode, or key mode with no pin) — agents must branch on this
+   * boolean, not on the human `warning` string, to avoid inferring auth.
+   */
+  authenticated: boolean;
+  /**
    * Set when signerMode === 'key' but the stored pubkey is re-derivable from
    * (gitCommit, salt) — i.e. a "key"-labelled seal that is really the
    * ornamental derived key (adversarial review: hybrid-confusion). Advisory.
@@ -114,6 +122,12 @@ export interface VerifyJson {
     signerMode: SignerMode;
     /** Additive: the one honest sentence about what this seal proves. */
     guarantee: string;
+    /**
+     * Additive (v1-compatible): machine-readable authentication verdict —
+     * true ONLY for a pinned, externally-signed key. Agents branch on this
+     * instead of parsing `warning`. `valid` does NOT imply `authenticated`.
+     */
+    authenticated: boolean;
     /** Additive: present only when the signer identity is unverified/confused. */
     warning?: string;
   };
@@ -134,6 +148,7 @@ export function toVerifyJson(r: VerifyResult): VerifyJson {
       publicKeyReproducible: r.signature.publicKeyReproducible,
       signerMode: r.signature.signerMode,
       guarantee: r.signature.guarantee,
+      authenticated: r.signature.authenticated,
       ...(r.signature.warning ? { warning: r.signature.warning } : {}),
     },
     summary: { totalClaims: r.results.length, ...r.summary },
@@ -193,6 +208,11 @@ export function checkSignature(witness: Witness, pinnedPublicKey?: string): Sign
       : signerMode === 'key' && !pinnedPublicKey
         ? 'signerMode=key but no --pubkey pin — signer identity is unverified'
         : undefined;
+  // Authentication = a real external key (not the re-derivable derived one)
+  // signed this, AND the verifier pinned it. Anything less is integrity-only.
+  // (A pin that did not match never reaches here — verify() exits 1 first.)
+  const authenticated =
+    signerMode === 'key' && Boolean(pinnedPublicKey) && !publicKeyReproducible && signatureValid;
   return {
     manifestHashOk,
     publicKeyReproducible,
@@ -200,6 +220,7 @@ export function checkSignature(witness: Witness, pinnedPublicKey?: string): Sign
     publicKey: witness.integrity.publicKey,
     signerMode,
     guarantee: guaranteeFor(signerMode, Boolean(pinnedPublicKey)),
+    authenticated,
     ...(warning ? { warning } : {}),
   };
 }
@@ -288,6 +309,7 @@ const EMPTY_SIG: SignatureCheck = {
   publicKey: '',
   signerMode: 'derived',
   guarantee: 'no manifest',
+  authenticated: false,
 };
 
 function precondition(reason: string, hint: string, summary?: VerifySummary, signature?: SignatureCheck, results?: ClaimResult[]): VerifyResult {

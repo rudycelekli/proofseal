@@ -12,6 +12,7 @@ import { generateKeyPairSync, createPublicKey } from 'node:crypto';
 import {
   seal,
   verify,
+  toVerifyJson,
   saveConfig,
   loadExternalSigningKey,
   SCHEMA_ID,
@@ -92,6 +93,33 @@ test('key-mode + --pubkey pin: matching pin passes, wrong pin → exit 1', async
   const bad = await verify({ root, pinnedPublicKey: wrong });
   assert.equal(bad.ok, false);
   assert.equal(bad.exitCode, 1);
+});
+
+test('authenticated flag: machine-readable verdict an agent branches on', async () => {
+  const root = freshRepo();
+  const { seedHex, pubHex } = realKey();
+  await sealWith(root, { PROOFSEAL_SIGNING_KEY: seedHex });
+
+  // key mode, NO pin: the seal is valid but the signer is UNVERIFIED. An agent
+  // reading only `valid` would over-trust; `authenticated` is the honest no.
+  const noPin = await verify({ root });
+  assert.equal(noPin.signature.signatureValid, true);
+  assert.equal(noPin.signature.authenticated, false, 'no pin → not authenticated');
+  assert.equal(toVerifyJson(noPin).signature.authenticated, false, 'flag reaches MCP/JSON output');
+
+  // key mode + matching pin: real external authentication → flag flips true.
+  const pinned = await verify({ root, pinnedPublicKey: pubHex });
+  assert.equal(pinned.signature.authenticated, true, 'matching pin → authenticated');
+  assert.equal(toVerifyJson(pinned).signature.authenticated, true);
+});
+
+test('authenticated flag: derived mode is never authenticated', async () => {
+  const root = freshRepo();
+  await sealWith(root, {}); // derived (ornamental) default
+  const r = await verify({ root });
+  assert.equal(r.ok, true);
+  assert.equal(r.signature.authenticated, false, 'derived seal is integrity-only, not auth');
+  assert.equal(toVerifyJson(r).signature.authenticated, false);
 });
 
 test('key-mode: single-byte manifest tamper → invalid', async () => {
