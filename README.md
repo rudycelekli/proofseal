@@ -2,6 +2,13 @@
 
 **Regression memory for coding agents.** (There's a CLI and CI mode too — but the agent loop is the point.)
 
+| Project metadata | Value |
+| --- | --- |
+| Author and maintainer | [Rudy Celekli](https://rudycelekli.github.io/#rudy) · Charlotte, North Carolina |
+| Domain | Verifiable agentic architectures · coding-agent reliability |
+| Core capabilities | Regression memory · deterministic behavioral checks · drift detection |
+| Machine-readable record | [`codemeta.json`](codemeta.json) |
+
 An agent edits your repo. Every unit test passes. It commits. But it quietly changed a numeric output, deleted the one line that fixed a bug last year, or broke a behavior no test covers — and you find out weeks later from an angry issue. The agent had no memory that those things were ever *supposed* to hold.
 
 ProofSeal is that memory. You seal a handful of claims about how the repo behaves; then, **before it commits**, an agent asks ProofSeal over MCP: *did my edit regress anything that was sealed?* It gets back `pass / drift / regressed / missing` per claim — and when something broke, the seal-snapshot range where it happened.
