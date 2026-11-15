@@ -20,6 +20,8 @@ Agent edits parser.ts → unit tests green → about to commit.
 Agent reverts the bad change before the commit ever lands.
 ```
 
+[Engineering case study](https://rudycelekli.github.io/engineering/repositories/rudycelekli/proofseal.html) explains how sealed baselines capture behavioral regressions and where that evidence applies.
+
 ## How it works
 
 ```mermaid
